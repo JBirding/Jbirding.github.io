@@ -1,0 +1,29 @@
+<html>
+<head>
+<style>
+body {margin:0}
+</style>
+<title>JBirding</title>
+<link rel="icon" type="image/x-icon" href="kestrel.ico">
+</head>
+<body>
+<iframe width=100% height=100% id='iframe' frameborder=0></iframe>
+
+<script>
+	const url = "https://script.google.com/macros/s/AKfycbzL4FYUJY5KH1h6LUQV6jTe9VMQHvPvQN82mqfT8-c/exec/gallery"
+
+	document.addEventListener('DOMContentLoaded',function() {
+		let iframe = document.getElementById('iframe')
+		iframe.src = url + window.location.search
+	})
+
+	window.addEventListener('message', function(event) {
+		let string = '?'
+		for (const key in event.data) {
+			string = string + key + '=' + event.data[key] + '&'
+		}
+		history.pushState(event.data,'',string.replace(/\&$/,''))
+  	})
+</script>
+</body>
+</html>
