@@ -12,17 +12,38 @@ body {margin:0}
 <script>
 	const url = "https://script.google.com/macros/s/AKfycbzL4FYUJY5KH1h6LUQV6jTe9VMQHvPvQN82mqfT8-c/exec/gallery"
 
+			function getLang() {
+    			var result,
+        			tmp = [];
+    			location.search
+   			     .substr(1)
+   			     .split("&")
+   			     .forEach(function (item) {
+   			       tmp = item.split("=");
+   			       if (tmp[0] === 'lang') result = decodeURIComponent(tmp[1]);
+   			     });
+  			  return result;
+			}
+	const lang = getLang()
+
 	document.addEventListener('DOMContentLoaded',function() {
 		let iframe = document.getElementById('iframe')
 		iframe.src = url + window.location.search
 	})
 
 	window.addEventListener('message', function(event) {
-		let string = '?'
-		for (const key in event.data) {
-			string = string + key + '=' + event.data[key] + '&'
-		}
-		history.pushState(event.data,'',string.replace(/\&$/,''))
+		if(typeof event.data == 'string') {
+			window.top.location.pathname = '/' + event.data
+		} else {
+			let string = '?'
+			string += new URLSearchParams(event.data).toString()
+			if (event.data.lang != lang) {
+				window.top.location = string.replace(/\&$/,'')
+			} else {
+				history.pushState(event.data,'',string.replace(/\&$/,''))
+			}
+			}
+		
   	})
 </script>
 </body>
