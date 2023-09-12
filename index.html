@@ -38,6 +38,7 @@ body {margin:0}
 			let string = '?'
 			string += new URLSearchParams(event.data).toString()
 			if (event.data.lang != lang) {
+				alert('pusi')
 				window.top.location = string.replace(/\&$/,'')
 			} else {
 				history.pushState(event.data,'',string.replace(/\&$/,''))
