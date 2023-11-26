@@ -1,0 +1,337 @@
+/*general stuff*/
+
+  .photo:not(.carphoto):hover, .paddle {
+    cursor: pointer;
+  }
+
+  /*table*/
+
+  table {
+    max-width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+	margin-bottom: 30px;
+  }
+  
+  table * {
+	  text-align: center;
+  }
+
+  td:not(.sp) {
+    max-width: 45vw;
+    width: 400px;
+    position: relative;
+  }
+
+  .sp {
+    width: 10vw;
+  }
+
+  img {
+    width: 90%;
+  }
+
+  .imgcell {
+    max-height: 33.75vw;
+    height: 300px;
+  }
+
+  .name {
+    font-size: 20px;
+    font-weight: bold;
+    height: 40px;
+    vertical-align: bottom;
+  }
+
+  .sci {
+    font-size: 14px;
+    font-style: italic;
+    height: 50px;
+    vertical-align: top;
+  }
+
+  .special {
+    background-image: url('../other_assets/specialbg.png');
+    background-size: 100% 100%;
+  }
+
+  .star {
+    color: #b30000;
+    position: absolute;
+    top: -6.67%;
+    left: -3.75%;
+    font-size: 70px;
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    pointer-events: none;
+  }
+
+  /*loader*/
+
+  #loadcontainer {
+    width: 30%;
+    height: 30px;
+    margin-left: 35%;
+    margin-right: 35%;
+	margin-top: 20px;
+    z-index: 1;
+  }
+
+  #progress {
+    line-height: 30px;
+    height: 100%;
+    width: 0;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  /*carousel*/
+
+  #carousel {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(0,0,0,0.8);
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+
+    display: none; /* Hidden and flexbox doesn't work */
+  }
+
+  .star, #closecar, .photo, .paddle {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+
+  #namecontainer {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    height: 40px;
+    width: 100%;
+    display:flex;
+    align-items:flex-end;
+    justify-content: center;
+  }
+
+  #scicontainer {
+    color: white;
+    font-size: 15px;
+    font-style: italic;
+    height: 40px;
+    width: 100%;
+    z-index: 10;
+  }
+
+  .carphoto, #photoinfo {
+    position: relative;
+  }
+
+  .paddle {
+    display: flex;
+    font-family: Righteous;
+    font-weight: 700;
+    font-size: 3vw;
+    height: 5vw;
+    width: 5vw;
+    border-radius: 5vw;
+    line-height: 0;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+    background-color: white;
+    color: black;
+    mix-blend-mode: screen;
+  }
+
+  .paddle:hover {
+    background-color: #dedede;
+  }
+
+  .paddle:active {
+    background-color: #999999;
+  }
+
+  .sidephotos {
+    pointer-events: none;
+    width: auto;
+    position: absolute;
+    height: 10vw;
+  }
+
+  #closecar {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+
+  #fullscreen, #closefullscreen {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    cursor: pointer;
+    user-drag: none;
+    -webkit-user-drag: none;
+  }
+
+  #fullscreen:hover, #closefullscreen:hover{
+    filter: brightness(0.87);
+  }
+
+  #fullscreen:active, #closefullscreen:active{
+    filter: brightness(0.6)
+  }
+
+
+
+
+
+
+
+  /*searching and sorting*/
+
+  #search {
+    border-radius: 40px;
+    height: 100%;
+    width: 100%;
+    font-family: Montserrat;
+    padding: 0 55px 0 55px;
+    font-size: 20px;
+    background: url('../other_assets/search.png') left center  no-repeat;
+    background-size: 30px;
+    background-position: 15px 50%;
+    color: #b30000;
+    font-weight: 500;
+  }
+
+  #sort {
+    border-radius: 50px;
+    height: 100%;
+    width: 100%;
+    font-family: Montserrat;
+    padding: 5px 20px 5px 20px;
+    font-size: 20px;
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+  }
+
+  #sort, #search {
+    background-color: #dedede;
+    border: none;
+  }
+
+  option[value='choose'] {
+    color: #454545;
+    font-weight: 300;
+  }
+
+  option:not([value='choose']) {
+    color: #b30000;
+    font-weight: 500;
+  }
+
+  #search:-ms-input-placeholder, #search::-ms-input-placeholder {
+    color: #454545;
+    opacity: 1;
+    font-weight: 300;
+  }
+
+  #search::placeholder, #search::-webkit-input-placeholder {
+    color: #454545;
+    opacity: 1;
+    font-weight: 300;
+  }
+
+  input::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+
+  #searchbox, #sortbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    width: 30%;
+    max-width: 600px;
+    min-width: 400px;
+    margin: 10px;
+  }
+
+  #closesearch, #sortoptions {
+    position: absolute;
+    right: 20px;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+
+  #sortoptions {
+    display: flex;
+    align-items: center;
+  }
+
+  #closesearch, #closesort {
+    font-size: 60px;
+    height: 40px;
+    line-height: 40px;
+    color: #b30000;
+    font-family: Righteous;
+  }
+
+  #sort:hover, #shuffle:hover {
+    cursor: pointer;
+  }
+
+  *:focus{
+    outline: 1px solid #b30000;
+  }
+
+  #shuffle {
+    filter: brightness(0.7);
+    width: 35px;
+    height: 35px;
+  }
+
+  #shuffle:hover {
+    filter: brightness(0.6);
+  }
+
+  #shuffle:active {
+    filter: brightness(0.5);
+  }
+
+  #closesearch:hover, #closesort:hover {
+    cursor: pointer;
+    color: #990000;
+  }
+
+  #closesearch:active, #closesort:active {
+    color: #800000;
+  }
+
+  #nav {
+    width: 100%;
+    position: relative;
+    text-align: center;
+  }
+  
+  #footer.hidden {
+	  display: none;
+  }
+  
+  #nobird {
+	  font-weight: bold;
+	  font-size: 20px;
+	  margin-top: 30px;
+  }

@@ -1,50 +1,130 @@
 <html>
 <head>
-<style>
-body {margin:0;overflow:hidden}
-</style>
-<title>JBirding</title>
-<link rel="icon" type="image/x-icon" href="kestrel.ico">
+
+ <!--// Fonts-->
+ 
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Sigmar&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<script src="https://kit.fontawesome.com/ff70983d1b.js" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+	<title>JBirding</title>
+
+	<link rel="icon" type="image/x-icon" href="kestrel.ico">
+	<link rel="stylesheet" href="styles/style-general.css">
+	<link rel="stylesheet" href="styles/style-gallery.css">
+	
+
 </head>
 <body>
-<iframe width=100% height=100% id='iframe' frameborder=3></iframe>
 
-<script>
-	const url = "https://script.google.com/macros/s/AKfycbzL4FYUJY5KH1h6LUQV6jTe9VMQHvPvQN82mqfT8-c/exec/home"
+	<iframe hidden src="https://script.google.com/macros/s/AKfycbzL4FYUJY5KH1h6LUQV6jTe9VMQHvPvQN82mqfT8-c/exec/data"></iframe>
+	
+	
+	<div id='header'>
+	  <img id='logo' src='logos\Jbirding-birds\jbirding-black-space-birds.png'>
+	</div>
 
-			function getLang() {
-    			var result,
-        			tmp = [];
-    			location.search
-   			     .substr(1)
-   			     .split("&")
-   			     .forEach(function (item) {
-   			       tmp = item.split("=");
-   			       if (tmp[0] === 'lang') result = decodeURIComponent(tmp[1]);
-   			     });
-  			  return result;
-			}
-	const lang = getLang()
+	<div id='pages'>
+	  <li id='home' class='nav' data-tab="home">Inicio</li>
+	  <li id='gallery' class='nav' data-tab="gallery">Galería</li>
+	  <select id='language' onchange="parameters.set('lang',this.value); updateURL(parameters)">
+		<option value="ES">ES</option>
+		<option value="EN">EN</option>
+	  </select>
+	</div>
+	
+	
+	<datalist id='birds'>
+      <option>Hembra</option>
+      <option>Macho</option>
+      <option>Juvenil</option>
+      <optgroup id='commonnames' value='commonname'>Nombre común</optgroup>
+      <optgroup id='scinames' value='sciname'>Nombre científico</optgroup>
+    </datalist>
 
-	document.addEventListener('DOMContentLoaded',function() {
-		let iframe = document.getElementById('iframe')
-		iframe.src = url + window.location.search
-	})
 
-	window.addEventListener('message', function(event) {
-		if(typeof event.data == 'string') {
-			window.top.location.pathname = '/' + event.data
-		} else {
-			let string = '?'
-			string += new URLSearchParams(event.data).toString()
-			if (event.data.lang != lang) {	
-				window.top.location = string.replace(/\&$/,'')
-			} else {
-				history.pushState(event.data,'',string.replace(/\&$/,''))
-			}
-			}
-		
-  	})
-</script>
+    <div id='carousel'>
+      <div id='closecar' onclick="closeCarousel()"></div>
+      <img id='fullscreen' src="other_assets\fullscreen.png" onclick="fullScreen()" title="Pantalla completa (F)">
+      <img id='closefullscreen' src="other_assets\closefullscreen.png" onclick="closeFullScreen()" title="Pantalla completa (F)" hidden>
+      <div id='carouselinfo'>
+        <div id='photoinfo'>
+          <div id='namecontainer'></div>
+          <div id='scicontainer'></div>
+        </div>
+        
+      </div>
+
+      
+
+      <div id='paddleleft' class='paddle' onclick="carouselPrevious()">
+        &lt
+      </div>
+      <div id='paddleright' class="paddle" onclick="carouselNext()">
+        &gt
+      </div>
+    </div>
+
+    <div id='nav'>
+      <div id='searchbox'>
+        <input list='birds' id='search' onchange="tableFiltered()" placeholder="Busca un ave">
+        <div hidden id='closesearch' onclick="clearSearch()">×</div>
+      </div>
+      <div id='sortbox'>
+        <select onchange="changeSort()" id='sort'>
+          <option value="choose" disabled selected>Ordenar por...</option>
+
+          <option value=''>Predeterminado</option>
+          <option value="Random">Aleatorio</option>
+          <option value="Species A-Z">Especie (A-Z)</option>
+          <option value="Species Z-A">Especie (Z-A)</option>
+          <option value="Scientific name A-Z">Nombre científico (A-Z)</option>
+          <option value="Scientific name Z-A">Nombre científico (Z-A)</option>
+          <option value="Latest">Más recientes</option>
+          <option value="Oldest">Más antiguas</option>
+        </select>
+        <div id='sortoptions'>
+          <div id='closesort' hidden onclick="clearSort()">×</div>
+          <img src='other_assets\shuffle.png' id='shuffle' onclick="genTable()" hidden>
+        </div>
+      </div>
+    </div>
+	
+	<div id='loadcontainer'>
+      <div id='progress'></div>
+    </div>
+	<div id='nobird' hidden>No se han encontrado aves con esos criterios de búsqueda</div>
+
+    <table id='table'></table>
+	
+	
+	
+	
+	
+	
+	
+	<div id='footer' class='hidden'>
+	  <div id='footernav'>
+		<ul class='socials'>
+		  <li><a href="https://instagram.com/_erithacus_rubecula"><i class="fab fa-fw fa-instagram"></i>INSTAGRAM</a></li>
+		</ul>
+	  </div>
+	  <div id='copyright'>© JBirding 2023<br>Todos los derechos reservados.</div>
+	  <img src="logos\J-pygargus\j-white-pygargus.png" id='footerlogo'>
+	</div>
+	
+	<script src="scripts/script-gallery.js"></script>
+	<script src="scripts/script-header.js"></script>
+
+
+
 </body>
 </html>
