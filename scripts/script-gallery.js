@@ -1,6 +1,7 @@
 // initialization 🔴
   // getting search queries
-  let parameters = new URLSearchParams(location.search)
+  let url = new URL(location)
+  let parameters = url.searchParams
   let lang
   if (parameters.has('lang')) {
 	  lang = parameters.get('lang')
@@ -34,6 +35,8 @@
 
   let fullscreen
   let closefullscreen
+  
+  let constmov
   
   function urlFix () {
 		if (parameters.has('search')) {
@@ -127,10 +130,11 @@
 		let par = new URLSearchParams(params)
 		let string = '?'
 			string += par.toString()
+			url.search = string
 			if (par.has('lang') && par.get('lang') != lang) {	
-				location = string.replace(/(\&|\?)$/,'')
+				location = url.toString()
 			} else {
-				history.pushState(event.data,'',string.replace(/(\&|\?)$/,''))
+				history.pushState(event.data,'',url.toString())
 			}
 	}
 
@@ -359,6 +363,12 @@
 	
 	urlFix()
 	
+	paddleright.ontouchstart = function() {constmov = setInterval(carouselNext(),25)}
+	paddleleft.ontouchstart = function() {constmov = setInterval(carouselPrevious(),25)}
+	
+	paddleright.ontouchend = function() {clearInterval(constmov)}
+	paddleleft.ontouchend = paddleright.ontouchend	
+	
 	  carousel.addEventListener('touchstart', handleTouchStart, false); // make carousel swipable   
 	  carousel.addEventListener('touchend', handleTouchMove, false);
 
@@ -543,6 +553,9 @@
 
     w = window.innerWidth
     h = window.innerHeight
+	
+	carouselinfo.style = ''
+	photoinfo.style = ''
 
     paddleright.style.top = ''
     paddleleft.style.top = ''
@@ -583,97 +596,128 @@
     carouselinfo.appendChild(newPhoto)
     carousel.appendChild(nextPhoto)
     carousel.appendChild(postPhoto)
+	
+	namecontainer.textContent = names[n].textContent
+	scicontainer.textContent = scis[n].textContent
+	carouselinfo.appendChild(photoinfo)
+	
+	newPhoto.classList.add('carphoto')
+	newPhoto.classList.remove('photo')
+	
+	if (document.fullscreenElement && w >= h*5/3) {
+		
+		newPhoto.style.height = '100vh'
+		newPhoto.style.width = 'auto'
+		newPhoto.style.position = 'absolute'
+		newPhoto.style.left = 0
+		newPhoto.style.top = 0
+		
+		nextPhoto.style.opacity = 0
+		prevPhoto.style.opacity = 0
+		
+		carouselinfo.style.width = '100vw'
+		carouselinfo.style.height = '100vh'
+		
+		photoinfo.style.position = 'absolute'
+		photoinfo.style.width = (w - h*4/3 - 20) + 'px'
+		photoinfo.style.right = '10px'
+		photoinfo.style.top = (h/2 - 40)+'px'
+		
+		paddleleft.style.position = 'absolute'
+		paddleright.style.position = 'absolute'
+		
+		paddleright.style.left = (w/2 + h*4/6 + 20) + 'px'
+		paddleleft.style.right = (w-h*4/3)/2 + 20 + 'px'
+		paddleleft.style.top = (h*0.55)+'px'
+		paddleright.style.top = (h*0.55)+'px'
+		
+		
+		
+	} else {
 
+		photowidth = h*0.8*0.85*4/3
+		photoheight = h*0.8*0.85
 
-    namecontainer.textContent = names[n].textContent
-    scicontainer.textContent = scis[n].textContent
-    carouselinfo.appendChild(photoinfo)
-    
-    newPhoto.classList.add('carphoto')
-    newPhoto.classList.remove('photo')
+		photoinfo.style.position = 'relative'
 
-    photowidth = h*0.8*0.85*4/3
-    photoheight = h*0.8*0.85
+		if (h*0.85*4/3 <= w) {
+		  carouselinfo.style.height = '85%'
+		  carouselinfo.style.width = 'auto'
+		  newPhoto.style.height = '80%'
+		  newPhoto.style.width = 'auto'
 
-    photoinfo.style.position = 'relative'
+		  newPhoto.style.position = 'relative'
+		  newPhoto.style.top = '5%'
+		  
+		  photoinfo.style.top = '5%'
+		} else {
+		  carouselinfo.style.width = '90%'
+		  carouselinfo.style.height = 90*3/4+'vw'
+		  newPhoto.style.width = 'auto'
+		  newPhoto.style.height = 0.9*75+'vw'
 
-    if (h*0.85*4/3 <= w) {
-      carouselinfo.style.height = '85%'
-      carouselinfo.style.width = 'auto'
-      newPhoto.style.height = '80%'
-      newPhoto.style.width = 'auto'
+		  prevPhoto.style.right = '100%'
+		  prevPhoto.style.height = '30vw'
+		  nextPhoto.style.left = '100%'
+		  nextPhoto.style.height = '30vw'
 
-      newPhoto.style.position = 'relative'
-      newPhoto.style.top = '5%'
-      
-      photoinfo.style.top = '5%'
-    } else {
-      carouselinfo.style.width = '90%'
-      carouselinfo.style.height = 90*3/4+'vw'
-      newPhoto.style.width = 'auto'
-      newPhoto.style.height = 0.9*75+'vw'
+		  paddleleft.style.left = '7.5%'
+		  paddleleft.style.width = '10vw'
+		  paddleright.style.right = '7.5%'
+		  paddleright.style.width = '10vw'
+		  paddleleft.style.height = '10vw'
+		  paddleright.style.height = '10vw'
+		  paddleleft.style.fontSize = '6vw'
+		  paddleright.style.fontSize = '6vw'
+		}
 
-      prevPhoto.style.right = '100%'
-      prevPhoto.style.height = '30vw'
-      nextPhoto.style.left = '100%'
-      nextPhoto.style.height = '30vw'
+		
 
-      paddleleft.style.left = '7.5%'
-      paddleleft.style.width = '10vw'
-      paddleright.style.right = '7.5%'
-      paddleright.style.width = '10vw'
-      paddleleft.style.height = '10vw'
-      paddleright.style.height = '10vw'
-      paddleleft.style.fontSize = '6vw'
-      paddleright.style.fontSize = '6vw'
-    }
+		if (photowidth <= (44-2/3)*w/100) {
+		  prevPhoto.style.right = 55+photowidth*50/w+'%'
 
-    
+		  nextPhoto.style.left = 55+photowidth*50/w+'%'
 
-    if (photowidth <= (44-2/3)*w/100) {
-      prevPhoto.style.right = 55+photowidth*50/w+'%'
+		  paddleright.style.left = 70.5+1/3+photowidth*50/w+'%'
+		  paddleleft.style.right = 70.5+1/3+photowidth*50/w+'%'
 
-      nextPhoto.style.left = 55+photowidth*50/w+'%'
+		} else if (photowidth <= (27-1/3)*w/50) {
+		  prevPhoto.style.right = 55+photowidth*50/w+'%'
 
-      paddleright.style.left = 70.5+1/3+photowidth*50/w+'%'
-      paddleleft.style.right = 70.5+1/3+photowidth*50/w+'%'
+		  nextPhoto.style.left = 55+photowidth*50/w+'%'
 
-    } else if (photowidth <= (27-1/3)*w/50) {
-      prevPhoto.style.right = 55+photowidth*50/w+'%'
+		  paddleright.style.left = 59+1/6+photowidth*50/w+'%'
+		  paddleleft.style.right = 59+1/6+photowidth*50/w+'%'
 
-      nextPhoto.style.left = 55+photowidth*50/w+'%'
+		  paddleright.style.top = 55+5*w/h+'%'
+		  paddleleft.style.top = 55+5*w/h+'%'
 
-      paddleright.style.left = 59+1/6+photowidth*50/w+'%'
-      paddleleft.style.right = 59+1/6+photowidth*50/w+'%'
+		} else if (photowidth <= 0.8*w) {
+		  paddleright.style.left = 52.5+photowidth*50/w+'%'
+		  paddleleft.style.right = 52.5+photowidth*50/w+'%'
 
-      paddleright.style.top = 55+5*w/h+'%'
-      paddleleft.style.top = 55+5*w/h+'%'
+		  prevPhoto.style.right = '100%'
+		  nextPhoto.style.left = '100%'
+		}
 
-    } else if (photowidth <= 0.8*w) {
-      paddleright.style.left = 52.5+photowidth*50/w+'%'
-      paddleleft.style.right = 52.5+photowidth*50/w+'%'
+		antPhoto.style.right = prevPhoto.style.right
+		postPhoto.style.left = nextPhoto.style.left
 
-      prevPhoto.style.right = '100%'
-      nextPhoto.style.left = '100%'
-    }
+		if(l <= 1) {
+		  antPhoto.hidden = true
+		  prevPhoto.hidden = true
+		  nextPhoto.hidden = true
+		  postPhoto.hidden = true
+		  paddleleft.style.display = 'none'
+		  paddleright.style.display = 'none'
 
-    antPhoto.style.right = prevPhoto.style.right
-    postPhoto.style.left = nextPhoto.style.left
-
-    if(l <= 1) {
-      antPhoto.hidden = true
-      prevPhoto.hidden = true
-      nextPhoto.hidden = true
-      postPhoto.hidden = true
-      paddleleft.style.display = 'none'
-      paddleright.style.display = 'none'
-
-    } else if(paddleleft.hidden) {
-      antPhoto.hidden = false
-      prevPhoto.hidden = false
-      nextPhoto.hidden = false
-      postPhoto.hidden = false
-    }
+		} else if(paddleleft.hidden) {
+		  antPhoto.hidden = false
+		  prevPhoto.hidden = false
+		  nextPhoto.hidden = false
+		  postPhoto.hidden = false
+		}
+	}
 
   }
 
