@@ -90,6 +90,10 @@
   }
 
   /*carousel*/
+  
+  #photoinfo {
+	  z-index: 1000;
+  }
 
   #carousel {
     position: fixed;
@@ -182,6 +186,7 @@
     cursor: pointer;
     user-drag: none;
     -webkit-user-drag: none;
+	z-index: 10;
   }
 
   #fullscreen:hover, #closefullscreen:hover{
