@@ -143,7 +143,7 @@
 
   // animations 🟩
 
-  function fadeIn(element,time) {
+  function fadeIn(element,time,pointer='auto',op = 1) {
 
     let rand = Math.random()
     running[rand] = true
@@ -157,14 +157,14 @@
       opacity = element.style.opacity * 100
     }
 
-    let initial = 100-opacity
+    let initial = 100*op-opacity
 
     element.hidden = false
-    element.style.pointerEvents = 'auto'
+    element.style.pointerEvents = pointer
     let int = setInterval(function(){
 
-      if (opacity > 100) {
-        element.style.opacity = 1
+      if (opacity > 100*op) {
+        element.style.opacity = op
         clearInterval(int)
         delete running[rand]
       } else {
@@ -176,7 +176,7 @@
     },1)
   }
 
-  function fadeOut(element,time) {
+  function fadeOut(element,time,pointer='none') {
 
     let rand = Math.random()
     running[rand] = true
@@ -192,7 +192,7 @@
     
     let initial = opacity
 
-    element.style.pointerEvents = 'none'
+    element.style.pointerEvents = pointer
     
     let int = setInterval(function(){
 
@@ -363,11 +363,14 @@
 	
 	urlFix()
 	
-	paddleright.ontouchstart = function() {constmov = setInterval(carouselNext(),25)}
-	paddleleft.ontouchstart = function() {constmov = setInterval(carouselPrevious(),25)}
+	paddleright.onpointerdown = function() {constmov = setInterval(carouselNext,50)}
+	paddleleft.onpointerdown = function() {constmov = setInterval(carouselPrevious,50)}
 	
-	paddleright.ontouchend = function() {clearInterval(constmov)}
-	paddleleft.ontouchend = paddleright.ontouchend	
+	paddleright.onpointerup = function() {clearInterval(constmov)}
+	paddleleft.onpointerup = paddleright.onpointerup
+	
+	paddleleft.oncontextmenu = function(ev) { ev.preventDefault() }
+	paddleright.oncontextmenu = paddleleft.oncontextmenu
 	
 	  carousel.addEventListener('touchstart', handleTouchStart, false); // make carousel swipable   
 	  carousel.addEventListener('touchend', handleTouchMove, false);
@@ -417,7 +420,6 @@
 
   function fullScreen() {
     let docel = document.documentElement
-	console.log(screen.orientation)
     try {
       if (docel.requestFullscreen) {
         docel.requestFullscreen()
@@ -492,6 +494,7 @@
     catch {n = photo.index}
     display(n)
   }
+  
 
   function carouselNext() {
     if(!isRunning() && !moving) {
@@ -499,10 +502,12 @@
       n = (n+1) % photos.length
 
       changeNames(n,50)
-      mutate(postPhoto,nextPhoto,50,'')
+      fadeIn(postPhoto,50,undefined,0.6)
+	  postPhoto.loading = 'eager'
       mutate(nextPhoto,newPhoto,50,'center')
       mutate(newPhoto,prevPhoto,50,'right')
       fadeOut(prevPhoto,50)
+	  prevPhoto.loading = 'lazy'
 
       let int = setInterval(function(){
         if(!isRunning()) {
@@ -520,10 +525,12 @@
       n = (photos.length+n-1) % photos.length
 
       changeNames(n,50)
-      mutate(antPhoto,prevPhoto,50,'right')
+      fadeIn(antPhoto,50,undefined,0.6)
+	  antPhoto.loading = 'eager'
       mutate(prevPhoto,newPhoto,50,'center')
       mutate(newPhoto,nextPhoto,50,'')
       fadeOut(nextPhoto,50)
+	  nextPhoto.loading = 'lazy'
 
       let int = setInterval(function(){
         if(!isRunning()) {
@@ -582,11 +589,15 @@
     prevPhoto.style.opacity = 0.6
     prevPhoto.className = 'sidephotos'
     prevPhoto.style.zIndex = 2
+	prevPhoto.loading = 'eager'
     newPhoto = photos[n].cloneNode(true)
+	newPhoto.style.zIndex = 3
+	newPhoto.loading = 'eager'
     nextPhoto = photos[(n+1)%photos.length].cloneNode(true)
     nextPhoto.style.opacity = 0.6
     nextPhoto.className = 'sidephotos'
     nextPhoto.style.zIndex = 2
+	nextPhoto.loading = 'eager'
     postPhoto = photos[(n+2)%photos.length].cloneNode(true)
     postPhoto.className = 'sidephotos'
     postPhoto.style.opacity = 0
