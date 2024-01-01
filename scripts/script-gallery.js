@@ -1,4 +1,7 @@
 // initialization 🔴
+
+$.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3s9GQyu?alt=media&key=AIzaSyDM8Zj-e-dzD8otHJ0m9zydIv5E-uCed-8",store)
+
   // getting search queries
   let url = new URL(location)
   let parameters = url.searchParams
@@ -96,6 +99,7 @@
 
   //store function
         function store(dat) {
+			data = dat
           dat.forEach(function(r){
             scioptions.push(r[2])
             commonoptions.push(r[7+langIndex])
@@ -124,6 +128,7 @@
 
           generateTable(filterData)
           document.getElementById('loadcontainer').hidden = true
+		  console.log(dat)
         }
 		
 	function updateURL (params) {
@@ -325,11 +330,6 @@
 }
 
   // adding event listeners 🟡
-  
-  window.addEventListener("message",(event) => {
-	  data = event.data
-	  store(data)
-  })
 
   document.addEventListener("DOMContentLoaded",function(){ // loading the photos into the page
     window.focus()
