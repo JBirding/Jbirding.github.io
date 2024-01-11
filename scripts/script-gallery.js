@@ -5,8 +5,6 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
 
 
 
-
-
   // getting search queries
   let url = new URL(location)
   let parameters = url.searchParams
