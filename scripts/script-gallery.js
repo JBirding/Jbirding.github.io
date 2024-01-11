@@ -2,6 +2,11 @@
 
 $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3s9GQyu?alt=media&key=AIzaSyDM8Zj-e-dzD8otHJ0m9zydIv5E-uCed-8",store)
 
+
+
+
+
+
   // getting search queries
   let url = new URL(location)
   let parameters = url.searchParams
@@ -76,12 +81,13 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
   let carphoto = document.getElementsByClassName('carphoto')[0]
 
   // preparing things
-  let data
+  let data, ogdata
   let scioptions = []
   let commonoptions = []
   let saoptions = [['macho','hembra','juvenil'],['male','female','juvenile']]
 
-  const base = 'https://drive.google.com/uc?export=view&id='
+  const base = 'https://www.googleapis.com/drive/v3/files/'
+  const driveKey = '?alt=media&key=AIzaSyDM8Zj-e-dzD8otHJ0m9zydIv5E-uCed-8'
   
   const sa = {
     A: ['','','',''],
@@ -99,10 +105,11 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
 
   //store function
         function store(dat) {
+			ogdata = dat
 			data = dat
           dat.forEach(function(r){
-            scioptions.push(r[2])
-            commonoptions.push(r[7+langIndex])
+            scioptions.push(r[1])
+            commonoptions.push(r[5+langIndex])
           })
 
           filterData = filterSomething(data,search.value)
@@ -128,7 +135,6 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
 
           generateTable(filterData)
           document.getElementById('loadcontainer').hidden = true
-		  console.log(dat)
         }
 		
 	function updateURL (params) {
@@ -809,23 +815,24 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
       star = document.createElement('div')
       star.textContent = '★'
       star.classList.add('star')
-      if(a[i][5]) {
+      if(a[i][3]) {
         cell.classList.add('special')
         cell.appendChild(star)
       }
       photo = document.createElement('img')
-      photo.src = base+a[i][1]
+      photo.src = base+a[i][0]+driveKey
+	  photo.onerror = imgloadError
       photo.classList.add('photo')
       if(i>limit) {
         photo.loading = 'lazy'
       }
       photo.index = i
       name = document.createElement('td')
-      name.textContent = sa[a[i][3]][langIndex]+a[i][7+langIndex]+sa[a[i][3]][2+langIndex]
+      name.textContent = sa[a[i][2]][langIndex]+a[i][5+langIndex]+sa[a[i][2]][2+langIndex]
       
       name.classList.add('name')
       sci = document.createElement('td')
-      sci.textContent = a[i][2]
+      sci.textContent = a[i][1]
       sci.classList.add('sci')
 
       cell.appendChild(photo)
@@ -854,22 +861,23 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
       star = document.createElement('div')
       star.textContent = '★'
       star.classList.add('star')
-      if(a[i+1][5]) {
+      if(a[i+1][3]) {
         cell.classList.add('special')
         cell.appendChild(star)
       }
       photo = document.createElement('img')
-      photo.src = base+a[i+1][1]
+      photo.src = base+a[i+1][0]+driveKey
       photo.classList.add('photo')
+	  photo.onerror = imgloadError
       photo.index = i+1
       if(i>limit) {
         photo.loading = 'lazy'
       }
       name = document.createElement('td')
-      name.textContent = sa[a[i+1][3]][langIndex]+a[i+1][7+langIndex]+sa[a[i+1][3]][2+langIndex]
+      name.textContent = sa[a[i+1][2]][langIndex]+a[i+1][5+langIndex]+sa[a[i+1][2]][2+langIndex]
       name.classList.add('name')
       sci = document.createElement('td')
-      sci.textContent = a[i+1][2]
+      sci.textContent = a[i+1][1]
       sci.classList.add('sci')
 
       cell.appendChild(photo)
@@ -900,6 +908,11 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
 
 
   // other utility I'm not gonna touch in ages 🟠
+  
+  function imgloadError(ev) {
+	  ev.target.src = 'logos/J-pygargus/j-black-pygargus.png'
+	  ev.onerror = null
+  }
 
   function clearSearch() {
     search.value = ''
@@ -926,14 +939,14 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
         searchparam = r.trim()
 
         if(scioptions.includes(searchparam)) {
-          acum = acum || elem[2] == searchparam
+          acum = acum || elem[1] == searchparam
         } else if (commonoptions.includes(searchparam)) {
-          acum = acum || elem[7+langIndex] == searchparam
+          acum = acum || elem[5+langIndex] == searchparam
         } else if (saoptions[langIndex].includes(searchparam.toLowerCase())) {
-          acum = acum || sa[elem[3]][2-langIndex].toLowerCase().trim() == searchparam.toLowerCase()
+          acum = acum || sa[elem[2]][2-langIndex].toLowerCase().trim() == searchparam.toLowerCase()
         } else {
-          acum = acum || elem[2].toLowerCase().includes(searchparam.toLowerCase())
-            || (sa[elem[3]][langIndex]+elem[7+langIndex]+sa[elem[3]][2+langIndex]).
+          acum = acum || elem[1].toLowerCase().includes(searchparam.toLowerCase())
+            || (sa[elem[2]][langIndex]+elem[5+langIndex]+sa[elem[2]][2+langIndex]).
             toLowerCase().includes(searchparam.toLowerCase()) 
         }
         
@@ -1023,8 +1036,7 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
     
   }
 
-  function sort(type,data) {
-    let a = data
+  function sort(type,a) {
     if (type=='Random') {
       a.sort(sortrand)
     } else if (type == 'Species A-Z') {
@@ -1036,9 +1048,10 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
     } else if(type == 'Scientific name Z-A') {
       a.sort(sortsciza)
     } else if(type == 'Latest') {
-      a.sort(sortlatest)
+      a = ogdata
     } else if(type == 'Oldest') {
-      a.sort(sortoldest)
+		ogdata.invert = invert
+      a = invert(ogdata)
     } else {
       a.sort(sortdefault)
     }
@@ -1064,14 +1077,6 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
     return b[2].localeCompare(a[2])+Math.random()*0.1-0.05
   }
 
-  function sortlatest(a,b) {
-    return b[11]-a[11]
-  }
-
-  function sortoldest(a,b) {
-    return a[11]-b[11]
-  }
-
   function sortdefault(a,b) {
     return (b[5]-a[5])*2+Math.sign(b[6]-a[6])+Math.random()*0.1-0.05
   }
@@ -1092,6 +1097,17 @@ $.getJSON("https://www.googleapis.com/drive/v3/files/1o_Odx1sktYxrCg9JINQlDXBXX3
       x = x || running[key]
     }
     return x
+  }
+  
+  function invert(a) {
+	  let len = a.length
+	  let temp
+	  for(let i=0; i<len; i++) {
+		  temp = a[i]
+		  a[i] = this[len-i-1]
+		  a[len-i-1] = a[i]
+	  }
+	  return a
   }
 
   // other utility I'm not gonna touch in ages 🟠
