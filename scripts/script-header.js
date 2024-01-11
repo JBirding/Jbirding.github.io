@@ -28,7 +28,7 @@ let didScroll;
           $('#pages').removeClass('nav-down').addClass('nav-up');
       } else {
           // Scroll Up
-          if(st + $(window).height() < $(document).height()) {
+          if(st + window.innerHeight < $(document).height()) {
               $('#pages').removeClass('nav-up').addClass('nav-down');
           }
       }
