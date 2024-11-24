@@ -1,8 +1,101 @@
 /* general page things */
+:root {
+  --background-color-light: #fefcfb;
+  --background-color-dark: #282c34;
 
-  table {
-    border-collapse: separate;
-    border-spacing: 0;
+  --accent-color: #b30000;
+  --accent-color-dark: #ff4040;
+
+  --light-gray: #dedede;
+  --dark-gray: #40454f;
+
+  --scrollbar-thumb-light: #bababa;
+  --scrollbar-active-light: #aaaaaa;
+
+  --scrollbar-thumb-dark: #555555;
+  --scrollbar-active-dark: #606060;
+
+}
+
+  body.light-theme{
+    background-color: var(--background-color-light);
+    color: black;
+  }
+
+  .light-theme *:focus{
+    outline: 1px solid var(--accent-color);
+  }
+
+  html:has(.light-theme)::-webkit-scrollbar-track {
+    background-color: var(--light-gray);
+  }
+  html:has(.light-theme)::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-light);
+  }
+  html:has(.light-theme)::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-active-light);
+  }
+  /*scrollbar:active: color = #666666*/
+
+  body.light-theme #pages {
+    background-color: var(--background-color-light);
+  }
+
+  body.light-theme #theme:after{
+    content: "\1F323";
+  }
+
+  body.light-theme #pages>li.active, body.light-theme #pages>li:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+  }
+
+  body.light-theme #language {
+    background-color: var(--light-gray);
+    color: var(--background-color-dark);
+  }
+
+
+
+  body.dark-theme {
+    background-color: var(--background-color-dark);
+    color: white;
+  }
+
+  .dark-theme *:focus {
+    outline: 1px solid var(--accent-color-dark);
+  }
+
+  .dark-theme #logo {
+    filter: invert(1);
+  }
+
+  html:has(.dark-theme)::-webkit-scrollbar-track {
+    background-color: var(--dark-gray);
+  }
+  html:has(.dark-theme)::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-dark);
+  }
+  html:has(.dark-theme)::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-active-dark);
+  }
+
+  body.dark-theme #pages {
+    background-color: var(--background-color-dark);
+  }
+
+  body.dark-theme #theme:after{
+    content: "\263D";
+  }
+
+  body.dark-theme #pages>li.active, body.dark-theme #pages>li:hover {
+    color: var(--accent-color-dark);
+    border-color: var(--accent-color-dark);
+  }
+
+  body.dark-theme #language {
+    background-color: var(--dark-gray);
+    color: var(--background-color-light);
   }
 
   body {
@@ -10,12 +103,11 @@
     text-align: center;
     margin: 0;
     overflow-x: hidden;
-    background-color: white;
-	min-height: 100vh;
-	position: relative;
-	
-	display: flex;
-	flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
   }
 
   * {
@@ -23,32 +115,16 @@
   }
 
   ::selection {
-    background-color: rgb(179,0,0,0.3);
+    background-color: rgb(179,0,0,0.4);
   }
 
-  // scrollbar
+  /*scrollbar*/
   html::-webkit-scrollbar {
-    width: 200px;
+    width: 9px;
     height: 12px;
   }
 
-  html::-webkit-scrollbar-thumb {
-    background-color: #bababa;
-    border-radius: 10px;
-  }
 
-  html::-webkit-scrollbar-thumb:hover {
-    background-color: #aaaaaa;
-  }
-
-  html::-webkit-scrollbar-thumb:active {
-    background-color: #666666;
-  }
-
-  html::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background-color: #dedede;
-  }
 
   #footerlogo, #logo {
     pointer-events: none;
@@ -59,7 +135,7 @@
   
   #header {
     width: 100%;
-    height: 140px;
+    max-height: 25vh;
     position: relative;
     margin-bottom: 20px;
     display: flex;
@@ -67,10 +143,11 @@
   }
 
   #logo {
-    height: 120px;
+    height: 100px;
+    max-height: 21.5vh;
     width: auto;
     position: relative;
-    top: 20px;
+    top: min(20px, 3.5vh);
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
@@ -79,18 +156,19 @@
   #pages {
     width: 100%;
     height: 70px;
+    max-height: 12.5vh;
     display: flex;
     align-items: center;
-    background-color: white;
     z-index: 1;
-    transition: top 0.2s ease-in-out;
+    transition: top 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     position: sticky;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 
   .nav-down {
-    top: 0px;
+    top: 0;
+    box-shadow: 0 0 10px 10px rgb(0,0,0,0.1);
   }
 
   .nav-up {
@@ -102,39 +180,55 @@
 
   #pages > li {
     display: inline-block;
-    width: 10vw;
-    min-width: 150px;
-    max-width: 250px;
+    width: min(150px,20vw);
     height: 50px;
-    line-height: 50px;
+    max-height: 12.5vh;
+    line-height: min(50px, 12.5vh);
     font-size: 22px;
     font-weight: bold;
     color: #dedede;
     border-top: 2px solid #dedede;
     border-bottom: 2px solid #dedede;
     cursor: pointer;
-    transition: 0.2s;
-    margin-inline: 30px;
+    transition: all 0.2s ease-in-out;
+    margin-inline: min(30px, 4vw);
   }
 
-  #pages > li.active, #pages > li:hover {
-    color: #b30000;
-    border-top: 2px solid #b30000;
-    border-bottom: 2px solid #b30000;
+  #pages > li.active, #pages > li:hover {;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+  }
+
+  #options {
+    position: fixed;
+    top: 2%;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+  }
+
+  #theme {
+    height: min(40px,7.5vh);
+    font-size: min(40px,7.5vh);
+    line-height: min(40px,7.5vh);
+    font-family: Montserrat;
+    margin-right: min(15px,2.8125vh);
+    cursor: pointer;
+    /*visibility: collapse;*/
+  }
+
+  #theme:after {
+    visibility: visible;
   }
 
   #language {
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    width: 60px;
-    height: 40px;
+    width: min(60px,11.25vh);
+    height: min(40px,7.5vh);
     font-family: Montserrat;
-    font-size: 18px;
+    font-size: min(18px, 5vh);
     border: none;
-    border-radius: 10px;
-
-    background-color: #dedede;
+    border-radius: min(10px,1.875vh);
 
     text-align: center;
     cursor: pointer;
@@ -152,7 +246,8 @@
     width:100%;
     height: 250px;
     margin-top: 50px;
-    background-color: #dedede;
+    background-color: transparent;
+    border-top: 5px solid black;
 
     display: flex;
     justify-content: center;
@@ -162,13 +257,14 @@
   }
 
   #footerlogo {
-    width: 300px;
+    /*width: 300px;
     max-width: 30vw;
     height: auto;
     position: absolute;
     bottom: 35px;
     right: 20px;
     -webkit-user-select: none;
+    user-select: none;*/
   }
 
   .socials {

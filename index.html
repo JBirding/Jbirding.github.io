@@ -1,7 +1,9 @@
+<!DOCTYPE html>
 <html lang='es'>
 <head>
+    <meta charset='UTF-8'>
 
- <!--// Fonts-->
+ <!--Fonts-->
  
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +14,15 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<script src="https://kit.fontawesome.com/ff70983d1b.js" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <!--Fonts-->
 
+	<script src="jquery-3.7.1.min.js"></script>
+  <script src='data.js'></script>
+  <noscript>
+    <div id='noscript'>
+      JavaScript está desactivado en el navegador. Para ver la página, activa JavaScript.
+    </div>
+  </noscript>
 	<title>JBirding</title>
 
 	<link rel="icon" type="image/x-icon" href="kestrel.ico">
@@ -22,22 +31,40 @@
 	
 
 </head>
-<body>
-	
-	
-	<div id='header'>
-	  <img id='logo' src='logos\Jbirding-birds\jbirding-black-space-birds.png'>
-	</div>
+<body class="light-theme">
+    <script>
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        console.log(prefersDarkScheme);
 
-	<div id='pages'>
-	  <li id='home' class='nav' data-tab="home">Inicio</li>
-	  <li id='gallery' class='nav' data-tab="gallery">Galería</li>
-	  <select id='language' onchange="parameters.set('lang',this.value); updateURL(parameters)">
-		<option value="ES">ES</option>
-		<option value="EN">EN</option>
-	  </select>
-	</div>
-	
+        if (prefersDarkScheme.matches) {
+            document.body.classList.add("dark-theme");
+            document.body.classList.remove("light-theme");
+            document.body.theme = "dark-theme";
+        } else {
+            document.body.classList.add("light-theme");
+            document.body.classList.remove("dark-theme");
+            document.body.theme = "light-theme";
+        }
+    </script>
+
+
+    <div id='header'>
+        <img id='logo' src='logos\Jbirding-birds\jbirding-black-space-birds.png'>
+    </div>
+
+    <div id='pages'>
+        <li id='home' class='nav' data-tab="home">Inicio</li>
+        <li id='gallery' class='nav' data-tab="gallery">Galería</li>
+    </div>
+
+    <div id="options">
+        <div id="theme" onclick="if(document.body.classList.contains('light-theme')) document.body.classList.replace('light-theme','dark-theme'); else document.body.classList.replace('dark-theme','light-theme');"></div>
+        <select id='language' onchange="parameters.set('lang',this.value); updateURL(parameters)">
+            <option value="ES">ES</option>
+            <option value="EN">EN</option>
+        </select>
+    </div>
+
 	
 	<datalist id='birds'>
       <option>Hembra</option>
@@ -48,19 +75,14 @@
     </datalist>
 
 
-    <div id='carousel'>
+    <div id='carousel' hidden>
       <div id='closecar' onclick="closeCarousel()"></div>
       <img id='fullscreen' src="other_assets\fullscreen.png" onclick="fullScreen()" title="Pantalla completa (F)">
       <img id='closefullscreen' src="other_assets\closefullscreen.png" onclick="closeFullScreen()" title="Pantalla completa (F)" hidden>
-      <div id='carouselinfo'>
-        <div id='photoinfo'>
-          <div id='namecontainer'></div>
-          <div id='scicontainer'></div>
-        </div>
-        
+      <div id='photoinfo'>
+        <div id='namecontainer'></div>
+        <div id='scicontainer'></div>
       </div>
-
-      
 
       <div id='paddleleft' class='paddle' onclick="carouselPrevious()">
         &lt
@@ -72,14 +94,15 @@
 
     <div id='nav'>
       <div id='searchbox'>
+        <div id="searchBackground"></div>
         <input list='birds' id='search' onchange="tableFiltered()" placeholder="Busca un ave">
         <div hidden id='closesearch' onclick="clearSearch()">×</div>
       </div>
       <div id='sortbox'>
+        <div id="sortbg">Ordenar por...</div>
         <select onchange="changeSort()" id='sort'>
-          <option value="choose" disabled selected>Ordenar por...</option>
 
-          <option value=''>Predeterminado</option>
+          <option value='' selected>Mejores</option>
           <option value="Random">Aleatorio</option>
           <option value="Species A-Z">Especie (A-Z)</option>
           <option value="Species Z-A">Especie (Z-A)</option>
@@ -89,8 +112,7 @@
           <option value="Oldest">Más antiguas</option>
         </select>
         <div id='sortoptions'>
-          <div id='closesort' hidden onclick="clearSort()">×</div>
-          <img src='other_assets\shuffle.png' id='shuffle' onclick="genTable()" hidden>
+          <img src='other_assets/shuffle.png' id='shuffle' onclick="resetGrid()" hidden>
         </div>
       </div>
     </div>
@@ -100,7 +122,15 @@
     </div>
 	<div id='nobird' hidden>No se han encontrado aves con esos criterios de búsqueda</div>
 
-    <table id='table'></table>
+    <!--<table id='table'></table>-->
+
+    <main id="main">
+    </main>
+
+    <div id="pageList">
+        <div class="pagePaddle" onclick="previousPage()"><</div>
+        <div class="pagePaddle" onclick="nextPage()">></div>
+    </div>
 	
 	
 	
