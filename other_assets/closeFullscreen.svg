@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+  <g style="transform-origin: 35.3553px 35.3555px;" transform="matrix(-0.707107, 0.707107, -0.707107, -0.707107, -7.303289, -7.303291)">
+    <g transform="matrix(1, 0, 0, 1, -0.025551, 4.341568)">
+      <g style="transform-origin: 35.368px 0.694618px;" transform="matrix(0.000001, 5.050322, -5.050322, 0.000001, 0.00007, -283.588106)">
+        <g>
+          <g>
+            <g>
+              <g>
+                <g>
+                  <path d="M 271.229 85.444 L 271.229 135.444 L 221.229 135.444 L 271.229 85.444 Z" style="transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(-0.707107, -0.707107, 0.707107, -0.707107, -210.873735, -75.088528)" bx:shape="triangle 221.229 85.444 50 50 1 0 1@ed0dfe59"/>
+                </g>
+              </g>
+            </g>
+          </g>
+          <ellipse style="transform-box: fill-box; transform-origin: 50% 50%;" cx="35.392" cy="55.697" rx="10.606" ry="10.606"/>
+          <rect x="24.809" y="30.968" width="21.172" height="25.258" style=""/>
+        </g>
+        <g transform="matrix(-1, 0, 0, -1, 0.025414, -69.321763)" style="transform-origin: 35.3553px 35.3555px;">
+          <g>
+            <g>
+              <g>
+                <g>
+                  <path d="M 271.229 85.444 L 271.229 135.444 L 221.229 135.444 L 271.229 85.444 Z" style="transform-box: fill-box; transform-origin: 50% 50%;" transform="matrix(-0.707107, -0.707107, 0.707107, -0.707107, -210.873735, -75.088528)" bx:shape="triangle 221.229 85.444 50 50 1 0 1@ed0dfe59"/>
+                </g>
+              </g>
+            </g>
+          </g>
+          <ellipse style="transform-box: fill-box; transform-origin: 50% 50%;" cx="35.392" cy="55.697" rx="10.606" ry="10.606"/>
+          <rect x="24.809" y="30.968" width="21.172" height="25.258" style=""/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
