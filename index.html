@@ -31,25 +31,30 @@
 	
 
 </head>
-<body class="light-theme">
+<body>
     <script>
-        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
-        console.log(prefersDarkScheme);
-
-        if (prefersDarkScheme.matches) {
+        let theme = localStorage.getItem('theme');
+        if(theme === 'dark-theme'){
             document.body.classList.add("dark-theme");
             document.body.classList.remove("light-theme");
-            document.body.theme = "dark-theme";
         } else {
             document.body.classList.add("light-theme");
             document.body.classList.remove("dark-theme");
-            document.body.theme = "light-theme";
+        }
+
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        if (prefersDarkScheme.matches && !theme) {
+            document.body.classList.add("dark-theme");
+            document.body.classList.remove("light-theme");
+        } else if(!theme) {
+            document.body.classList.add("light-theme");
+            document.body.classList.remove("dark-theme");
         }
     </script>
 
 
     <div id='header'>
-        <img id='logo' src='logos\Jbirding-birds\jbirding-black-space-birds.png'>
+        <img id='logo' src='logos/jbirding-birds.svg'>
     </div>
 
     <div id='pages'>
@@ -58,7 +63,7 @@
     </div>
 
     <div id="options">
-        <div id="theme" onclick="if(document.body.classList.contains('light-theme')) document.body.classList.replace('light-theme','dark-theme'); else document.body.classList.replace('dark-theme','light-theme');"></div>
+        <div id="theme" onclick="switchTheme()"></div>
         <select id='language' onchange="parameters.set('lang',this.value); updateURL(parameters)">
             <option value="ES">ES</option>
             <option value="EN">EN</option>
@@ -75,21 +80,41 @@
     </datalist>
 
 
-    <div id='carousel' hidden>
+    <div id='carousel' hidden="true">
       <div id='closecar' onclick="closeCarousel()"></div>
       <img id='fullscreen' src="other_assets\fullscreen.png" onclick="fullScreen()" title="Pantalla completa (F)">
       <img id='closefullscreen' src="other_assets\closefullscreen.png" onclick="closeFullScreen()" title="Pantalla completa (F)" hidden>
-      <div id='photoinfo'>
-        <div id='namecontainer'></div>
-        <div id='scicontainer'></div>
-      </div>
-
-      <div id='paddleleft' class='paddle' onclick="carouselPrevious()">
-        &lt
-      </div>
-      <div id='paddleright' class="paddle" onclick="carouselNext()">
-        &gt
-      </div>
+            <div id="carouselLeftSide">
+                <div id="leftPhotoContainer">
+                    <div class="imgBorder">
+                        <img id='leftPhoto' src="images/merops_apiaster-a-1.JPG">
+                    </div>
+                </div>
+                <div id='paddleleft' class='paddle' onclick="carouselPrevious()">
+                    &lt
+                </div>
+            </div>
+            <div id="centerPhotoData">
+                <div id='centerPhotoContainer'>
+                    <div class="imgBorder">
+                        <img id='centerPhoto' src="images/larus_michahellis-a-5.JPG">
+                    </div>
+                </div>
+                <div id='photoinfo'>
+                    <div id='namecontainer'>Gaviota patiamarilla</div>
+                    <div id='scicontainer'>Larus michahellis</div>
+                </div>
+            </div>
+            <div id="carouselRightSide">
+                <div id="rightPhotoContainer">
+                    <div class="imgBorder">
+                        <img id='rightPhoto' src="images/phoenicurus_ochruros-f-15.JPG">
+                    </div>
+                </div>
+                <div id='paddleright' class="paddle" onclick="carouselNext()">
+                    &gt
+                </div>
+            </div>
     </div>
 
     <div id='nav'>

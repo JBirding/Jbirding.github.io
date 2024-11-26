@@ -919,9 +919,12 @@ let photoLimit = 48;
 
       if(a[i][3]) {
         let star = document.createElement('div')
+        let specialBg = document.createElement('div');
         star.textContent = '\u2605'
         star.classList.add('star')
+        specialBg.classList.add('specialBg')
         imgContainer.classList.add('special')
+        imgContainer.appendChild(specialBg);
         imgContainer.appendChild(star)
       }
       

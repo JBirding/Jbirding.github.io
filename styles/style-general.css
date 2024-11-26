@@ -1,13 +1,15 @@
 /* general page things */
 :root {
-  --background-color-light: #fefcfb;
+  --background-color-light: #F1F0E8;
   --background-color-dark: #282c34;
 
   --accent-color: #b30000;
   --accent-color-dark: #ff4040;
 
-  --light-gray: #dedede;
+  --light-gray: #d9d8ce;
+  --light-gray-darker: #bab9ad;
   --dark-gray: #40454f;
+  --dark-gray-lighter: #50555f;
 
   --scrollbar-thumb-light: #bababa;
   --scrollbar-active-light: #aaaaaa;
@@ -18,7 +20,7 @@
 }
 
   body.light-theme{
-    background-color: var(--background-color-light);
+    background-color: var(--background-color-light) !important;
     color: black;
   }
 
@@ -43,6 +45,11 @@
 
   body.light-theme #theme:after{
     content: "\1F323";
+  }
+
+  .light-theme #pages>li {
+    color: var(--light-gray-darker);
+    border-color: var(--light-gray-darker);
   }
 
   body.light-theme #pages>li.active, body.light-theme #pages>li:hover {
@@ -86,6 +93,11 @@
 
   body.dark-theme #theme:after{
     content: "\263D";
+  }
+
+  .dark-theme #pages>li {
+    color: var(--dark-gray-lighter);
+    border-color: var(--dark-gray-lighter);
   }
 
   body.dark-theme #pages>li.active, body.dark-theme #pages>li:hover {
@@ -186,15 +198,8 @@
     line-height: min(50px, 12.5vh);
     font-size: 22px;
     font-weight: bold;
-    color: #dedede;
-    border-top: 2px solid #dedede;
-    border-bottom: 2px solid #dedede;
     cursor: pointer;
-    transition: all 0.2s ease-in-out;
     margin-inline: min(30px, 4vw);
-  }
-
-  #pages > li.active, #pages > li:hover {;
     border-top: 2px solid;
     border-bottom: 2px solid;
   }
@@ -215,6 +220,7 @@
     font-family: Montserrat;
     margin-right: min(15px,2.8125vh);
     cursor: pointer;
+    transition: all 0.3s linear;
     /*visibility: collapse;*/
   }
 

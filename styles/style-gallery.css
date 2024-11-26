@@ -1,16 +1,3 @@
-:root {
-  --background-color-light: #fefcfb;
-  --background-color-dark: #282c34;
-
-  --accent-color: #b30000;
-  --accent-color-dark: #ff4040;
-
-  --light-gray: #dedede;
-  --light-gray-darker: #cccccc;
-  --dark-gray: #40454f;
-  --dark-gray-lighter: #50555f;
-}
-
 .light-theme #search, .light-theme #sort {
   color: var(--accent-color);
   background-color: var(--light-gray);
@@ -18,9 +5,11 @@
 
 .light-theme #searchBackground {
   background-color: var(--accent-color);
-  -webkit-mask: url('../other_assets/search.svg') left center no-repeat;
-  mask: url('../other_assets/search.svg') left center no-repeat;
+  -webkit-mask: url('../other_assets/search.svg') 15px no-repeat;
+  mask: url('../other_assets/search.svg') 15px center no-repeat;
   width: 100%;
+  border: 1px solid blue;
+  height: 100%;
   mask-size: 30px;
   position: absolute;
   pointer-events: none;
@@ -66,10 +55,30 @@
   background: var(--light-gray-darker);
 }
 
+.light-theme .star {
+  color: var(--accent-color);
+}
+
+.light-theme .specialBg {
+  background-color: var(--accent-color);
+}
+
 
 .dark-theme #search, .dark-theme #sort {
   color: var(--accent-color-dark);
   background-color: var(--dark-gray);
+}
+
+.dark-theme #searchBackground {
+  background-color: var(--accent-color-dark);
+  -webkit-mask: url('../other_assets/search.svg') 15px no-repeat;
+  mask: url('../other_assets/search.svg') 15px center no-repeat;
+  width: 100%;
+  border: 1px solid blue;
+  height: 100%;
+  mask-size: 30px;
+  position: absolute;
+  pointer-events: none;
 }
 
 .dark-theme #closesearch {
@@ -113,6 +122,14 @@
   background: var(--dark-gray-lighter);
 }
 
+.dark-theme .star {
+  color: var(--accent-color-dark);
+}
+
+.dark-theme .specialBg {
+  background-color: var(--accent-color-dark);
+}
+
 /*.dark-theme #search::placeholder, .dark-theme #search::-webkit-input-placeholder {
   color: red;
 }
@@ -133,12 +150,11 @@
   }
 
   .blurry {
-    filter: blur(5px);
+    filter: blur(10px);
   }
 
   .carphoto.blurry, .sidephotos.blurry {
     filter: blur(10px);
-    border-radius: 20px;
   }
 
   /*table*/
@@ -185,9 +201,12 @@
 }
 
 .imgBorder{
-  width: 100%;
   overflow: hidden;
   position: relative;
+}
+
+.imgContainer .imgBorder {
+  width: 100%;
 }
 
 .imgContainer:not(.v) .imgBorder {max-width: 90%; height: 90%;}
@@ -196,7 +215,7 @@
 
 .imgContainer:not(.v)>.imgBorder>img.blurry {
   width: 105%;
-  margin: -5px;
+  margin: -2.5%;
 }
 
 .imgContainer:not(.v)>.imgBorder>img {
@@ -205,7 +224,7 @@
 
 .imgContainer.v>.imgBorder>img.blurry {
   height: 105%;
-  margin: -10px;
+  margin: -2.5%;
 }
 
 .imgContainer.v>.imgBorder>img {
@@ -237,22 +256,31 @@
     line-clamp: 2;
   }
 
-  .special:not(.v) {
-    background-image: url('../other_assets/specialbg.png');
-    background-size: calc(90% + min(300px, 30vw)*0.1) min(300px, 30vw);
-    background-position: center;
-    background-repeat: no-repeat;
+  .special:not(.v) > .specialBg {
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    mask: url('../other_assets/specialbg.svg') center no-repeat;
+    mask-size: calc(90% + min(300px, 30vw)*0.1) min(300px,30vw);
+
+    -webkit-mask: url('../other_assets/specialbg.svg') center no-repeat;
+    -webkit-mask-size: calc(90% + min(300px, 30vw)*0.1) min(300px,30vw);
   }
 
-  .special.v {
-    background-image: url('../other_assets/specialbg.png');
-    background-size: calc(0.775*min(400px, 40vw)) 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+  .special.v > .specialBg {
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    mask: url('../other_assets/specialbg.svg') center no-repeat;
+    mask-size: calc(0.775*min(400px, 40vw)) 100%;
+
+    -webkit-mask: url('../other_assets/specialbg.svg') center no-repeat;
+    -webkit-mask-size: calc(0.775*min(400px, 40vw)) 100%;
   }
 
   .star {
-    color: #b30000;
     position: absolute;
     font-size: min(70px, 6vw);
     width: min(70px, 6vw);
@@ -294,9 +322,9 @@
 
   /*carousel*/
 
-  #carousel.hidden {
+  /*#carousel.hidden {
     display: none;
-  }
+  }*/
 
   #carousel {
     position: fixed;
@@ -304,13 +332,138 @@
     height: 100%;
     width: 100%;
     background-color: rgb(0,0,0,0.8);
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0;
+    z-index: 3;
+    pointer-events: auto;
+    opacity: 1;
     transition-property: opacity;
     transition-duration: 1s;
     transition-timing-function: ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
   }
+
+  #carouselLeftSide, #carouselRightSide {
+    align-items: center;
+    display: flex;
+  }
+
+  #carouselLeftSide img, #carouselRightSide img {
+    height: 100%;
+  }
+
+  #centerPhotoData {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #rightPhotoContainer, #leftPhotoContainer {
+    height: 10vw;
+    width: calc(10vw*4/3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #carousel .imgBorder {
+    height: 100%;
+    width: 100%;
+    border: 5px solid red;
+  }
+
+  #carousel div {
+    border: 1px solid lightblue;
+  }
+  
+  /* Carousel styles depending on screen aspect ratio*/
+
+  @media (min-aspect-ratio: 2.1) {
+    #carouselLeftSide {
+      flex-direction: row-reverse;
+    }
+
+    #carouselRightSide {
+      flex-direction: row;
+    }
+
+    #carouselLeftSide, #carouselRightSide {
+      gap: 2.5vw;
+    }
+    
+  }
+
+  @media (max-aspect-ratio: 2.1) and (min-aspect-ratio: 1.55) {
+    #carouselLeftSide, #carouselRightSide {
+      flex-direction: column;
+      gap: 1.5vw;
+    }
+  }
+
+ @media (max-aspect-ratio: 1.55) {
+   #leftPhotoContainer {
+     position: absolute;
+     left: calc(-10vw*4/3);
+   }
+
+   #rightPhotoContainer {
+     position: absolute;
+     right: calc(-10vw*4/3);
+   }
+ }
+
+@media (max-aspect-ratio: 1.2) {
+  .paddle {
+    position: absolute;
+    height: 10vw !important;
+    width: 10vw !important;
+    font-size: 6vw !important;
+  }
+
+  #paddleleft {
+    left: 5vw;
+  }
+
+  #paddleright {
+    right: 5vw;
+  }
+}
+
+@media (min-aspect-ratio: 1) {
+  #centerPhotoData {
+    width: calc(85vh*0.8*4/3);
+  }
+
+  #centerPhotoContainer {
+    height: 68vh;
+    max-width: 100%;
+  }
+
+  #centerPhotoContainer img{
+    height: 100%;
+  }
+
+  #carousel {
+    gap: 5vw
+  }
+}
+
+@media (max-aspect-ratio: 1) {
+  #centerPhotoData {
+    width: 90%;
+  }
+
+  #centerPhotoContainer {
+    height: calc(90vw*3/4);
+  }
+
+  #centerPhotoContainer img {
+    height: 100%;
+  }
+}
 
   .star, #closecar, .photo, .paddle {
     -webkit-user-select: none; /* Safari */
@@ -351,7 +504,6 @@
     width: 5vw;
     border-radius: 5vw;
     line-height: 0;
-    position: absolute;
     justify-content: center;
     align-items: center;
     z-index: 3;
@@ -361,11 +513,11 @@
   }
 
   .paddle:hover {
-    background-color: #dedede;
+    background-color: var(--light-gray);
   }
 
   .paddle:active {
-    background-color: #999999;
+    background-color: var(--light-gray-darker);
   }
 
   .sidephotos {
@@ -412,7 +564,7 @@
 
   /*carousel based on aspect ratio*/
 
-  @media (min-aspect-ratio: 17/15) {
+  /*@media (min-aspect-ratio: 17/15) {
 
     #photoinfo {
       position: absolute;
@@ -447,7 +599,7 @@
 
   @media (min-aspect-ratio: 272/130) {
 
-  }
+  }*/
 
 
 
