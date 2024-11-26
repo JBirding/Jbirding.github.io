@@ -4,15 +4,8 @@ let didScroll;
   let navbarHeight = $('#pages').outerHeight();
 
   $(window).scroll(function(event){
-      didScroll = true;
+      hasScrolled()
   });
-
-  setInterval(function() {
-      if (didScroll) {
-          hasScrolled();
-          didScroll = false;
-      }
-  }, 250);
 
   function hasScrolled() {
       var st = $(this).scrollTop();
@@ -23,7 +16,7 @@ let didScroll;
       
       // If they scrolled down and are past the navbar, add class .nav-up.
       // This is necessary so you never see what is "behind" the navbar.
-      if (st > lastScrollTop && st > navbarHeight){
+      if (st > lastScrollTop && st > navbarHeight || st < Math.min(140, window.innerHeight*0.25)){
           // Scroll Down
           $('#pages').removeClass('nav-down').addClass('nav-up');
       } else {
@@ -35,3 +28,14 @@ let didScroll;
       
       lastScrollTop = st;
   }
+
+function switchTheme() {
+    if(document.body.classList.contains('light-theme')) {
+        document.body.classList.replace('light-theme','dark-theme');
+        localStorage.setItem('theme', 'dark-theme');
+    }
+    else {
+        document.body.classList.replace('dark-theme','light-theme');
+        localStorage.setItem('theme', 'light-theme');
+    }
+}
