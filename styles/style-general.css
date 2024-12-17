@@ -19,96 +19,104 @@
 
 }
 
-  body.light-theme{
-    background-color: var(--background-color-light) !important;
-    color: black;
-  }
+.light-theme {
+  background-color: var(--background-color-light);
+  color: black;
 
-  .light-theme *:focus{
+  :focus-visible{
     outline: 1px solid var(--accent-color);
   }
 
-  html:has(.light-theme)::-webkit-scrollbar-track {
-    background-color: var(--light-gray);
+  :focus{
+    outline: 1px solid var(--accent-color);
   }
-  html:has(.light-theme)::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb-light);
-  }
-  html:has(.light-theme)::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-active-light);
-  }
-  /*scrollbar:active: color = #666666*/
 
-  body.light-theme #pages {
+  #pages {
     background-color: var(--background-color-light);
   }
 
-  body.light-theme #theme:after{
+  #theme:after{
     content: "\1F323";
   }
 
-  .light-theme #pages>li {
+  #pages>div {
     color: var(--light-gray-darker);
     border-color: var(--light-gray-darker);
   }
 
-  body.light-theme #pages>li.active, body.light-theme #pages>li:hover {
+  #pages>div.active, #pages>div:hover {
     color: var(--accent-color);
     border-color: var(--accent-color);
   }
 
-  body.light-theme #language {
+  #language {
     background-color: var(--light-gray);
     color: var(--background-color-dark);
   }
+}
 
+.dark-theme {
+  background-color: var(--background-color-dark);
+  color: white;
 
-
-  body.dark-theme {
-    background-color: var(--background-color-dark);
-    color: white;
-  }
-
-  .dark-theme *:focus {
+  :focus-visible {
     outline: 1px solid var(--accent-color-dark);
   }
 
-  .dark-theme #logo {
+  #logo {
     filter: invert(1);
   }
 
-  html:has(.dark-theme)::-webkit-scrollbar-track {
-    background-color: var(--dark-gray);
-  }
-  html:has(.dark-theme)::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb-dark);
-  }
-  html:has(.dark-theme)::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-active-dark);
-  }
-
-  body.dark-theme #pages {
+  #pages {
     background-color: var(--background-color-dark);
   }
 
-  body.dark-theme #theme:after{
+  #theme:after{
     content: "\263D";
   }
 
-  .dark-theme #pages>li {
+  #pages>div {
     color: var(--dark-gray-lighter);
     border-color: var(--dark-gray-lighter);
   }
 
-  body.dark-theme #pages>li.active, body.dark-theme #pages>li:hover {
+  #pages>div.active, #pages>div:hover {
     color: var(--accent-color-dark);
     border-color: var(--accent-color-dark);
   }
 
-  body.dark-theme #language {
+  #language {
     background-color: var(--dark-gray);
     color: var(--background-color-light);
   }
+}
+
+
+
+html:has(.light-theme)::-webkit-scrollbar-track {
+  background-color: var(--light-gray);
+}
+html:has(.light-theme)::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-light);
+}
+html:has(.light-theme)::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-active-light);
+}
+html:has(.light-theme)::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
+}
+html:has(.dark-theme)::-webkit-scrollbar-track {
+  background-color: var(--dark-gray);
+}
+html:has(.dark-theme)::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-dark);
+}
+html:has(.dark-theme)::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-active-dark);
+}
+html:has(.dark-theme)::-webkit-scrollbar-thumb:active {
+  background-color: #666666;
+}
 
   body {
     font-family: Montserrat;
@@ -121,6 +129,8 @@
     display: flex;
     flex-direction: column;
   }
+
+
 
   * {
     -webkit-tap-highlight-color: transparent;
@@ -180,7 +190,7 @@
 
   .nav-down {
     top: 0;
-    box-shadow: 0 0 10px 10px rgb(0,0,0,0.1);
+    box-shadow: 0 0 10px 10px rgb(0,0,0,0.15);
   }
 
   .nav-up {
@@ -190,7 +200,7 @@
 
 
 
-  #pages > li {
+  #pages>div {
     display: inline-block;
     width: min(150px,20vw);
     height: 50px;
@@ -205,9 +215,9 @@
   }
 
   #options {
-    position: fixed;
-    top: 2%;
-    right: 2%;
+    position: absolute;
+    top: 2vh;
+    right: 2vh;
     display: flex;
     align-items: center;
     z-index: 2;
@@ -219,8 +229,11 @@
     line-height: min(40px,7.5vh);
     font-family: Montserrat;
     margin-right: min(15px,2.8125vh);
+    background-color: transparent;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s linear;
+    transition: color 0.3s linear;
+    border-radius: min(20px,3.75vh);
     /*visibility: collapse;*/
   }
 
@@ -264,13 +277,13 @@
 
   #footerlogo {
     /*width: 300px;
-    max-width: 30vw;
-    height: auto;
+    max-width: 30vw;*/
+    height: 50px;
     position: absolute;
     bottom: 35px;
     right: 20px;
     -webkit-user-select: none;
-    user-select: none;*/
+    user-select: none;
   }
 
   .socials {

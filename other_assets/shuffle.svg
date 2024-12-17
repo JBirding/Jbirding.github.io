@@ -1,12 +1,19 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="111.000000pt" height="111.000000pt" viewBox="0 0 111.000000 111.000000"
- preserveAspectRatio="xMidYMid meet">
+              "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 
-<g transform="translate(0.000000,111.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
-<path d="M0 555 l0 -555 555 0 555 0 0 555 0 555 -555 0 -555 0 0 -555z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="9.39802mm" height="9.39802mm"
+     viewBox="0 0 150 150">
+  <path id="Selección #1"
+        d="M 100,0
+            L 150,0 150,50
+            133,33 16,150 0,134 117,17
+
+            M 150,100
+            L 150,150 100,150
+            117,133 80,96 96,80 133,117
+            M 0,16
+            L 16,0 70,54 54,70
+            Z" />
 </svg>
