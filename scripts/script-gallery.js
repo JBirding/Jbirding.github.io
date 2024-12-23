@@ -15,6 +15,7 @@ imgPrototype.setNewImgOnLoad = function(src,place = null) {
   dummyImg.loading = place ? 'lazy': '';
 
   dummyImg.onload = function() {
+    console.log('dummyImg has been loaded');
     //setTimeout(function(){
       this.originalImg.classList.add('loadTransition');
       this.originalImg.src = dummyImg.src;

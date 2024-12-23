@@ -158,7 +158,8 @@ function generateTable(a){
             let elementToChange = this.parentElement.parentElement
             elementToChange.classList.remove('v');
             elementToChange.classList.remove('h');
-            elementToChange.classList.add(this.naturalHeight > this.naturalWidth ? 'v' : 'h')
+            elementToChange.classList.add(this.naturalHeight > this.naturalWidth ? 'v' : 'h');
+            this.onload = '';
         };
         photo.src = 'images-blur/'+a[i][0]+'-blur.JPG'
         photo.classList.add('blurry')
