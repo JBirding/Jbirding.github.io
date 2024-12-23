@@ -1081,6 +1081,11 @@
   height: 2em;
   width: 2em;
   line-height: 2em;
+  border-radius: 2em;
+  border: none;
+  margin-inline: 3px;
+  background-color: transparent;
+  cursor: pointer;
   user-select: none;
 }
 
