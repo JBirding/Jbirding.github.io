@@ -100,13 +100,10 @@ function unique (arr) {
 }
 
 function urlFix () {
-    let lang;
-    if (parameters.has('lang')) {
-        lang = parameters.get('lang');
-    } else {
-        lang = 'ES'
-    }
+    let lang = document.getElementById('language').value;
+    console.log(lang)
     langIndex = (lang === 'EN') + 0;
+    console.log(langIndex)
 
     console.log(parameters.has('search'));
     if (parameters.has('search')) {

@@ -198,7 +198,7 @@ html:has(.dark-theme)::-webkit-scrollbar-thumb:active {
   }
 
   .nav-down {
-    top: 0;
+    top: -1px;
     box-shadow: 0 0 10px 10px rgb(0,0,0,0.15);
   }
 

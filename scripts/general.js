@@ -4,23 +4,14 @@ let url = new URL(location);
 let parameters = url.searchParams;
 
 document.getElementById('year').textContent = ((new Date).getFullYear()>2024?'2024-'+(new Date).getFullYear():'2024');
-document.getElementById('language').onclick = function(){parameters.set('lang',this.value); updateURL(parameters);}
+document.getElementById('language').onchange = function () {updateLanguage(this.value)}
 document.getElementById('theme').onclick = switchTheme;
 document.getElementById('theme').onkeydown = triggerClickOnKey;
 
 function updateURL (params) {
     let string = '?';
-    let lang = parameters.get('lang');
-    string += params.toString();
-    url.search = string;
-    console.log(string);
-    if (params.has('lang') && params.get('lang') !== lang) {
-        let newLocation = new Location();
-        newLocation.pathname = url.toString();
-        location = newLocation;
-    } else {
-        history.pushState(event.data,'',url.toString())
-    }
+
+    history.pushState(event.data,'',url.toString())
 }
 
 function switchTheme() {
@@ -39,6 +30,11 @@ function triggerClickOnKey(event) {
         event.preventDefault();
         this.click();
     }
+}
+
+function updateLanguage(lan) {
+    if(lan === 'ES') location.replace(location.pathname.replaceAll('/en',''));
+    else location.replace(location.pathname.replace('/','/en/'));
 }
 
 export {url, parameters, updateURL, triggerClickOnKey}
