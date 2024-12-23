@@ -57,10 +57,12 @@ document.addEventListener('keydown',(event) => { // carousel key functionality
     if (event.code === 'ArrowRight' && l > 1) {// move right
         carouselNext();
         if(event.repeat) return;
+        paddleright.classList.add('active');
         fastCarousel = setTimeout(accelerateCarousel,2000);
     } else if (event.code === 'ArrowLeft' && l > 1) { // move left
         carouselPrevious();
         if(event.repeat) return;
+        paddleleft.classList.add('active');
         fastCarousel = setTimeout(accelerateCarousel,2000);
     } else if (event.code === 'Escape') { // exit
         closeCarousel()
@@ -75,6 +77,8 @@ document.addEventListener('keyup',function(ev) {
     } else if(ev.code === 'ArrowLeft' || ev.code === 'ArrowRight') {
         clearTimeout(fastCarousel);
         document.querySelector(':root').style.removeProperty('--carousel-transition-duration');
+        if(ev.code === 'ArrowLeft') paddleleft.classList.remove('active');
+        else paddleright.classList.remove('active');
     }
 })
 
@@ -109,8 +113,8 @@ paddleleft.onclick = carouselPrevious;
 paddleright.onclick = carouselNext;
 paddleleft.oncontextmenu = paddleright.oncontextmenu = function(ev) { ev.preventDefault() };
 
-paddleright.onpointerdown = function() {carouselNext(); constMov = setInterval(carouselNext,100); clearTimeout(fastCarousel); fastCarousel = setTimeout(accelerateCarousel,2000); };
-paddleleft.onpointerdown = function() {carouselPrevious(); constMov = setInterval(carouselPrevious,100); clearTimeout(fastCarousel); fastCarousel = setTimeout(accelerateCarousel,2000); }
+paddleright.onpointerdown = function() {carouselNext(); constMov = setInterval(carouselNext,50); clearTimeout(fastCarousel); fastCarousel = setTimeout(accelerateCarousel,2000); };
+paddleleft.onpointerdown = function() {carouselPrevious(); constMov = setInterval(carouselPrevious,50); clearTimeout(fastCarousel); fastCarousel = setTimeout(accelerateCarousel,2000); }
 carousel.onpointerup = carousel.ontouchend = carousel.ontouchcancel = function() {clearInterval(constMov); clearTimeout(fastCarousel); document.querySelector(':root').style.removeProperty('--carousel-transition-duration')};
 //paddleright.onmouseout = paddleleft.onmouseout = function() {clearInterval(constMov)}
 //paddleleft.onmouseover = paddleright.onmouseover = function(){if(this.clicked){this.onpointerdown()}};
@@ -268,26 +272,36 @@ function display(n) {
     hiddenPhotoLeftContainer.innerHTML = '';
     hiddenPhotoLeftContainer.appendChild(hiddenPhotoLeft);
     if(!hiddenPhotoLeft.loaded) hiddenPhotoLeft.setNewImgOnLoad(hiddenPhotoLeft.src.replaceAll('-blur',''));
+    hiddenPhotoLeftContainer.classList.remove('v');
+    hiddenPhotoLeftContainer.classList.remove('h');
     hiddenPhotoLeftContainer.classList.add(hiddenPhotoLeft.linked.parentElement.parentElement.classList.contains('v') ? 'v' : 'h');
 
     leftPhotoContainer.innerHTML = '';
     leftPhotoContainer.appendChild(leftPhoto);
     if(!leftPhoto.loaded) leftPhoto.setNewImgOnLoad(leftPhoto.src.replaceAll('-blur',''));
+    leftPhotoContainer.classList.remove('v');
+    leftPhotoContainer.classList.remove('h');
     leftPhotoContainer.classList.add(leftPhoto.linked.parentElement.parentElement.classList.contains('v') ? 'v' : 'h');
 
     centerPhotoContainer.innerHTML = '';
     centerPhotoContainer.appendChild(centerPhoto);
     if(!centerPhoto.loaded) centerPhoto.setNewImgOnLoad(centerPhoto.src.replaceAll('-blur',''));
+    centerPhotoContainer.classList.remove('v');
+    centerPhotoContainer.classList.remove('h');
     centerPhotoContainer.classList.add(centerPhoto.linked.parentElement.parentElement.classList.contains('v') ? 'v' : 'h');
 
     rightPhotoContainer.innerHTML = '';
     rightPhotoContainer.appendChild(rightPhoto);
     if(!rightPhoto.loaded) rightPhoto.setNewImgOnLoad(rightPhoto.src.replaceAll('-blur',''));
+    rightPhotoContainer.classList.remove('v');
+    rightPhotoContainer.classList.remove('h');
     rightPhotoContainer.classList.add(rightPhoto.linked.parentElement.parentElement.classList.contains('v') ? 'v' : 'h');
 
     hiddenPhotoRightContainer.innerHTML = '';
     hiddenPhotoRightContainer.appendChild(hiddenPhotoRight);
     if(!hiddenPhotoRight.loaded) hiddenPhotoRight.setNewImgOnLoad(hiddenPhotoRight.src.replaceAll('-blur',''));
+    hiddenPhotoRightContainer.classList.remove('v');
+    hiddenPhotoRightContainer.classList.remove('h');
     hiddenPhotoRightContainer.classList.add(hiddenPhotoRight.linked.parentElement.parentElement.classList.contains('v') ? 'v' : 'h');
 
     namecontainer.textContent = names[n];

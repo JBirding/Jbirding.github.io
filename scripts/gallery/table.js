@@ -22,7 +22,7 @@ const sa = {
     J: ['','Juvenile ',' juvenil',''],
 }
 
-let main = document.getElementById("main");
+let main = document.getElementById("photoGallery");
 
 let sciList = document.getElementById('scinames');
 let commonList = document.getElementById('commonnames');
@@ -38,7 +38,7 @@ let closeSearch = document.getElementById('closesearch')
 closeSearch.onclick = clearSearch;
 
 let pageList = document.getElementById("pageList");
-let footer = document.getElementById('footer');
+let footer = document.querySelector('footer');
 let nobird = document.getElementById('nobird');
 let progbar = document.getElementById('progress')
 progbar.hidden = false
@@ -153,9 +153,15 @@ function generateTable(a){
         imgBorder.className = 'imgBorder'
 
         let photo = document.createElement('img')
+        photo.onload = function() {
+            this.setNewImgOnLoad('images/'+a[i][0]+'.JPG',mainContainer)
+            let elementToChange = this.parentElement.parentElement
+            elementToChange.classList.remove('v');
+            elementToChange.classList.remove('h');
+            elementToChange.classList.add(this.naturalHeight > this.naturalWidth ? 'v' : 'h')
+        };
         photo.src = 'images-blur/'+a[i][0]+'-blur.JPG'
         photo.classList.add('blurry')
-        photo.setNewImgOnLoad('images/'+a[i][0]+'.JPG',mainContainer)
         photo.onerror = imgLoadError;
         imgBorder.tabIndex = 0;
         imgBorder.onclick = openCarousel.bind(photo);
@@ -183,8 +189,6 @@ function generateTable(a){
         imgContainer.appendChild(imgBorder);
         imgBorder.appendChild(photo);
 
-        photo.onload = function() {this.parentElement.parentElement.classList.add(this.naturalHeight > this.naturalWidth ? 'v' : 'h')}
-
         if(a[i][3]) {
             let star = document.createElement('div')
             let specialBg = document.createElement('div');
@@ -199,10 +203,10 @@ function generateTable(a){
         main.appendChild(mainContainer);
     }
 
-    /*progbar.hidden = true*/
+    progbar.hidden = true
     footer.classList.remove('hidden')
-    nobird.hidden = l != 0;
-    if(l===0) pageList.classList.add('hidden');
+    nobird.hidden = l !== 0;
+    if(l<=48) pageList.classList.add('hidden');
     else pageList.classList.remove('hidden');
 }
 
@@ -214,26 +218,31 @@ function clearSearch() {
 }
 
 function filterSomething(a,query) {
-    let searchParam, acum
     let f = function(elem) {
-        acum = false
+        let globalAcum = false
 
         query.split('/').forEach(function(r){
-            searchParam = r.trim()
+            let orTerm = r.trim()
+            let andAcum = true;
 
-            if(sciOptions.includes(searchParam)) {
-                acum = acum || elem[1] === searchParam
-            } else if (commonOptions.includes(searchParam)) {
-                acum = acum || elem[5+langIndex] === searchParam
-            } else if (saOptions[langIndex].includes(searchParam.toLowerCase())) {
-                acum = acum || sa[elem[2]][2-langIndex].toLowerCase().trim() === searchParam.toLowerCase()
-            } else {
-                acum = acum || elem[1].toLowerCase().includes(searchParam.toLowerCase())
-                    || (sa[elem[2]][langIndex]+elem[5+langIndex]+sa[elem[2]][2+langIndex]).
-                    toLowerCase().includes(searchParam.toLowerCase())
-            }
+            orTerm.split('&').forEach(function(s){
+                let searchParam = s.trim();
+                if(sciOptions.includes(searchParam)) {
+                    andAcum = andAcum && elem[1] === searchParam
+                } else if (commonOptions.includes(searchParam)) {
+                    andAcum = andAcum && elem[5+langIndex] === searchParam
+                } else if (saOptions[langIndex].includes(searchParam.toLowerCase())) {
+                    andAcum = andAcum && sa[elem[2]][2-langIndex].toLowerCase().trim() === searchParam.toLowerCase()
+                } else {
+                    andAcum = andAcum && (elem[1].toLowerCase().includes(searchParam.toLowerCase())
+                        || (sa[elem[2]][langIndex]+elem[5+langIndex]+sa[elem[2]][2+langIndex]).
+                        toLowerCase().includes(searchParam.toLowerCase()))
+                }
+            })
+
+            globalAcum = globalAcum || andAcum;
         })
-        return acum;
+        return globalAcum;
     }
 
     return a.filter(f)

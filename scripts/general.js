@@ -34,7 +34,8 @@ function switchTheme() {
 }
 
 function triggerClickOnKey(event) {
-    if(event.keyCode === 13){
+    if(event.keyCode === 13 || event.keyCode === 32) {
+        event.preventDefault();
         this.click();
     }
 }

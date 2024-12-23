@@ -15,16 +15,20 @@ imgPrototype.setNewImgOnLoad = function(src,place = null) {
   dummyImg.loading = place ? 'lazy': '';
 
   dummyImg.onload = function() {
-    setTimeout(function(){
+    //setTimeout(function(){
+      this.originalImg.classList.add('loadTransition');
       this.originalImg.src = dummyImg.src;
       this.originalImg.classList.remove('blurry')
       this.originalImg.loaded = true;
+      this.originalImg.linked?.classList.add('loadTransition');
       this.originalImg.linked?.setAttribute('src',this.src);
       this.originalImg.linked?.classList.remove('blurry')
       this.originalImg.linked?.setAttribute('loaded',true);
       this.originalImg.linked?.fullImageLoader?.remove();
       delete this.originalImg.linked?.fullImageLoader;
-    }.bind(dummyImg),500);
+
+      this.originalImg.ontransitionend = function() {this.classList.remove('loadTransition');this.ontransitionend = null;}
+    //}.bind(dummyImg),500);
 
     this.remove();
     delete this.originalImg.fullImageLoader;

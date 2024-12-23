@@ -31,18 +31,6 @@
     color: var(--accent-color);
   }
 
-  /*#shuffle {
-    filter: brightness(0.7);
-  }
-
-  #shuffle:hover {
-    filter: brightness(0.6);
-  }
-
-  #shuffle:active {
-    filter: brightness(0.5);
-  }*/
-
   #sort option {
     color: var(--accent-color);
   }
@@ -51,7 +39,7 @@
     color: var(--accent-color);
   }
 
-  #pageList>button:hover {
+  #pageList>button:hover, #pageList>button:focus-visible {
     background-color: var(--light-gray);
   }
 
@@ -115,7 +103,7 @@
     color: var(--accent-color-dark);
   }
 
-  #pageList>button:hover {
+  #pageList>button:hover, #pageList>button:focus-visible {
     background-color: var(--dark-gray);
   }
 
@@ -146,20 +134,24 @@
   }*/
 }
 
+.loadTransition {
+  transition: filter 0.2s linear;
+}
+
 
 /*general stuff*/
 
-  #main img, .paddle {
+  #photoGallery img, .paddle {
     cursor: pointer;
   }
 
-  #main .blurry {
+  #photoGallery .blurry {
     filter: blur(min(10px, 1vw));
   }
 
   /*table*/
 
-#main {
+#photoGallery {
   max-width: 95%;
   margin: 15px auto 30px;
 
@@ -173,11 +165,11 @@
   align-content: center;
 }
 
-#main * {
+#photoGallery * {
   text-align: center;
 }
 
-#main>div {
+#photoGallery>div {
   width: 100%;
   display: flex;
   align-items: center;
@@ -293,11 +285,10 @@
   /*loader*/
 
   #loadcontainer {
-    width: 30%;
+    width: 40%;
     height: 30px;
-    margin-left: 35%;
-    margin-right: 35%;
-	margin-top: 20px;
+    margin-inline: auto;
+	margin-top: 40px;
     z-index: 1;
   }
 
@@ -309,7 +300,7 @@
     color: white;
     font-weight: bold;
     font-size: 14px;
-    animation: progress 1s ease-in;
+    animation: progress 2s linear forwards;
   }
 
   @keyframes progress {
@@ -329,7 +320,7 @@
     top: 0;
     height: 100%;
     width: 100%;
-    background-color: rgb(0,0,0,0.8);
+    background-color: rgb(0,0,0,0.85);
     z-index: 3;
   }
 
@@ -416,10 +407,6 @@
   /* Carousel styles depending on screen aspect ratio*/
 
 
-  :-moz-full-screen, :-ms-fullscreen {
-    color: blue;
-  }
-
 /*#centerPhotoContainer {
   translate: calc(5vw + 10vw*4/3) 40px;
   transform-origin: right center;
@@ -436,7 +423,7 @@
       }
 
       .sidephotos .blurry, .carphoto .blurry {
-        filter: blur(30px);
+        filter: blur(calc(10vh/3));
       }
 
       #leftPhotoContainer, #rightPhotoContainer {
@@ -446,7 +433,7 @@
       #rightPhotoContainer .imgBorder, #leftPhotoContainer .imgBorder {
         pointer-events: none;
         img:not(.blurry) {
-          filter: blur(30px);
+          filter: blur(calc(10vh/3));
         }
       }
 
@@ -578,6 +565,7 @@
   }
 
  @media (max-aspect-ratio: 1.55) {
+
    .sidePhotosContainer.left {
      position: absolute;
      left: calc(-10vw*4/3);
@@ -615,6 +603,18 @@
     height: 5vw;
     width: 5vw;
   }
+
+  .sidephotos .blurry {
+    filter: blur(calc(10vw/30));
+  }
+
+  #leftPhotoContainer.previousPhoto, #rightPhotoContainer.nextPhoto, .hiddenPhotoContainer.previousPhoto {
+    transition-timing-function: cubic-bezier(0.5,0,1,1), cubic-bezier(0,0,0.5,1), cubic-bezier(0,0,0.5,1), cubic-bezier(0,0,0.5,1);
+  }
+
+  #leftPhotoContainer.nextPhoto, #centerPhotoContainer.previousPhoto, #centerPhotoContainer.nextPhoto, #rightPhotoContainer.previousPhoto, .hiddenPhotoContainer.nextPhoto {
+    transition-timing-function: cubic-bezier(0,0,0.5,1), cubic-bezier(0.5,0,1,1), cubic-bezier(0.5,0,1,1), cubic-bezier(0.5,0,1,1);
+  }
 }
 
 @media (max-aspect-ratio: 1.2) {
@@ -632,6 +632,55 @@
   #paddleright {
     right: 5vw;
   }
+
+  #carousel #leftPhotoContainer, #carousel #rightPhotoContainer {
+    height: 68vh;
+    width: calc(68vh*4/3);
+    top: -40px;
+  }
+
+  .sidePhotosContainer.left {
+    position: absolute;
+    left: calc(-68vh*4/3);
+  }
+
+  .sidePhotosContainer.right {
+    position: absolute;
+    right: calc(-68vh*4/3);
+  }
+
+  #leftPhotoContainer.previousPhoto {
+    translate: calc(68vh*2/3 + 50vw);
+    top:0;
+  }
+
+  #centerPhotoContainer.previousPhoto {
+    translate: calc(68vh*2/3 + 50vw);
+    top:0;
+  }
+
+  #rightPhotoContainer.nextPhoto {
+    translate: calc(-68vh*2/3 - 50vw);
+    top:0;
+  }
+
+  #centerPhotoContainer.nextPhoto {
+    translate: calc(-68vh*2/3 - 50vw);
+    top:0;
+  }
+
+  #leftPhotoContainer.previousPhoto, #rightPhotoContainer.nextPhoto, .hiddenPhotoContainer.previousPhoto {
+    transition-timing-function: linear !important;
+  }
+
+  #leftPhotoContainer.nextPhoto, #centerPhotoContainer.previousPhoto, #centerPhotoContainer.nextPhoto, #rightPhotoContainer.previousPhoto, .hiddenPhotoContainer.nextPhoto {
+    transition-timing-function: linear !important;
+  }
+
+  .sidephotos .blurry {
+    filter: blur(calc(68vh/30));
+  }
+
 }
 
 @media (min-aspect-ratio: 1) {
@@ -644,54 +693,65 @@
     width: 100%;
   }
 
-  .carphoto .blurry {
-    filter: blur(calc(68vh/30));
-  }
-
-  .sidephotos .blurry {
-    filter: blur(calc(10vw/30));
-  }
-
   #carousel {
     gap: 5vw
+  }
+
+  .carphoto .blurry {
+    filter: blur(calc(68vh/30));
   }
 }
 
 @media (max-aspect-ratio: 1) {
   #centerPhotoData {
-    width: 90%;
+    width: 90vw;
   }
 
   #centerPhotoContainer {
+    max-height: calc(90vw*3/4);
     height: calc(90vw*3/4);
   }
 
-  .carphoto .blurry {
-    filter: blur(2.25vw);
-  }
-
-  .sidephotos .blurry {
-    filter: blur(calc(10vw/30));
+  #carousel #leftPhotoContainer, #carousel #rightPhotoContainer {
+    height: calc(90vw*3/4);
+    width: 90vw;
+    top: -40px;
   }
 
   #leftPhotoContainer.previousPhoto {
-    translate: calc(10vw*4/3 + 5vw);
-    top: -40px;
+    translate: 95vw;
+    top:0;
   }
 
   #centerPhotoContainer.previousPhoto {
-    translate: calc(10vw*4/3 + 5vw);
-    top: 40px;
+    translate: 95vw;
+    top:0;
   }
 
   #rightPhotoContainer.nextPhoto {
-    translate: calc(-10vw*4/3 - 5vw);
-    top: -40px;
+    translate: -95vw;
+    top:0;
   }
 
   #centerPhotoContainer.nextPhoto {
-    translate: calc(-10vw*4/3 - 5vw);
-    top: 40px;
+    translate: -95vw;
+    top:0;
+  }
+
+  .sidePhotosContainer.left {
+    position: absolute;
+    left: -90vw;
+  }
+
+  .sidePhotosContainer.right {
+    position: absolute;
+    right: -90vw;
+  }
+
+  .carphoto,.sidephotos{
+    .blurry {
+      filter: blur(2.25vw);
+    }
   }
 }
 
@@ -716,7 +776,7 @@
   #carousel.closing {
     animation: fadeOut 0.5s;
 
-    div {
+    div, img {
       pointer-events: none;
     }
   }
@@ -733,10 +793,6 @@
   .previousPhoto, .nextPhoto {
     transition-property: translate, top, scale, opacity;
     transition-duration: var(--carousel-transition-duration);
-  }
-
-  .fastTransition .previousPhoto, .fastTransition .nextPhoto {
-    transition-duration: var(--carousel-transition-duration-fast);
   }
 
   #leftPhotoContainer, #rightPhotoContainer, #centerPhotoContainer {
@@ -758,14 +814,6 @@
 
   #centerPhotoContainer.previousPhoto {
     transform-origin: right center;
-  }
-
-  #leftPhotoContainer.previousPhoto, #rightPhotoContainer.nextPhoto, .hiddenPhotoContainer.previousPhoto {
-    transition-timing-function: cubic-bezier(0.5,0,1,1), cubic-bezier(0,0,0.5,1), cubic-bezier(0,0,0.5,1), cubic-bezier(0,0,0.5,1);
-  }
-
-  #leftPhotoContainer.nextPhoto, #centerPhotoContainer.previousPhoto, #centerPhotoContainer.nextPhoto, #rightPhotoContainer.previousPhoto, .hiddenPhotoContainer.nextPhoto {
-    transition-timing-function: cubic-bezier(0,0,0.5,1), cubic-bezier(0.5,0,1,1), cubic-bezier(0.5,0,1,1), cubic-bezier(0.5,0,1,1);
   }
 
   #leftPhotoContainer.previousPhoto, #rightPhotoContainer.nextPhoto {
@@ -830,11 +878,11 @@
   mix-blend-mode: screen;
 }
 
-.paddle:hover {
+.paddle:hover, .paddle:focus-visible {
   background-color: var(--light-gray);
 }
 
-.paddle:active {
+.paddle:active, .paddle.active {
   background-color: var(--light-gray-darker);
 }
 
@@ -845,13 +893,13 @@
 }
 
 #fullscreen, #closefullscreen {
-  height: 40px;
-  width: 40px;
+  height: min(40px,5vmin);
+  width: min(40px,5vmin);
   max-height: 5vw;
   max-width: 5vw;
   position: absolute;
-  left: 5vh;
-  top: 5vh;
+  left: min(5vmin,40px);
+  top: min(5vmin,40px);
   cursor: pointer;
   user-drag: none;
   -webkit-user-drag: none;
@@ -860,7 +908,7 @@
   filter: drop-shadow(1px 1px 3px rgb(0,0,0,0.5));
 }
 
-#fullscreen:hover, #closefullscreen:hover{
+#fullscreen:hover, #closefullscreen:hover, #fullscreen:focus-visible, #closefullscreen:focus-visible{
   filter: brightness(0.87) drop-shadow(1px 1px 3px rgb(0,0,0,0.5));
 }
 
@@ -884,9 +932,6 @@
     font-family: Montserrat;
     padding: 0 55px 0 55px;
     font-size: 20px;
-    background: url('../other_assets/search.svg') left center  no-repeat;
-    background-size: 30px;
-    background-position: 15px 50%;
     font-weight: 500;
   }
 
@@ -1003,7 +1048,7 @@
     border-radius: 2px;
   }
 
-  #closesearch:hover, #shuffle:hover {
+  #closesearch:hover, #shuffle:hover, #closesearch:focus-visible, #shuffle:focus-visible {
     filter: brightness(0.9);
   }
 
@@ -1011,7 +1056,7 @@
     filter: brightness(0.8);
   }
 
-  #nav {
+  #tableOptions {
     width: 100%;
     position: relative;
     text-align: center;
@@ -1033,14 +1078,9 @@
   font-size: 2em;
   font-weight: bold;
   color: inherit;
-  height: 50px;
-  width: 50px;
-  line-height: 50px;
-  border-radius: 50px;
-  border: none;
-  margin-inline: 3px;
-  background-color: transparent;
-  cursor: pointer;
+  height: 2em;
+  width: 2em;
+  line-height: 2em;
   user-select: none;
 }
 
