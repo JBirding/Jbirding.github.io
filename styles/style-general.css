@@ -170,6 +170,7 @@ html:has(.dark-theme)::-webkit-scrollbar-thumb:active {
     display: flex;
     flex-direction: column;
     a, a:visited {
+      cursor: default;
       width: min-content;
       align-self: center;
     }
@@ -221,6 +222,7 @@ html:has(.dark-theme)::-webkit-scrollbar-thumb:active {
     margin-inline: min(30px, 4vw);
     border-top: 2px solid;
     border-bottom: 2px solid;
+    text-decoration: none;
   }
 
   #options {
