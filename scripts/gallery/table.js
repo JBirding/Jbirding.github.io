@@ -24,9 +24,8 @@ const sa = {
 
 let main = document.getElementById("photoGallery");
 
-let sciList = document.getElementById('scinames');
-let commonList = document.getElementById('commonnames');
-let search = document.getElementById('search')
+let dataList = document.getElementById("birds");
+let search = document.getElementById('search');
 search.onchange = tableFiltered;
 let sortSelect = document.getElementById('sort')
 sortSelect.onchange = changeSort;
@@ -69,17 +68,19 @@ function initializePhotos() {
     sciOptions = unique(sciOptions).sort();
     commonOptions = unique(commonOptions).sort();
 
-    sciOptions.forEach(function (r) {
-        option = document.createElement('option');
-        option.value = r;
-        sciList.appendChild(option);
-    })
-
     commonOptions.forEach(function (r) {
         option = document.createElement('option');
         option.value = r;
-        commonList.appendChild(option);
+        dataList.appendChild(option);
     })
+
+    sciOptions.forEach(function (r) {
+        option = document.createElement('option');
+        option.value = r;
+        dataList.appendChild(option);
+    })
+
+
 
     updatePageList();
     filterData.sort(sortOptions[sortSelect.value] ?? sortOptions.default);
@@ -154,14 +155,14 @@ function generateTable(a){
 
         let photo = document.createElement('img')
         photo.onload = function() {
-            this.setNewImgOnLoad('images/'+a[i][0]+'.JPG',mainContainer)
+            this.setNewImgOnLoad('/images/'+a[i][0]+'.JPG',mainContainer)
             let elementToChange = this.parentElement.parentElement
             elementToChange.classList.remove('v');
             elementToChange.classList.remove('h');
             elementToChange.classList.add(this.naturalHeight > this.naturalWidth ? 'v' : 'h');
             this.onload = '';
         };
-        photo.src = 'images-blur/'+a[i][0]+'-blur.JPG'
+        photo.src = '/images-blur/'+a[i][0]+'-blur.JPG'
         photo.classList.add('blurry')
         photo.onerror = imgLoadError;
         imgBorder.tabIndex = 0;

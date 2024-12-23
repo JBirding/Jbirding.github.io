@@ -3,6 +3,7 @@ import './script-header.js';
 let url = new URL(location);
 let parameters = url.searchParams;
 
+document.getElementById('year').textContent = ((new Date).getFullYear()>2024?'2024-'+(new Date).getFullYear():'2024');
 document.getElementById('language').onclick = function(){parameters.set('lang',this.value); updateURL(parameters);}
 document.getElementById('theme').onclick = switchTheme;
 document.getElementById('theme').onkeydown = triggerClickOnKey;

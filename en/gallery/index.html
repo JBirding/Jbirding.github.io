@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='es' translate='no'>
+<head>
+    <meta charset='UTF-8'/>
+
+ <!--Fonts-->
+ 
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+ <!--Fonts-->
+
+    <!--script data-main='scripts/script-gallery.js' src="scripts/require.js"></--script-->
+	<!--script src="jquery-3.7.1.min.js"></script-->
+  <!--script src='data.js'></script-->
+    <script src="/scripts/script-gallery.js" type="module"></script>
+    <!--script src="scripts/script-header.js"></script-->
+  <noscript>
+    <div id='noscript'>
+      JavaScript is disabled in your browser. Please enable it to view this page.
+    </div>
+  </noscript>
+	<title>JBirding</title>
+
+	<link rel="icon" type="image/x-icon" href="/kestrel.ico">
+	<link rel="stylesheet" href="/styles/style-general.css">
+	<link rel="stylesheet" href="/styles/style-gallery.css">
+	
+
+</head>
+<body>
+    <script>
+        let theme = localStorage.getItem('theme');
+        if(theme === 'dark-theme'){
+            document.body.classList.add("dark-theme");
+            document.body.classList.remove("light-theme");
+        } else if(theme) {
+            document.body.classList.add("light-theme");
+            document.body.classList.remove("dark-theme");
+        }
+
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+        if (prefersDarkScheme.matches && !theme) {
+            document.body.classList.add("dark-theme");
+            document.body.classList.remove("light-theme");
+        } else if(!theme) {
+            document.body.classList.add("light-theme");
+            document.body.classList.remove("dark-theme");
+        }
+    </script>
+
+    <header>
+        <a href="about:blank" tabindex="-1"><img id='logo' src='/logos/jbirding-birds.svg'></a>
+
+        <div id="options">
+            <div id="theme" tabindex="0"></div>
+            <select id='language'>
+                <option value="ES">ES</option>
+                <option value="EN">EN</option>
+            </select>
+        </div>
+    </header>
+
+        <nav id='pages'>
+            <a id="homeLink" class='nav' tabindex="0" data-tab="home">Home</a>
+            <a id="galleryLink" class='nav active' tabindex="0" data-tab="gallery">Gallery</a>
+            <a id="aboutLink" class='nav' tabindex="0" data-tab="gallery">About</a>
+        </nav>
+
+
+
+	<datalist id='birds'>
+      <option>Female</option>
+      <option>Male</option>
+      <option>Juvenile</option>
+    </datalist>
+
+
+    <main>
+        <div id='carousel' class="closed">
+            <div id='closecar'></div>
+            <img id='fullscreen' src="/other_assets/fullscreen.svg" tabindex="0" title="Fullscreen (F)">
+            <img id='closefullscreen' src="/other_assets/closeFullscreen.svg" tabindex="0" title="Exit fullscreen (F)"
+                 hidden>
+            <div id="carouselContents">
+                <div id="carouselLeftSide">
+                    <div class="sidePhotosContainer left">
+                        <div id="leftPhotoContainer">
+                            <div class="imgBorder sidephotos">
+                            </div>
+                        </div>
+                        <div class="hiddenPhotoContainer" id="hiddenPhotoLeft">
+                            <div class="imgBorder sidephotos">
+                            </div>
+                        </div>
+                    </div>
+                    <div id='paddleleft' class='paddle' tabindex="0">
+                        &lt
+                    </div>
+                </div>
+                <div id="centerPhotoData">
+                    <div id='centerPhotoContainer'>
+                        <div class="imgBorder carphoto">
+                        </div>
+                    </div>
+                    <div id='photoinfo'>
+                        <p><span id='namecontainer'></span><br>
+                            <span id='scicontainer'></span></p>
+                    </div>
+                </div>
+                <div id="carouselRightSide">
+                    <div class="sidePhotosContainer right">
+                        <div id="rightPhotoContainer">
+                            <div class="imgBorder sidephotos">
+                            </div>
+                        </div>
+                        <div class="hiddenPhotoContainer" id="hiddenPhotoRight">
+                            <div class="imgBorder sidephotos">
+                            </div>
+                        </div>
+                    </div>
+                    <div id='paddleright' class="paddle" tabindex="0">
+                        &gt
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id='tableOptions'>
+            <div id='searchbox'>
+                <div id="searchBackground"></div>
+                <input list='birds' id='search' placeholder="Search for a bird...">
+                <button hidden id='closesearch'>×</button>
+            </div>
+            <div id='sortbox'>
+                <div id="sortbg">Sort by</div>
+                <select id='sort'>
+
+                    <option value='' selected>Best</option>
+                    <option value="Random">Random</option>
+                    <option value="Species A-Z">Species (A-Z)</option>
+                    <option value="Species Z-A">Species (Z-A)</option>
+                    <option value="Scientific name A-Z">Scientific name (A-Z)</option>
+                    <option value="Scientific name Z-A">Scientific name (Z-A)</option>
+                    <option value="Latest">Latest</option>
+                    <option value="Oldest">Oldest</option>
+                </select>
+                <div id='sortoptions'>
+                    <div id="shuffleContainer">
+                        <div id="shuffle" tabindex="0" hidden="" role="button"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id='loadcontainer'>
+            <div id='progress'></div>
+        </div>
+        <div id='nobird' hidden>No birds matching the search criteria were found</div>
+
+        <div id="pageList" class="hidden">
+            <button class="pagePaddle" id="previousPage" tabindex="0"><</button>
+            <button class="pagePaddle" id="nextPage" tabindex="0">></button>
+        </div>
+
+        <div id="photoGallery">
+        </div>
+    </main>
+
+
+
+
+	<footer class='hidden'>
+        <hr>
+
+        <div id="footerContents">
+            <div id="footerMiddle">
+                <nav id="footerNavigation">
+                    <a href="Inicio">Home</a> |
+                    <a href="https://instagram.com/_erithacus_rubecula">Gallery</a> |
+                    <a href="https://instagram.com/_erithacus_rubecula">About</a>
+                </nav>
+                <nav id="socials">
+                    <a href="https://instagram.com/_erithacus_rubecula" target="_blank"><img
+                            src="/other_assets/iconmonstr-instagram-11.svg"></a>
+                    <a href="mailto:contact@jbirding.com" target="_blank"><img
+                            src="/other_assets/iconmonstr-email-4.svg"></a>
+                </nav>
+                <div id='copyright'>© JBirding <span id="year">2023</span><br>All rights reserved.</div>
+            </div>
+
+            <div id="footerRight">
+                <img id="footerLogo" src="/logos\J-pygargus\j-black-pygargus.png">
+            </div>
+        </div>
+
+	</footer>
+</body>
+</html>
