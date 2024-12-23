@@ -24,7 +24,7 @@ const sa = {
 
 let main = document.getElementById("photoGallery");
 
-let dataList = document.getElementById("birds");
+let dataList = document.getElementById('birds');
 let search = document.getElementById('search');
 search.onchange = tableFiltered;
 let sortSelect = document.getElementById('sort')

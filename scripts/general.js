@@ -10,6 +10,8 @@ document.getElementById('theme').onkeydown = triggerClickOnKey;
 
 function updateURL (params) {
     let string = '?';
+    string += params.toString();
+    url.search = string;
 
     history.pushState(event.data,'',url.toString())
 }
