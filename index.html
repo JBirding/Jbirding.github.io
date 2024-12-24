@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <!--Fonts-->
 
-    <script src="/scripts/general.js" type="module"></script>
+    <script src="/scripts/script-home.js" type="module"></script>
     <noscript>
         <div id='noscript'>
             JavaScript está desactivado en el navegador. Para ver la página, activa JavaScript.
@@ -23,7 +23,7 @@
 
     <link rel="icon" type="image/x-icon" href="/kestrel.ico">
     <link rel="stylesheet" href="/styles/style-general.css">
-    <link rel="stylesheet" href="/styles/style-gallery.css">
+    <link rel="stylesheet" href="/styles/style-home.css">
 
 
 </head>
@@ -61,7 +61,7 @@
 </header>
 
 <nav id='pages'>
-    <a id="homeLink" class='nav active' tabindex="0" href="/">Inicio</a>
+    <a id="homeLink" class='nav active' tabindex="0">Inicio</a>
     <a id="galleryLink" class='nav' tabindex="0" href="/gallery">Galería</a>
     <a id="aboutLink" class='nav' tabindex="0" href="/about">Sobre mí</a>
 </nav>
@@ -69,9 +69,41 @@
 
 
 <main>
-    <div id="pusi">
-        mapuchaina!!!!!!!!!!!11
-    </div>
+    <nav id='pagesMenu'>
+        <div>
+            <a href="/gallery"><div class="pageImageContent">
+                <div class="imgContainer">
+                    <div class="specialBg"></div>
+                    <div class="imgBorder">
+                        <img id="galleryImg" alt="">
+                    </div>
+                    <div class="star">&starf;</div>
+                </div>
+            </div></a>
+            <p>Galería</p>
+        </div>
+        <div>
+            <a href="/about">
+                <div class="pageImageContent">
+                    <img src="/logos/J-pygargus/j-black-pygargus-shadow.png" alt="" id="aboutImg">
+                </div>
+            </a>
+            <p>Sobre mí</p>
+        </div>
+    </nav>
+
+    <h1>¡Bienvenido a JBirding!</h1>
+    <p>En esta página podrás encontrar fotografías de aves, siempre en libertad y sin ningún tipo de intervención en el medio.</p>
+    <p>Esta es la primera versión de la página, y por el momento sólo tiene la galería de fotos, pero espero poder expandirla en el futuro.
+        Para visitar la galería, puedes acceder mediante el menú que hay encima o utilizando los enlaces en la cabecera o el pie de página.</p>
+    <br>
+    <p>He intentado que la página sea accesible utilizando solamente el teclado, aunque todavía creo que no es muy navegable con lectores de pantalla.
+    En la galería, al abrir el carrusel de imágenes, se desactiva la navegación con el tabulador.
+    Las teclas de dirección cambian de imagen, F cambia a pantalla completa y Escape cierra el carrusel. Además, con O se puede abrir el carrusel en la primera imagen.</p>
+    <br>
+    <p>Si tienes alguna sugerencia o comentario, puedes escribirme por Instagram o por correo electrónico. Si encuentras algún en la página, también agradecería mucho si me lo pudieses hacer llegar.</p>
+    <p style="margin-bottom: 2em;text-align: center;">¡Gracias por visitar!</p>
+
 </main>
 
 

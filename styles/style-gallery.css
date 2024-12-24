@@ -134,10 +134,6 @@
   }*/
 }
 
-.loadTransition {
-  transition: filter 0.2s linear;
-}
-
 
 /*general stuff*/
 
@@ -216,11 +212,12 @@
 }
 
   .imgContainer {
-    min-height: min(300px, 30vw);
+    --height: min(300px, 30vw);
+    min-height: var(--height);
   }
 
   .imgContainer.h {
-    height: min(300px, 30vw);
+    height: var(--height);
   }
 
   .imgContainer.v {
@@ -254,13 +251,13 @@
   }
 
   .special:not(.v) > .specialBg {
-    mask-size: calc(90% + min(300px, 30vw)*0.1) min(300px,30vw);
-    -webkit-mask-size: calc(90% + min(300px, 30vw)*0.1) min(300px,30vw);
+    mask-size: calc(90% + var(--height)*0.1) min(300px,30vw);
+    -webkit-mask-size: calc(90% + var(--height)*0.1) min(300px,30vw);
   }
 
   .special.v > .specialBg {
-    mask-size: calc(min(300px, 30vw)) calc(90% + min(300px, 30vw)*0.1);
-    -webkit-mask-size: calc(min(300px, 30vw)) calc(90% + min(300px, 30vw)*0.1);
+    mask-size: var(--height) calc(90% + var(--height)*0.1);
+    -webkit-mask-size: var(--height) calc(90% + var(--height)*0.1);
   }
 
   .star {
@@ -273,7 +270,7 @@
   }
 
   .imgContainer:not(.v)>.star {
-    top: calc(50% - min(300px, 30vw)*0.45 - min(70px, 6vw)/2);
+    top: calc(50% - var(--height)*0.45 - min(70px, 6vw)/2);
     left: calc(5% - min(70px, 6vw)/2); 
   }
 

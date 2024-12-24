@@ -1,0 +1,183 @@
+.light-theme {
+    #pagesMenu > div p, .star {
+        color: var(--accent-color)
+    }
+
+    .specialBg {
+        background-color: var(--accent-color)
+    }
+
+    .pageImageContent {
+        background-color: var(--light-gray)
+    }
+}
+
+.dark-theme {
+    #pagesMenu > div p, .star {
+        color: var(--accent-color-dark)
+    }
+
+    .specialBg {
+        background-color: var(--accent-color-dark)
+    }
+
+    .pageImageContent {
+        background-color: var(--dark-gray);
+    }
+
+    #aboutImg {
+        filter: invert(1);
+    }
+}
+
+#pagesMenu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,min(400px,40vw));
+    width: min(850px,85vw);
+    grid-auto-rows: min(400px,40vw);
+    margin-inline: auto;
+    justify-content: center;
+    gap: min(50px,5vw);
+}
+
+#pagesMenu > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    a {
+        height: 80%;
+        width: 80%;
+        &:focus-visible {outline-width: 3px}
+        border-radius: 5%;
+        &:hover, &:focus-visible {
+            scale: 1.1;
+        }
+        transition: scale 0.3s ease;
+    }
+    p {
+        width: fit-content;
+        font-size: 2em;
+        font-weight: bold;
+        text-align: center;
+        margin: 0;
+    }
+}
+
+.pageImageContent {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    cursor: pointer;
+
+    img {
+        width: 90%;
+        height: auto;
+    }
+}
+
+p {
+    font-size: 1.3em;
+    width: min(800px,90%);margin-inline:auto;text-align: justify;
+}
+
+
+.imgContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    &.h {
+        width: 100%;
+        height: 75%;
+    }
+
+    &.v {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.imgBorder{
+    overflow: hidden;
+    position: relative;
+}
+
+.imgContainer .imgBorder {
+    height: 100%;
+}
+
+.imgContainer:not(.v) .imgBorder {max-width: 90%; height: 90%;}
+
+.imgContainer.v .imgBorder {height: 90%; max-height: 54vw; max-width: calc(min(400px, 40vw)*0.9*3/4);}
+
+.imgBorder>img.blurry {
+    width: 105%;
+    height: 105%;
+    margin: -2.38%;
+    filter: blur(min(7.5px,0.75vw));
+}
+
+.h img {
+    width: 100%;
+}
+
+.v img {
+    height: 100%;
+}
+
+.imgContainer {
+    --height: min(240px, 24vw);
+    min-height: var(--height);
+    transition: opacity 0.5s linear;
+    opacity: 1;
+    &.changingImage {
+        opacity: 0;
+    }
+}
+
+.specialBg {
+    z-index: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    mask: url('../other_assets/specialbg.svg') center no-repeat;
+    -webkit-mask: url('../other_assets/specialbg.svg') center no-repeat;
+}
+
+.special:not(.v) > .specialBg {
+    mask-size: calc(90% + var(--height)*0.1) var(--height);
+    -webkit-mask-size: calc(90% + var(--height)*0.1) var(--height);
+}
+
+.special.v > .specialBg {
+    mask-size: var(--height) calc(90% + var(--height)*0.1);
+    -webkit-mask-size: var(--height) calc(90% + var(--height)*0.1);
+}
+
+.imgContainer:not(.special) {
+    .specialBg, .star {display: none}
+}
+
+.star {
+    position: absolute;
+    font-size: min(70px, 6vw);
+    width: min(70px, 6vw);
+    height: min(70px, 6vw);
+    line-height: min(70px, 6vw);
+    pointer-events: none;
+}
+
+.imgContainer:not(.v)>.star {
+    top: calc(50% - var(--height)*0.45 - min(70px, 6vw)/2);
+    left: calc(5% - min(70px, 6vw)/2);
+}
+
+.imgContainer.v>.star {
+    top: calc(5% - min(70px, 6vw)/2);
+    left: calc(16.25% - min(70px, 6vw)/2);
+}

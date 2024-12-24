@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang='es' translate='no'>
+<head>
+    <meta charset='UTF-8'/>
+
+    <!--Fonts-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <!--Fonts-->
+
+    <script src="/scripts/general.js" type="module"></script>
+    <noscript>
+        <div id='noscript'>
+            JavaScript está desactivado en el navegador. Para ver la página, activa JavaScript.
+        </div>
+    </noscript>
+    <title>JBirding</title>
+
+    <link rel="icon" type="image/x-icon" href="/kestrel.ico">
+    <link rel="stylesheet" href="/styles/style-general.css">
+    <link rel="stylesheet" href="/styles/style-gallery.css">
+
+
+</head>
+<body>
+<script>
+    let theme = localStorage.getItem('theme');
+    if(theme === 'dark-theme'){
+        document.body.classList.add("dark-theme");
+        document.body.classList.remove("light-theme");
+    } else if(theme) {
+        document.body.classList.add("light-theme");
+        document.body.classList.remove("dark-theme");
+    }
+
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    if (prefersDarkScheme.matches && !theme) {
+        document.body.classList.add("dark-theme");
+        document.body.classList.remove("light-theme");
+    } else if(!theme) {
+        document.body.classList.add("light-theme");
+        document.body.classList.remove("dark-theme");
+    }
+</script>
+
+<header>
+    <a href="/en" tabindex="-1"><img id='logo' src='/logos/jbirding-birds.svg'></a>
+
+    <div id="options">
+        <div id="theme" tabindex="0"></div>
+        <select id='language'>
+            <option value="ES">ES</option>
+            <option value="EN" selected>EN</option>
+        </select>
+    </div>
+</header>
+
+<nav id='pages'>
+    <a id="homeLink" class='nav' tabindex="0" href="/en">Home</a>
+    <a id="galleryLink" class='nav' tabindex="0" href="/en/gallery">Gallery</a>
+    <a id="aboutLink" class='nav active' tabindex="0">About</a>
+</nav>
+
+
+
+<main style="font-size: 1.3em;width: min(800px,90%);margin-inline:auto;text-align: justify;">
+    <p>Hi! I like birds. And that's my personality trait.</p>
+    <p>In the summer of 2021, I was gifted a bridge camera —a Canon PowerShot— and started taking pictures with it.
+    I've used it for wildlife photography since the beginning, though I didn't start to take an interest in birds until several months later.
+    At fist, my main subjects were damselflies (I have a ton of photos of those from back then), but, as time went on,
+    I began to shoot more birds and learn more about them. And here we are now.</p>
+    <p>I also find web design rather appealing (how unexpected!). My first steps at it actually stem from an unusual place: spreadsheets.
+    Several years ago now, I started working along other people on a spreadsheet that serves as a guide with a ton of resources for a videogame.
+    After much work gathering more and more information not found anywhere else (such as the damage formula), I started learning JavaScript
+    to write scripts that would let me improve the sheet.
+    I also started making a website to be able to have all that information in a more accessible way, but soon after I started this site and... yeah.</p>
+    <br>
+    <p>Regarding this site, It began as a learning project in the summer of 2023.
+    At first, I was convinced I'd be able to have it ready by September. Naturally, that was not the case.
+    Though it is true that it could have been ready a lot sooner <span style="text-decoration: line-through">had I dedicated any time to it throughout 2024</span>.</p>
+    <p>The site and (almost) all resources in it were made by myself from scratch. Coming from someone who knew little to nothing,
+    in the beginning, many things were... questionable. For instance, for the carousel animations, I had a whopping 200 lines of JavaScript to calculate the exact positions of each element on screen.
+    As inline styles applied to each element. Because who needs CSS. Or readable code. Nonetheless, this is still a project to learn from mistakes like that and I <i>think</i> I've taken a thing or two away from it.</p>
+    <br>
+    <p>Right now I'm studying a double bachelor's degree in Math and Informatics. I spent a lot of time wanting to do Math and Physics (💀),
+    but, in part due to the horrible year I'd had with Physics, in part because I'd already started using JavaScript and I wanted to learn programming in a proper way,
+    I changed my mind. There's a whopping one (1) subject about web design, but at least that's better than none.</p>
+    <p>Surprisingly enough, there are other things I enjoy in life. For instance, I've been doing varsity debate
+        for several years now —in fact, in the gallery, there are several photos I took on a trip to Cape Verde as a prize for winning a competition.
+    Besides, I also like a very niche 3DS game (the spreadsheet one) probably way too much.
+        Back in high school, I did a project about the hidden math of the game and finding out the damage formula.
+    I'm also really fortunate to be a part of the team making the biggest mod in existence for the game. Mi contribution is being a huge nerd!</p>
+</main>
+
+
+
+
+<footer>
+    <hr>
+
+    <div id="footerContents">
+        <div id="footerMiddle">
+            <nav id="footerNavigation">
+                <a href="/en">Home</a> |
+                <a href="/en/gallery">Gallery</a> |
+                <a href="/en/about">About</a>
+            </nav>
+            <nav id="socials">
+                <a href="https://instagram.com/_erithacus_rubecula" target="_blank"><img
+                        src="/other_assets/iconmonstr-instagram-11.svg"></a>
+                <a href="mailto:contact@jbirding.com" target="_blank"><img
+                        src="/other_assets/iconmonstr-email-4.svg"></a>
+            </nav>
+            <div id='copyright'>© JBirding <span id="year"></span><br>All rights reserved.</div>
+        </div>
+
+        <div id="footerRight">
+            <img id="footerLogo" src="/logos\J-pygargus\j-black-pygargus.png">
+        </div>
+    </div>
+
+</footer>
+</body>
+</html>

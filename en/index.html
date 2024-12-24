@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='es' translate='no'>
+<html lang='en' translate='no'>
 <head>
     <meta charset='UTF-8'/>
 
@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <!--Fonts-->
 
-    <script src="/scripts/general.js" type="module"></script>
+    <script src="/scripts/script-home.js" type="module"></script>
     <noscript>
         <div id='noscript'>
             JavaScript está desactivado en el navegador. Para ver la página, activa JavaScript.
@@ -23,7 +23,7 @@
 
     <link rel="icon" type="image/x-icon" href="/kestrel.ico">
     <link rel="stylesheet" href="/styles/style-general.css">
-    <link rel="stylesheet" href="/styles/style-gallery.css">
+    <link rel="stylesheet" href="/styles/style-home.css">
 
 
 </head>
@@ -49,28 +49,61 @@
 </script>
 
 <header>
-    <a href="/" tabindex="-1"><img id='logo' src='/logos/jbirding-birds.svg'></a>
+    <a href="/en" tabindex="-1"><img id='logo' src='/logos/jbirding-birds.svg'></a>
 
     <div id="options">
         <div id="theme" tabindex="0"></div>
         <select id='language'>
             <option value="ES">ES</option>
-            <option value="EN">EN</option>
+            <option value="EN" selected>EN</option>
         </select>
     </div>
 </header>
 
 <nav id='pages'>
-    <a id="homeLink" class='nav' tabindex="0" href="/">Inicio</a>
-    <a id="galleryLink" class='nav' tabindex="0" href="/gallery">Galería</a>
-    <a id="aboutLink" class='nav' tabindex="0" href="/about">Sobre mí</a>
+    <a id="homeLink" class='nav active' tabindex="0">Home</a>
+    <a id="galleryLink" class='nav' tabindex="0" href="/en/gallery">Gallery</a>
+    <a id="aboutLink" class='nav' tabindex="0" href="/en/about">About</a>
 </nav>
 
 
 
 <main>
-    <p style="font-size: 10em;font-weight: 900;margin: 0">404</p>
-    <p style="font-size: 1.5em; margin: 10px">No se ha encontrado la página solicitada.</p>
+    <nav id='pagesMenu'>
+        <div>
+            <a href="/en/gallery"><div class="pageImageContent">
+                <div class="imgContainer">
+                    <div class="specialBg"></div>
+                    <div class="imgBorder">
+                        <img id="galleryImg" alt="">
+                    </div>
+                    <div class="star">&starf;</div>
+                </div>
+            </div></a>
+            <p>Gallery</p>
+        </div>
+        <div>
+            <a href="/en/about">
+                <div class="pageImageContent">
+                    <img src="/logos/J-pygargus/j-black-pygargus-shadow.png" alt="" id="aboutImg">
+                </div>
+            </a>
+            <p>About</p>
+        </div>
+    </nav>
+
+    <h1>Welcome!</h1>
+    <p>Here you'll be able to find a wide array of bird photographs, always of wild specimens and respecting the natural environment.</p>
+    <p>This is the first version of the site, and, so far, only the photo gallery is available, but I hope to expand it in the future.
+        To visit the gallery, you can use the menu above or the links in the header and footer.</p>
+    <br>
+    <p>I have tried to make the site as accessible as possible to users navigating with the keyboard, but screen readers might not work properly yet.
+    In the gallery, when the image carousel is open, navigation using the Tab key is disabled.
+    The arrow keys change the carousel image, the F key opens full screen mode and the Escape key closes the carousel. Also, using the O key opens the carousel on the first photo.</p>
+    <br>
+    <p>If you have any comments or suggestions, you can contact me via Instagram or e-mail. Likewise, if you find any bugs in the site, I'd be grateful if you could let me know about them.</p>
+    <p style="margin-bottom: 2em;text-align: center;">Thanks for visiting!</p>
+
 </main>
 
 
@@ -82,9 +115,9 @@
     <div id="footerContents">
         <div id="footerMiddle">
             <nav id="footerNavigation">
-                <a href="/">Inicio</a> |
-                <a href="/gallery">Galería</a> |
-                <a href="/about">Sobre mí</a>
+                <a href="/en">Home</a> |
+                <a href="/en/gallery">Gallery</a> |
+                <a href="/en/about">About</a>
             </nav>
             <nav id="socials">
                 <a href="https://instagram.com/_erithacus_rubecula" target="_blank"><img
@@ -92,7 +125,7 @@
                 <a href="mailto:contact@jbirding.com" target="_blank"><img
                         src="/other_assets/iconmonstr-email-4.svg"></a>
             </nav>
-            <div id='copyright'>© JBirding <span id="year">2023</span><br>Todos los derechos reservados.</div>
+            <div id='copyright'>© JBirding <span id="year"></span><br>All rights reserved.</div>
         </div>
 
         <div id="footerRight">

@@ -1,6 +1,6 @@
 import data from "/data.json" with {type: 'json'};
 import {openCarousel} from "./carousel.js";
-import {parameters, updateURL, triggerClickOnKey} from '../general.js';
+import {parameters, imgLoadError, updateURL, triggerClickOnKey} from '../general.js';
 console.log(data);
 
 let langIndex;
@@ -359,12 +359,6 @@ function hidePaddles(pageNumber) {
     } else {
         leftPaddle.classList.remove('hidden');
     }
-}
-
-function imgLoadError() {
-    this.src = 'logos/noload.png';
-    this.classList.remove('blurry');
-    this.onerror = null;
 }
 
 

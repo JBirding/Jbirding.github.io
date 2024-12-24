@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang='es' translate='no'>
+<head>
+    <meta charset='UTF-8'/>
+
+    <!--Fonts-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <!--Fonts-->
+
+    <script src="/scripts/general.js" type="module"></script>
+    <noscript>
+        <div id='noscript'>
+            JavaScript está desactivado en el navegador. Para ver la página, activa JavaScript.
+        </div>
+    </noscript>
+    <title>JBirding</title>
+
+    <link rel="icon" type="image/x-icon" href="/kestrel.ico">
+    <link rel="stylesheet" href="/styles/style-general.css">
+    <link rel="stylesheet" href="/styles/style-gallery.css">
+
+
+</head>
+<body>
+<script>
+    let theme = localStorage.getItem('theme');
+    if(theme === 'dark-theme'){
+        document.body.classList.add("dark-theme");
+        document.body.classList.remove("light-theme");
+    } else if(theme) {
+        document.body.classList.add("light-theme");
+        document.body.classList.remove("dark-theme");
+    }
+
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    if (prefersDarkScheme.matches && !theme) {
+        document.body.classList.add("dark-theme");
+        document.body.classList.remove("light-theme");
+    } else if(!theme) {
+        document.body.classList.add("light-theme");
+        document.body.classList.remove("dark-theme");
+    }
+</script>
+
+<header>
+    <a href="/" tabindex="-1"><img id='logo' src='/logos/jbirding-birds.svg'></a>
+
+    <div id="options">
+        <div id="theme" tabindex="0"></div>
+        <select id='language'>
+            <option value="ES">ES</option>
+            <option value="EN">EN</option>
+        </select>
+    </div>
+</header>
+
+<nav id='pages'>
+    <a id="homeLink" class='nav' tabindex="0" href="/">Inicio</a>
+    <a id="galleryLink" class='nav' tabindex="0" href="/gallery">Galería</a>
+    <a id="aboutLink" class='nav active' tabindex="0" href="/about">Sobre mí</a>
+</nav>
+
+
+
+<main style="font-size: 1.3em;width: min(800px,90%);margin-inline:auto;text-align: justify;">
+    <p>¡Hola! Mi nombre es Jorge y mi rasgo de personalidad es que gustan los pájaros.</p>
+    <p>En verano de 2021, me regalaron una cámara —una bridge, más concretamente una Canon PowerShot—
+    y empecé a hacer fotos con ella. Desde el principio la usé para hacer fotografías de naturaleza, aunque no me interesé por las aves hasta varios meses después.
+    Al principio, por algún motivo mis sujetos principales eran caballitos del diablo (tengo muchas fotos de entonces), pero, a medida
+    que iban pasando los meses, empecé a fotografiar más y más aves y a interesarme más por ellas. Y aquí estamos.</p>
+    <p>Por otra parte, también me interesa bastante el diseño web (sorpresa). Mi primer contacto con todo este mundillo surge de un sitio más bien curioso: de las hojas de cálculo.
+        Hace ya varios años, empecé a trabajar junto a otra gente en una hoja de cálculo que contiene mucha información y recursos varios sobre un videojuego.
+    Después de echarle muchas horas de trabajo para añadir más cosas que no estaban recogidas en ninguna parte (como la fórmula de daño del juego),
+    empecé a aprender JavaScript para escribir código que me permitiese mejorar la funcionalidad de esta hoja.
+    También intenté empezar una página para poder tener toda esa información de una forma más cómoda y accesible, pero luego empecé con esta y pues... bueno. Eso. Debería retomarlo en algún momento.</p>
+    <br>
+    <p>Respecto a la página, la empecé como una especie de proyecto personal en 2023, en parte con el fin de aprender.
+        Al principio estaba convencido de que estaría lista para septiembre de ese año. Como era de esperar, no se dio el caso.<br>
+        Es cierto que podría haber estado lista mucho antes <span style="text-decoration: line-through">si le hubiese dedicado algo de tiempo a lo largo de 2024</span>.</p>
+    <p>La página y (casi) todos los recursos están hechos completamente por mí, desde 0. Viniendo de una persona que no tiene (tenía) ni idea,
+    al principio había cosas... cuestionables. Por ejemplo, en la galería, para las animaciones, tenía un total de 200 líneas de código dedicadas a calcular las posiciones exactas de todos los elementos del carrusel de fotos en la pantalla con JavaScript.
+    Como estilos aplicados a cada elemento. Porque quién necesita CSS. O código que se pueda entender. No obstante, esto no deja de ser un proyecto para aprender de ese tipo de errores y <i>creo</i> que la solución que tengo ahora es algo mejor.</p>
+    <br>
+    <p>Ahora mismo estoy estudiando un doble grado de matemáticas e informática en la USC. Me pasé mucho tiempo queriendo hacer matemáticas y física (💀),
+    pero, a finales de 2º de Bachillerato, en parte motivado por el curso horrendo que había tenido con física, en parte porque ya había empezado a hacer cosas con JavaScript de aquella y quería aprender a programar de verdad,
+    cambié de opinión y puse el de informática como primera opción. Hay un total de una (1) unidad de asignaturas de desarrollo web, pero 1 es mejor que 0.</p>
+    <p>Sorprendentemente, también me gustan otras cosas. Por ejemplo, llevo varios años haciendo debate escolar/universitario
+        —de hecho, hay varias fotos de un viaje que hice a Cabo Verde como premio por ganar una competición.
+        Aparte de eso, también me gusta <i>probablemente demasiado</i> un juego desconocido de la 3DS (el de la hoja de cálculo), y tengo la suerte de formar parte del equipo que hace el mayor mod que existe para el juego. Mi aportación es ser un gran nerd :)</p>
+    <br>
+</main>
+
+
+
+
+<footer>
+    <hr>
+
+    <div id="footerContents">
+        <div id="footerMiddle">
+            <nav id="footerNavigation">
+                <a href="/">Inicio</a> |
+                <a href="/gallery">Galería</a> |
+                <a href="/about">Sobre mí</a>
+            </nav>
+            <nav id="socials">
+                <a href="https://instagram.com/_erithacus_rubecula" target="_blank"><img
+                        src="/other_assets/iconmonstr-instagram-11.svg"></a>
+                <a href="mailto:contact@jbirding.com" target="_blank"><img
+                        src="/other_assets/iconmonstr-email-4.svg"></a>
+            </nav>
+            <div id='copyright'>© JBirding <span id="year">2023</span><br>Todos los derechos reservados.</div>
+        </div>
+
+        <div id="footerRight">
+            <img id="footerLogo" src="/logos\J-pygargus\j-black-pygargus.png">
+        </div>
+    </div>
+
+</footer>
+</body>
+</html>
