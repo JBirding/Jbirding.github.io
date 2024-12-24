@@ -287,6 +287,7 @@
     margin-inline: auto;
 	margin-top: 40px;
     z-index: 1;
+   font-size: 2em;
   }
 
   #progress {
@@ -830,7 +831,8 @@
   }
 
   #photoinfo {
-    transition: opacity calc(var(--carousel-transition-duration)/2) linear;
+    transition: opacity linear;
+    transition-duration: calc(var(--carousel-transition-duration)/2);
     min-height: 80px;
     display: flex;
     align-items: center;
@@ -1075,10 +1077,10 @@
   font-size: 2em;
   font-weight: bold;
   color: inherit;
-  height: 2em;
-  width: 2em;
-  line-height: 2em;
-  border-radius: 2em;
+  height: 1.8em;
+  width: 1.8em;
+  line-height: 1.8em;
+  border-radius: 1.8em;
   border: none;
   margin-inline: 3px;
   background-color: transparent;

@@ -39,8 +39,7 @@ closeSearch.onclick = clearSearch;
 let pageList = document.getElementById("pageList");
 let footer = document.querySelector('footer');
 let nobird = document.getElementById('nobird');
-let progbar = document.getElementById('progress')
-progbar.hidden = false
+let loader = document.getElementById('loadcontainer')
 
 let sortOptions = {
     'Random': ()=>Math.random()-0.5,
@@ -85,7 +84,6 @@ function initializePhotos() {
     updatePageList();
     filterData.sort(sortOptions[sortSelect.value] ?? sortOptions.default);
     generateTable(filterData);
-    document.getElementById('loadcontainer').hidden = true;
 }
 
 
@@ -202,7 +200,7 @@ function generateTable(a){
         main.appendChild(mainContainer);
     }
 
-    progbar.hidden = true
+    //loader.hidden = true
     footer.classList.remove('hidden')
     nobird.hidden = l !== 0;
     if(l<=48) pageList.classList.add('hidden');
