@@ -93,9 +93,16 @@ function triggerClickOnKey(event) {
     }
 }
 
+document.getElementById('language').value = 'ES'
 function updateLanguage(lan) {
-    if(lan === 'ES') location.host = "en.jbirding.com"
-    else if (lan === 'EN') location.host = 'jbirding.com';
+    console.log(lan)
+    let newURL = new URL(location);
+    if(lan === 'ES') newURL.host = "jbirding.com"
+    else if (lan === 'EN') newURL.host = 'en.jbirding.com';
+    newURL.port = '';
+    console.log(newURL);
+    location.assign(newURL);
+    console.log(location);
 }
 
 function switchTheme() {
