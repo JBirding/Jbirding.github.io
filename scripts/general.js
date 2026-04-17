@@ -94,12 +94,8 @@ function triggerClickOnKey(event) {
 }
 
 function updateLanguage(lan) {
-    let newUrl;
-    if(lan === 'ES') newUrl = location.pathname.replaceAll('/en','');
-    else newUrl = location.pathname.replace('/','/en/');
-
-    history.pushState(null, newUrl);
-    location.replace(newUrl);
+    if(lan === 'ES') location.host = "en.jbirding.com"
+    else if (lan === 'EN') location.host = 'jbirding.com';
 }
 
 function switchTheme() {
