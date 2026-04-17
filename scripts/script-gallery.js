@@ -4,6 +4,7 @@ import '/scripts/general.js';
 import {initializePhotos, urlFix} from "/scripts/gallery/table.js";
 
   window.focus();
+  console.log('fixing url');
   urlFix();
   initializePhotos();
 

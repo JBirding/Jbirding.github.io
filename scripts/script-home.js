@@ -16,7 +16,7 @@ const data = await fetch(DB_ACCESS_URL+'data/'+(langIndex?'en':'es'))
         let imgContainer = galleryImg.parentElement.parentElement;
         imgContainer.classList.toggle('v',a[0].is_vertical);
         imgContainer.classList.toggle('h',!a[0].is_vertical);
-        imgContainer.classList.toggle('special',a[0].highlight)
+        imgContainer.classList.toggle('special',!!a[0].highlight)
 
         galleryImg.src = DB_ACCESS_URL+'blur/'+a[0].filename;
         galleryImg.setNewImgOnLoad(DB_ACCESS_URL+a[0].filename);
@@ -34,17 +34,17 @@ let galleryImg = document.getElementById('galleryImg');
 let nextImageLoader = document.createElement('img');
 galleryImg.onload = function(){
     console.log('gallery image has been loaded')
-    console.log('timeout :'+setTimeout(function(){
-            nextImageLoader.setNewImgOnLoad(DB_ACCESS_URL+data[photoIndex = (++photoIndex + data.length) % data.length].filename);
-        },2000))
+    if(this.loaded) setTimeout(function(){ // Only initialize the timeout if the fullsize photo is loaded
+            nextImageLoader.setNewImgOnLoad(DB_ACCESS_URL+data[photoIndex = (photoIndex + 1) % data.length].filename);
+        },2000)
 }
 
 let galleryLinkImgContainerHandler = function(){
     galleryImg.src = nextImageLoader.src;
 
-    this.classList.toggle('v',data[0].is_vertical);
-    this.classList.toggle('h',data[0].is_vertical);
-    this.classList.toggle('special',data[0].highlight)
+    this.classList.toggle('v',data[photoIndex].is_vertical);
+    this.classList.toggle('h',!data[photoIndex].is_vertical);
+    this.classList.toggle('special',!!data[photoIndex].highlight)
 
     this.ontransitionend = null;
     this.classList.remove('changingImage');

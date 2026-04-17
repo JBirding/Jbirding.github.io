@@ -21,8 +21,8 @@
 
   #shuffle {
     background-color: var(--accent-color);
-    -webkit-mask: url('../other_assets/shuffle.svg');
-    mask: url('../other_assets/shuffle.svg');
+    -webkit-mask: url('/other_assets/shuffle.svg');
+    mask: url('/other_assets/shuffle.svg');
 
     mask-size: 100%;
   }
@@ -74,8 +74,8 @@
 
   #searchBackground {
     background-color: var(--accent-color-dark);
-    -webkit-mask: url('../other_assets/search.svg') 15px no-repeat;
-    mask: url('../other_assets/search.svg') 15px center no-repeat;
+    -webkit-mask: url('/other_assets/search.svg') 15px no-repeat;
+    mask: url('/other_assets/search.svg') 15px center no-repeat;
     width: 100%;
     border: 1px solid blue;
     height: 100%;
@@ -86,8 +86,8 @@
 
   #shuffle {
     background-color: var(--accent-color-dark);
-    -webkit-mask: url('../other_assets/shuffle.svg');
-    mask: url('../other_assets/shuffle.svg');
+    -webkit-mask: url('/other_assets/shuffle.svg');
+    mask: url('/other_assets/shuffle.svg');
 
     mask-size: 100%;
   }
@@ -251,8 +251,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    mask: url('../other_assets/specialbg.svg') center no-repeat;
-    -webkit-mask: url('../other_assets/specialbg.svg') center no-repeat;
+    mask: url('/other_assets/specialbg.svg') center no-repeat;
+    -webkit-mask: url('/other_assets/specialbg.svg') center no-repeat;
   }
 
   .special:not(.v) > .specialBg {
