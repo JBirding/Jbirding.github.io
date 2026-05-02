@@ -12,6 +12,8 @@ carousel.addEventListener("wheel", (evt) => { //prevent scrolling on carousel
 });
 
 function handleTouchStart(evt) {
+    console.log(evt.currentTarget);
+
     const firstTouch = evt.touches[0];
 
     if(document.elementFromPoint(firstTouch.clientX, firstTouch.clientY) === paddleright) paddleright.onpointerdown;

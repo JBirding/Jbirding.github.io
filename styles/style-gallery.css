@@ -14,7 +14,7 @@
     mask: url('/other_assets/search.svg') 15px center no-repeat;
     width: 100%;
     height: 100%;
-    mask-size: 30px;
+    mask-size: 1.5em;
     position: absolute;
     pointer-events: none;
   }
@@ -79,7 +79,7 @@
     width: 100%;
     border: 1px solid blue;
     height: 100%;
-    mask-size: 30px;
+    mask-size: 1.5em;
     position: absolute;
     pointer-events: none;
   }
@@ -954,10 +954,11 @@
 }
 
 #fullscreen, #closefullscreen {
-  height: min(40px,5vmin);
-  width: min(40px,5vmin);
-  max-height: 5vw;
-  max-width: 5vw;
+  height: max(40px,5vmin);
+  width: max(40px,5vmin);
+  aspect-ratio: 1;
+  max-height: 5vmax;
+  max-width: 5vmax;
   position: absolute;
   left: min(5vmin,40px);
   top: min(5vmin,40px);
@@ -1135,6 +1136,7 @@
 .pageList {
   display: flex;
   justify-content: center;
+  margin-block: 15px;
 }
 
 .pageList.hidden {

@@ -46,7 +46,7 @@ header {
 
 
 #pages>a {
-    display: inline-block;
+    display: inline-flex;
     width: min(150px,20vw);
     height: 2em;
     max-height: 12.5vh;
@@ -58,6 +58,8 @@ header {
     border-top: 2px solid;
     border-bottom: 2px solid;
     text-decoration: none;
+    text-wrap: nowrap; white-space: nowrap;
+    justify-content: center;
 }
 
 #options {
@@ -70,9 +72,9 @@ header {
 }
 
 #theme {
-    height: min(40px,7.5vh);
-    font-size: min(40px,7.5vh);
-    line-height: min(40px,7.5vh);
+    height: min(3rem,7.5vh);
+    font-size: min(3em,7.5vh);
+    line-height: 1;
     font-family: inherit;
     margin-right: min(15px,2.8125vh);
     background-color: transparent;
@@ -88,10 +90,10 @@ header {
 }
 
 #language {
-    width: min(60px,11.25vh);
-    height: min(40px,7.5vh);
+    aspect-ratio: 3/2;
+    height: min(3rem,7.5vh);
     font-family: inherit;
-    font-size: min(18px, 5vh);
+    font-size: 1.5em;
     border: none;
     border-radius: min(10px,1.875vh);
 
