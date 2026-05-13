@@ -116,7 +116,12 @@ function switchTheme() {
     }
 }
 
+function normalizeString(str) {
+    return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
+}
+
+
 document.getElementById('theme').onclick = switchTheme;
 document.getElementById('theme').onkeydown = triggerClickOnKey;
 
-export {url, parameters, imgLoadError, updateURL, triggerClickOnKey, switchTheme}
+export {url, parameters, imgLoadError, updateURL, triggerClickOnKey, switchTheme, normalizeString}

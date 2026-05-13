@@ -1,5 +1,5 @@
 import {openCarousel} from "/scripts/gallery/carousel.js";
-import {parameters, imgLoadError, updateURL, triggerClickOnKey} from '/scripts/general.js';
+import {parameters, imgLoadError, updateURL, triggerClickOnKey, normalizeString} from '/scripts/general.js';
 
 const DB_ACCESS_URL = "https://g4bc8210ff017d8-jbirding.adb.eu-madrid-1.oraclecloudapps.com/ords/jbirding/bird_photos/";
 const langIndex = (document.getElementById('language').value === 'EN') + 0;
@@ -44,24 +44,24 @@ const nameLanguages = ['name_es','name_en']
 
 const searchFilter = function(elem) {
     let globalAcum = false;
-    let query = search.value;
+    let query = normalizeString(search?.value?.toLowerCase());
 
     query.split('/').forEach(function(r){
         let orTerm = r.trim()
         let andAcum = true;
 
         orTerm.split('&').forEach(function(s){
-            let searchParam = s.trim();
+            let searchParam = normalizeString(s.trim().toLowerCase());
             if(sciOptions.includes(searchParam)) {
-                andAcum = andAcum && elem.name_sci === searchParam
+                andAcum &= normalizeString(elem.name_sci.toLowerCase()) === searchParam
             } else if (commonOptions.includes(searchParam)) {
-                andAcum = andAcum && elem.name_common === searchParam
+                andAcum &= normalizeString(elem.name_common.toLowerCase()) === searchParam
             } else if (saOptions[langIndex].includes(searchParam.toLowerCase())) {
-                andAcum = andAcum && sa[elem.class][2-langIndex].toLowerCase().trim() === searchParam.toLowerCase()
+                andAcum &= normalizeString(sa[elem.class][2-langIndex].toLowerCase().trim()) === searchParam
             } else {
-                andAcum = andAcum && (elem.name_sci.toLowerCase().includes(searchParam.toLowerCase())
-                    || (sa[elem.class][langIndex]+elem.name_common+sa[elem.class][2+langIndex]).
-                    toLowerCase().includes(searchParam.toLowerCase()))
+                andAcum &= (normalizeString(elem.name_sci.toLowerCase()).includes(searchParam)
+                    || normalizeString(sa[elem.class][langIndex]+elem.name_common+sa[elem.class][2+langIndex]).
+                    toLowerCase().includes(searchParam))
             }
         })
 
