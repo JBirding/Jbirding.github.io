@@ -1,5 +1,8 @@
 ---
-species: Phalacrocorax carbo
+species:
+  - name_sci: Phalacrocorax carbo
+    name_es: Cormorán grande
+    name_en: Great Cormorant
 title: Cómo los cormoranes controlan el calor
 ---
 Las aves, al igual que otros animales, presentan varios mecanismos de termorregulación.

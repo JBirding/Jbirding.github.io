@@ -1,5 +1,8 @@
 ---
-species: Aegithalos caudatus
+species: 
+  - name_sci: Aegithalos caudatus
+    name_es: Mito común
+    name_en: Long-Tailed Tit
 title: Un pájaro que cambia de aspecto
 notes:
   - El dorso, entre las alas.
