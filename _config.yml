@@ -1,3 +1,4 @@
+language: ES
 lsi: false
 safe: true
 incremental: false
@@ -7,4 +8,28 @@ gist:
 kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
+title: JBirding
 includes_dir: _includes
+collections:
+  species:
+    output: true
+    permalink: /species/:title
+  species_facts:
+    output: true
+    permalink: /species/articles/:title
+defaults:
+  - scope:
+      path: ""
+      type: "species"
+    values:
+      layout: "species_page"
+      title: {{name_es}}
+  - scope:
+      path: ""
+      type: "species_facts"
+    values:
+      layout: "species_fact"
+  - scope:
+      path: ""
+    values:
+      layout: "default"

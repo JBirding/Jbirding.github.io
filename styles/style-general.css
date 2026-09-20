@@ -1,13 +1,15 @@
 /* general page things */
 :root {
-  --background-color-light: #F1F0E8;
+  --background-color-light: #f9f8f4;
+  /*--background-color-light: #F1F0E8;*/
   --background-color-dark: #282c34;
 
-  --accent-color: #b30000;
-  --accent-color-dark: #ff4040;
+  /*Original light theme accent color: #b30000*/
+  --accent-color-light-theme: #d60808;
+  --accent-color-dark-theme: #ff4040;
 
   --light-gray: #d9d8ce;
-  --light-gray-darker: #bab9ad;
+  --light-gray-darker: #c1baaa;
   --dark-gray: #40454f;
   --dark-gray-lighter: #50555f;
 
@@ -17,146 +19,136 @@
   --scrollbar-thumb-dark: #555555;
   --scrollbar-active-dark: #606060;
 
+
+  --text-color-light-theme: #161616;
+  --text-color-dark-theme: #f7fffe;
+
+
+  --theme-transition-duration: 0.2s;
+  --theme-transition-function: linear;
 }
 
+@property --text-color {syntax: "<color>"; inherits: true; initial-value: #f7fffe;}
+@property --accent-color {syntax: "<color>"; inherits: true; initial-value: #ff4040;}
+@property --background-color {syntax: "<color>"; inherits: true; initial-value: #282c34;}
+@property --gray-one {syntax: "<color>"; inherits: true; initial-value: #40454f;}
+@property --gray-two {syntax: "<color>"; inherits: true; initial-value: #50555f;}
+
+@property --opposite-text-color {syntax: "<color>"; inherits: true; initial-value: #161616;}
+@property --opposite-background {syntax: "<color>"; inherits: true; initial-value: #f9f8f4;}
+@property --opposite-gray-one {syntax: "<color>"; inherits: true; initial-value: #d5d5d5;}
+@property --opposite-gray-two {syntax: "<color>"; inherits: true; initial-value: #bcbcbc;}
+
+
 .light-theme {
-  background-color: var(--background-color-light);
-  color: black;
+  --text-color: var(--text-color-light-theme);
+  --accent-color: var(--accent-color-light-theme);
+  --background-color: var(--background-color-light);
+  --gray-one: var(--light-gray);
+  --gray-two: var(--light-gray-darker);
 
-  a {
-    color: var(--accent-color)
-  }
+  --opposite-text-color: var(--text-color-dark-theme);
+  --opposite-background: var(--background-color-dark);
+  --opposite-gray-one: var(--dark-gray);
+  --opposite-gray-two: var(--dark-gray-lighter);
 
-  :focus-visible{
-    outline: 1px solid var(--accent-color);
-  }
-
-  #pages {
-    background-color: var(--background-color-light);
-  }
-
-  #theme:after{
-    content: "\1F323";
-  }
-
-  #pages>a {
-    color: var(--light-gray-darker);
-    border-color: var(--light-gray-darker);
-  }
-
-  #pages>a.active, #pages>a:hover, #pages>a:focus-visible {
-    color: var(--accent-color);
-    border-color: var(--accent-color);
-  }
-
-  #language {
-    background-color: var(--light-gray);
-    color: var(--background-color-dark);
-  }
-
-  footer {
-    hr {background-color: var(--dark-gray);}
-    #copyright {
-      color: var(--dark-gray);
-    }
+  #theme{
+    mask-image: url("/other_assets/light-theme.svg");
   }
 }
 
 html:has(.light-theme) {
-  scrollbar-color: var(--accent-color) transparent;
+  scrollbar-color: var(--accent-color-light-theme) transparent;
 }
 
 .dark-theme {
-  background-color: var(--background-color-dark);
-  color: white;
+  --text-color: var(--text-color-dark-theme);
+  --accent-color: var(--accent-color-dark-theme);
+  --background-color: var(--background-color-dark);
+  --gray-one: var(--dark-gray);
+  --gray-two: var(--dark-gray-lighter);
 
-  a {
-    color: var(--accent-color-dark);
-  }
-
-  :focus-visible {
-    outline: 1px solid var(--accent-color-dark);
-  }
-
-  #logo, #footerLogo, #socials img {
-    filter: invert(1);
-  }
-
-  #pages {
-    background-color: var(--background-color-dark);
-  }
-
-  #theme:after{
-    content: "\263D";
-  }
-
-  #pages>a {
-    color: var(--dark-gray-lighter);
-    border-color: var(--dark-gray-lighter);
-  }
-
-  #pages>a.active, #pages>a:hover, #pages>a:focus-visible {
-    color: var(--accent-color-dark);
-    border-color: var(--accent-color-dark);
-  }
-
-  #language {
-    background-color: var(--dark-gray);
-    color: var(--background-color-light);
-  }
-
-  footer {
-    hr {background-color: var(--light-gray);}
-    #copyright {
-      color: var(--light-gray);
-    }
-  }
+  --opposite-text-color: var(--text-color-light-theme);
+  --opposite-background: var(--background-color-light);
+  --opposite-gray-one: #d5d5d5;
+  --opposite-gray-two: #bcbcbc;
 }
 
-html:has(.dark-theme) {
-  scrollbar-color: var(--accent-color-dark) transparent;
+.dark-theme #theme {
+    mask-image: url("/other_assets/dark-theme.svg");
+}
+
+html:has(.dark-theme), html {
+  scrollbar-color: var(--accent-color-dark-theme) transparent;
 }
 
 
 
-/*
+svg {
+  transition-property: --accent-color, fill;
+  transition-duration: var(--theme-transition-duration);
+  transition-timing-function: var(--theme-transition-function);
+}
 
-html:has(.light-theme)::-webkit-scrollbar-track {
-  background-color: var(--light-gray);
+
+
+body{
+  transition-property:
+          --text-color,
+          --accent-color,
+          --background-color,
+          --gray-one,
+          --gray-two,
+          --opposite-text-color,
+          --opposite-background,
+          --opposite-gray-one,
+          --opposite-gray-two;
+  transition-duration: var(--theme-transition-duration);
+  transition-timing-function: var(--theme-transition-function);
 }
-html:has(.light-theme)::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-light);
+
+
+html {
+  transition: scrollbar-color var(--theme-transition-duration) var(--theme-transition-function);
 }
-html:has(.light-theme)::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-active-light);
+
+
+
+
+
+
+@media all and (scripting: none) {
+  .requiresJS {display: none !important;}
 }
-html:has(.light-theme)::-webkit-scrollbar-thumb:active {
-  background-color: #999999;
-}
-html:has(.dark-theme)::-webkit-scrollbar-track {
-  background-color: var(--dark-gray);
-}
-html:has(.dark-theme)::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-dark);
-}
-html:has(.dark-theme)::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-active-dark);
-}
-html:has(.dark-theme)::-webkit-scrollbar-thumb:active {
-  background-color: #666666;
-}
-*/
-  body {
+
+
+
+
+
+body {
     font-family: Montserrat, Verdana, Helvetica, sans-serif;
     text-align: center;
     margin: 0;
-    overflow-x: hidden;
-    min-height: 100vh;
+    min-height: 100dvh;
     position: relative;
     
     display: grid;
       grid-template-rows: auto auto 1fr auto;
+
+    background-color: var(--background-color);
+    color: var(--text-color);
   }
+
+a {
+  color: var(--accent-color);
+  transition-property: color;
+  transition-duration: var(--theme-transition-duration);
+  transition-timing-function: var(--theme-transition-function);
+}
+
+:focus-visible, .focus-inside:has(:focus-visible) {
+  outline: 3px solid var(--accent-color);
+}
 
 .loadTransition {
   transition: filter 0.2s linear;
@@ -180,6 +172,59 @@ html:has(.dark-theme)::-webkit-scrollbar-thumb:active {
 
 
 
+
+#noscript {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+
+
+
+a.external::after {
+  display: inline-block;
+  vertical-align: middle;
+  content: "" / " (external)";
+  height: 1em;
+  aspect-ratio: 1;
+  background-color: currentColor;
+  margin-inline-start: 0.125em;
+  mask-image: url('/other_assets/external.svg');
+  mask-repeat: no-repeat;
+  mask-size: cover;
+  translate: calc(.5lh - .5em);
+
+}
+
+
+
+:has(.tooltip-anchor:not(:focus, :hover)) + .tooltip:not(:focus-within, :hover),
+.tooltip-anchor:not(:focus, :hover) + .tooltip:not(:focus-within, :hover) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tooltip {
+  display: block;
+  position: fixed;
+  position-area: top center;
+
+  background-color: var(--background-color);
+  border-radius: 5px;
+  border: 1px solid var(--text-color);
+
+  padding: 0.5em;
+
+  transition: opacity 0.2s linear;
+
+  text-wrap: auto;
+  text-align: left;
+  font-size: 1.15rem;
+  max-width: max-content;
+  width: 20rem;
+
+  box-shadow: rgba(0,0,0,0.5) 0 0 10px;
+}
 
 
 

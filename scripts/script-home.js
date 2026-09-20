@@ -8,6 +8,7 @@ const data = await fetch(DB_ACCESS_URL+'data/'+(langIndex?'en':'es'))
     .then(response => response.json())
     .then(json =>json.items)
     .then((a) => {
+
         loadedData = true;
 
         a.sort((a,b)=>Math.random() - 0.5);
@@ -17,6 +18,16 @@ const data = await fetch(DB_ACCESS_URL+'data/'+(langIndex?'en':'es'))
         imgContainer.classList.toggle('v',a[0].is_vertical);
         imgContainer.classList.toggle('h',!a[0].is_vertical);
         imgContainer.classList.toggle('special',a[0].highlight)
+
+
+        galleryImg.onload = function () {
+            this.onload = function(){
+                console.log('gallery image has been loaded')
+                console.log('timeout :'+setTimeout(function(){
+                    nextImageLoader.setNewImgOnLoad(DB_ACCESS_URL+data[photoIndex = (++photoIndex + data.length) % data.length].filename);
+                },2000))
+            }
+        }
 
         galleryImg.src = DB_ACCESS_URL+'blur/'+a[0].filename;
         galleryImg.setNewImgOnLoad(DB_ACCESS_URL+a[0].filename);
@@ -32,12 +43,6 @@ let photoIndex = 0;
 
 let galleryImg = document.getElementById('galleryImg');
 let nextImageLoader = document.createElement('img');
-galleryImg.onload = function(){
-    console.log('gallery image has been loaded')
-    console.log('timeout :'+setTimeout(function(){
-            nextImageLoader.setNewImgOnLoad(DB_ACCESS_URL+data[photoIndex = (++photoIndex + data.length) % data.length].filename);
-        },2000))
-}
 
 let galleryLinkImgContainerHandler = function(){
     galleryImg.src = nextImageLoader.src;

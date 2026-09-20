@@ -1,0 +1,56 @@
+---
+title: Pájaropedia | JBirding
+description: ¡Aprende sobre las especies que puedes encontrar en JBirding!
+styles:
+    - /styles/style-text-page.css
+scripts:
+    - /scripts/species.js
+---
+
+{% assign species_count = site.species.size %}
+{% assign current_species = 1 %}
+
+{% assign sorted_species = site.species | sort: 'top', 'last' %}
+{% for species in sorted_species %}
+<article class="species-item">
+    <div class="species-text">
+        <h2 class="species-name">
+            <a href="{{ species.url }}">{{ species.name_es }}</a><br>
+            <span class="subheading">{{ species.sci_name }}</span>
+        </h2>
+
+        {{ species.excerpt | truncatewords: 100 | markdownify }}
+
+        {% assign filtered_posts = site.species_facts | where: 'species', species.sci_name %}
+        {% assign count = 1 %}
+        {% if filtered_posts and filtered_posts.size > 0 %}
+        <ul>
+            {% for post in filtered_posts %}
+            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+            {% if count == 3 %}
+                {% break %}
+            {% else %}
+                {% assign count = count | plus: 1 %}
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% if species.image %}
+    <div class="image-container">
+        <img src="{{ species.image }}" alt="{{ species.name_es }}">
+    </div>
+    {% else %}
+    <div class="image-container requiresJS">
+        <img class="awaiting-photo" data-species="{{ species.sci_name }}" alt="{{ species.name_es }}">
+    </div>
+    {% endif %}
+</article>
+
+
+{% endfor %}
+
+
+<h2 class="requiresJS">Todas las especies</h2>
+<div id="all-species" class="requiresJS">
+</div>

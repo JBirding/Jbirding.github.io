@@ -1,105 +1,115 @@
 import {closeFullScreen, toggleFullScreen} from '/scripts/script-gallery.js';
-import {photos, names, sciNames, total_photos} from "/scripts/gallery/table.js";
+import {names, photos, sciNames, total_photos} from "/scripts/gallery/table.js";
+import {releaseFocus, trapFocus} from "/scripts/general.js";
+
+const global = {
+    xDown: null,
+    yDown: null,
+    touchTimestamp: null,
+    constMov: null,
+    fastCarousel: null,
+
+
+    movingInternal: false,
+    cachedMovingPromise: null,
+    cachedMovingPromiseResolution: null,
+
+
+    get moving() {return this.movingInternal},
+    set moving(moving) {
+        this.movingInternal = moving;
+
+        if(!moving && this.cachedMovingPromiseResolution) {
+            this.cachedMovingPromiseResolution();
+            this.cachedMovingPromise = null;
+            this.cachedMovingPromiseResolution = null;
+        }
+    },
+
+    get carouselStops() {
+        if(!this.movingInternal) return new Promise(resolve => resolve());
+
+        if(this.cachedMovingPromise) return this.cachedMovingPromise
+        this.cachedMovingPromise = new Promise(resolve => {
+            this.cachedMovingPromiseResolution = resolve;
+        });
+
+        return this.cachedMovingPromise;
+
+    },
+
+
+    currentPhotoZoomInternal: 1,
+    cachedPhotoZoomedPromise: null,
+    cachedPhotoZoomedResolution: null,
+
+
+    get photoIsZoomed() {return this.currentPhotoZoomInternal > 1},
+    set photoIsZoomed(x) {
+        if(this.photoIsZoomed && x) return;
+        if(!this.photoIsZoomed && !x) return;
+
+        if(this.photoIsZoomed && !x) this.currentPhotoZoomInternal = 1;
+        else if(!this.photoIsZoomed && x) this.currentPhotoZoomInternal = 1.5;
+
+        this.photoIsZoomedInternal = x;
+
+        if(!x && this.cachedPhotoZoomedResolution) {
+            this.cachedPhotoZoomedResolution();
+            this.cachedPhotoZoomedResolution = null;
+            this.cachedPhotoZoomedPromise = null;
+        }
+    },
+
+
+    get currentPhotoZoom() {return this.currentPhotoZoomInternal},
+    set currentPhotoZoom(zoom) {
+        this.currentPhotoZoomInternal = zoom;
+
+        if(!this.photoIsZoomed && this.cachedPhotoZoomedResolution) {
+            this.cachedPhotoZoomedResolution();
+            this.cachedPhotoZoomedResolution = null;
+            this.cachedPhotoZoomedPromise = null;
+        }
+    },
+
+
+    get photoZoomsOut() {
+        if(!this.photoIsZoomed) return new Promise(resolve => resolve());
+
+        if(this.cachedPhotoZoomedPromise) return this.cachedPhotoZoomedPromise;
+
+        this.cachedPhotoZoomedPromise = new Promise(resolve => {
+            this.cachedPhotoZoomedResolution = resolve;
+        });
+        return this.cachedPhotoZoomedPromise;
+    },
+
+
+
+    pointerEventCache: [],
+    previousPointerDifference: -1,
+    basePointerDifference: 0,
+    basePhotoZoom: 1
+}
+
+let n;
+
+
+
 
 
 const carousel = document.getElementById('carousel');
-let xDown, yDown, touchTimestamp;
-
-carousel.addEventListener('touchstart', handleTouchStart, false); // make carousel swipable
-carousel.addEventListener('touchmove', handleTouchMove, false);
-carousel.addEventListener("wheel", (evt) => { //prevent scrolling on carousel
-    evt.preventDefault();
-});
-
-function handleTouchStart(evt) {
-    console.log(evt.currentTarget);
-
-    const firstTouch = evt.touches[0];
-
-    if(document.elementFromPoint(firstTouch.clientX, firstTouch.clientY) === paddleright) paddleright.onpointerdown;
-    else if(document.elementFromPoint(firstTouch.clientX, firstTouch.clientY) === paddleleft) paddleleft.onpointerdown;
-    xDown = firstTouch.clientX;
-    yDown = firstTouch.clientY;
-    touchTimestamp = Date.now();
-}
-
-function handleTouchMove(evt) {
-
-    if(document.elementFromPoint(xDown,yDown) === paddleleft || document.elementFromPoint(xDown,yDown) === paddleright) return;
-
-    let w = window.innerWidth
-
-    if ( ! xDown || ! yDown ) {
-        return;
-    }
-
-    const xUp = evt.changedTouches[0].clientX;
-    const yUp = evt.changedTouches[0].clientY;
-    const timeElapsed = Date.now()-touchTimestamp;
-
-    const xDiff = xDown - xUp;
-    const yDiff = yDown - yUp;
-
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) && Math.abs( xDiff ) >= w*0.05 && Math.abs(1000*xDiff/w/timeElapsed)>0.8 && total_photos > 1 && evt.targetTouches.length === 1) {/*most significant*/
-        if ( xDiff > 0 ) {
-            carouselNext()
-        } else {
-            carouselPrevious()
-        }
-
-        xDown = null;
-        yDown = null;
-    }
-}
-
-
-
-document.addEventListener('keydown',(event) => { // carousel key functionality
-    if (!carouselIsOpen()) return;
-    if (event.code === 'ArrowRight' && total_photos > 1) {// move right
-        carouselNext();
-        if(event.repeat) return;
-        paddleright.classList.add('active');
-        fastCarousel = setTimeout(accelerateCarousel,2000);
-    } else if (event.code === 'ArrowLeft' && total_photos > 1) { // move left
-        carouselPrevious();
-        if(event.repeat) return;
-        paddleleft.classList.add('active');
-        fastCarousel = setTimeout(accelerateCarousel,2000);
-    } else if (event.code === 'Escape') { // exit
-        closeCarousel()
-    }
-})
-
-document.addEventListener('keyup',function(ev) {
-    if (ev.code === 'KeyO' && !carouselIsOpen() && total_photos > 0) {
-        forceOpen();
-    } else if (ev.code === 'KeyF' && carouselIsOpen()) {
-        toggleFullScreen();
-    } else if(ev.code === 'ArrowLeft' || ev.code === 'ArrowRight') {
-        clearTimeout(fastCarousel);
-        document.querySelector(':root').style.removeProperty('--carousel-transition-duration');
-        if(ev.code === 'ArrowLeft') paddleleft.classList.remove('active');
-        else paddleright.classList.remove('active');
-    }
-})
-
+const centerPhotoContainer = document.getElementById('centerPhotoContainer');
+[
+    centerPhotoContainer,
+    document.getElementById('leftPhotoContainer'),
+    document.getElementById('rightPhotoContainer'),
+    document.getElementById('hiddenPhotoLeft'),
+    document.getElementById('hiddenPhotoRight'),
+].forEach(el => el.oncontextmenu = (e) => {e.preventDefault(); e.stopPropagation(); });
 const fullscreen = document.getElementById('fullscreen')
 const closefullscreen = document.getElementById('closefullscreen')
-
-fullscreen.onclick = toggleFullScreen;
-closefullscreen.onclick = toggleFullScreen;
-
-document.onfullscreenchange = function(){
-    if(document.fullscreenElement) {
-        fullscreen.hidden = true
-        closefullscreen.hidden = false
-    } else {
-        fullscreen.hidden = false
-        closefullscreen.hidden = true
-    }
-}
-
 
 const namecontainer = document.getElementById('namecontainer');
 const scicontainer = document.getElementById('scicontainer');
@@ -108,19 +118,114 @@ const paddleleft = document.getElementById('paddleleft');
 const paddleright = document.getElementById('paddleright');
 let photoInfo = document.getElementById('photoinfo');
 
-let constMov;
-let fastCarousel;
-let accelerateCarousel = ()=>{document.querySelector(':root').style.setProperty('--carousel-transition-duration', '0.25s');}
+
+function accelerateCarousel(){document.querySelector(':root').style.setProperty('--carousel-transition-duration', '0.25s');}
+function handleTouchStart(evt) {
+    const firstTouch = evt.touches[0];
+
+    if(document.elementFromPoint(firstTouch.clientX, firstTouch.clientY) === paddleright) paddleright.onpointerdown;
+    else if(document.elementFromPoint(firstTouch.clientX, firstTouch.clientY) === paddleleft) paddleleft.onpointerdown;
+    global.xDown = firstTouch.clientX;
+    global.yDown = firstTouch.clientY;
+    global.touchTimestamp = Date.now();
+}
+function handleTouchMove(evt) {
+    if(document.elementFromPoint(global.xDown,global.yDown) === paddleleft || document.elementFromPoint(global.xDown,global.yDown) === paddleright) return;
+
+    let w = window.innerWidth
+
+    if ( ! global.xDown || ! global.yDown ) {
+        return;
+    }
+
+    const xUp = evt.changedTouches[0].clientX;
+    const yUp = evt.changedTouches[0].clientY;
+    const timeElapsed = Date.now() - global.touchTimestamp;
+
+    const xDiff = global.xDown - xUp;
+    const yDiff = global.yDown - yUp;
+
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) && Math.abs( xDiff ) >= w*0.05 && Math.abs(1000*xDiff/w/timeElapsed)>0.8 && total_photos > 1 && evt.targetTouches.length === 1) {/*most significant*/
+        if ( xDiff > 0 ) {
+            carouselNext()
+        } else {
+            carouselPrevious()
+        }
+
+        global.xDown = null;
+        global.yDown = null;
+    }
+}
+
+carousel.addEventListener('touchstart', handleTouchStart, false); // make carousel swipable
+carousel.addEventListener('touchmove', handleTouchMove, false);
+carousel.addEventListener("wheel", (evt) => { //prevent scrolling on carousel
+    evt.preventDefault();
+});
+
+document.addEventListener('keydown',async (event) => { // carousel key functionality
+    if (!carouselIsOpen()) return;
+    if (event.code === 'ArrowRight' && total_photos > 1) {// move right
+        carouselNext();
+        if(event.repeat) return;
+        paddleright.classList.add('active');
+        paddleright.focus();
+        global.fastCarousel = setTimeout(accelerateCarousel,2000);
+    }
+    else if (event.code === 'ArrowLeft' && total_photos > 1) { // move left
+        carouselPrevious();
+        if(event.repeat) return;
+        paddleleft.classList.add('active');
+        paddleleft.focus();
+        global.fastCarousel = setTimeout(accelerateCarousel,2000);
+    }
+    else if (event.code === 'Escape') { // exit
+        await global.carouselStops;
+        closeCarousel()
+    }
+})
+document.addEventListener('keyup',async function(ev) {
+    if (ev.code === 'KeyO' && !carouselIsOpen() && total_photos > 0) {
+        forceOpen();
+    }
+    else if (ev.code === 'KeyF' && carouselIsOpen()) {
+        await global.carouselStops;
+        toggleFullScreen();
+        if(document.fullscreenElement) fullscreen.focus();
+        else closefullscreen.focus();
+    }
+    else if(ev.code === 'ArrowLeft' || ev.code === 'ArrowRight') {
+        clearTimeout(global.fastCarousel);
+        document.querySelector(':root').style.removeProperty('--carousel-transition-duration');
+        if(ev.code === 'ArrowLeft') paddleleft.classList.remove('active');
+        else paddleright.classList.remove('active');
+    }
+})
+
+fullscreen.onclick = toggleFullScreen;
+closefullscreen.onclick = toggleFullScreen;
+
+document.onfullscreenchange = function(){
+    let hasFullscreen = document.fullscreenElement;
+    fullscreen.hidden = !!hasFullscreen;
+    fullscreen.disabled = !!hasFullscreen;
+    closefullscreen.hidden = !hasFullscreen;
+    closefullscreen.disabled = !hasFullscreen;
+    carousel.classList.toggle('fullscreen',!!hasFullscreen);
+
+    if(hasFullscreen)
+
+    console.log(!!hasFullscreen);
+}
+
 
 paddleleft.onclick = carouselPrevious;
 paddleright.onclick = carouselNext;
 paddleleft.oncontextmenu = paddleright.oncontextmenu = function(ev) { ev.preventDefault() };
 
-paddleright.onpointerdown = function() {carouselNext(); constMov = setInterval(carouselNext,50); clearTimeout(fastCarousel); fastCarousel = setTimeout(accelerateCarousel,2000); };
-paddleleft.onpointerdown = function() {carouselPrevious(); constMov = setInterval(carouselPrevious,50); clearTimeout(fastCarousel); fastCarousel = setTimeout(accelerateCarousel,2000); }
-carousel.onpointerup = carousel.ontouchend = carousel.ontouchcancel = function() {clearInterval(constMov); clearTimeout(fastCarousel); document.querySelector(':root').style.removeProperty('--carousel-transition-duration')};
-//paddleright.onmouseout = paddleleft.onmouseout = function() {clearInterval(constMov)}
-//paddleleft.onmouseover = paddleright.onmouseover = function(){if(this.clicked){this.onpointerdown()}};
+paddleright.onpointerdown = function() {carouselNext(); global.constMov = setInterval(carouselNext,50); clearTimeout(global.fastCarousel); global.fastCarousel = setTimeout(accelerateCarousel,2000); };
+paddleleft.onpointerdown = function() {carouselPrevious(); global.constMov = setInterval(carouselPrevious,50); clearTimeout(global.fastCarousel); global.fastCarousel = setTimeout(accelerateCarousel,2000); }
+carousel.onpointerup = carousel.ontouchend = carousel.ontouchcancel = function() {clearInterval(global.constMov); clearTimeout(global.fastCarousel); document.querySelector(':root').style.removeProperty('--carousel-transition-duration')};
 
 photoInfo.ontransitionend = function () {
     namecontainer.textContent = names[n];
@@ -134,10 +239,6 @@ photoInfo.ontransitionend = function () {
 document.getElementById('closecar').onclick = closeCarousel;
 
 
-
-let n;
-let moving;
-
 function forceOpen() {
     openCarousel(photos[0])
 }
@@ -148,14 +249,13 @@ function carouselIsOpen() {
 
 function openCarousel(photo) {
     if(carousel.open) return;
+    trapFocus(carousel);
+    carousel.focus();
 
-    document.addEventListener('keydown',disableTab);
+    //document.addEventListener('keydown',disableTab);
 
     carousel.onanimationend = function(){this.onanimationend=null;this.open=true;};
-    carousel.classList.remove('closed');
-    carousel.classList.add('open');
 
-    document.body.style.overflow = 'hidden';
     if (total_photos === 1) {
         document.getElementById('carouselLeftSide').classList.add('hidden');
         document.getElementById('carouselRightSide').classList.add('hidden');
@@ -166,29 +266,35 @@ function openCarousel(photo) {
     n = photo.index ?? this.index;
     console.log(n);
     display(n);
+
+
+    carousel.classList.remove('closed');
+    carousel.classList.add('open');
+    carousel.open = true;
 }
 
 function closeCarousel() {
     if(!carousel.open) return;
+    releaseFocus(carousel);
+    carousel.addEventListener('animationend', function () {
+        this.classList.remove('closing');
+        this.classList.add('closed');
+        this.open = false;
+    },{once:true});
     carousel.classList.remove('open');
     carousel.classList.add('closing');
-    carousel.onanimationend = function() {
-        carousel.classList.remove('closing');
-        carousel.classList.add('closed');
-        carousel.onanimationend = null;
-        this.open=false;
-    }
-    //clearInterval(constmov)
-    document.body.style.overflow = 'visible';
+
+
     closeFullScreen();
-    document.removeEventListener('keydown', disableTab);
+    //document.removeEventListener('keydown', disableTab);
 }
 
 
-function carouselNext() {
-    if (moving) return;
+async function carouselNext() {
+    if(global.moving) return;
+    global.moving = true;
+    await zoomPhotoOut();
 
-    moving = true;
     n = (n + 1) % photos.length
     console.log(n);
     let leftPhoto = document.querySelector("#leftPhotoContainer");
@@ -205,7 +311,7 @@ function carouselNext() {
         hiddenPhoto.classList.remove('nextPhoto');
 
         display(n);
-        moving = false;
+        global.moving = false;
     }
 
     let sizeRatio = parseInt(getComputedStyle(centerPhoto).getPropertyValue('height')) / parseInt(getComputedStyle(leftPhoto).getPropertyValue('height'));
@@ -227,9 +333,10 @@ function carouselNext() {
 
 }
 
-function carouselPrevious() {
-    if(moving) return;
-    moving = true;
+async function carouselPrevious() {
+    if(global.moving) return;
+    global.moving = true;
+    await zoomPhotoOut();
 
     n = (n-1+photos.length) % photos.length
     console.log(n);
@@ -248,7 +355,7 @@ function carouselPrevious() {
         hiddenPhoto.classList.remove('previousPhoto');
 
         display(n);
-        moving = false;
+        global.moving = false;
     }
 
     let sizeRatio = parseInt(getComputedStyle(centerPhoto).getPropertyValue('height'))/parseInt(getComputedStyle(leftPhoto).getPropertyValue('height'));
@@ -259,12 +366,11 @@ function carouselPrevious() {
     rightPhoto.classList.add('previousPhoto');
     hiddenPhoto.classList.add('previousPhoto');
 
-    let photoInfo = document.getElementById('photoinfo');
-    photoInfo.classList.add('changingContent');
-    photoInfo.ontransitionend = function(){
-        namecontainer.textContent = names[n];
-        scicontainer.textContent = sciNames[n];
-        this.classList.remove('changingContent');
+    if (!document.fullscreenElement) {
+        photoInfo.classList.add('changingContent');
+    }
+    else {
+        photoInfo.ontransitionend();
     }
 }
 
@@ -329,5 +435,113 @@ function disableTab(event) {
 function disableTabIndex() {
     document.querySelectorAll(':not(#carousel) [tabindex=""]').forEach(el => {el.tabIndex = -1;});
 }
+
+
+
+function onDoubleClick(event) {
+    if(!document.fullscreenElement) return;
+
+    console.log(event)
+    let isZoomed = global.photoIsZoomed;
+    let [mouseX, mouseY] = [event.x, event.y];
+    if(!isZoomed) {
+        let {x, y, width, height} = centerPhotoContainer.getBoundingClientRect();
+
+        let originX = (mouseX-x)*100/width;
+        let originY = (mouseY-y)*100/height;
+        centerPhotoContainer.style.setProperty('--transform-origin',`${originX}% ${originY}%`);
+        centerPhotoContainer.style.setProperty('--center-image-zoom',2);
+
+        global.currentPhotoZoom = 2;
+    } else zoomPhotoOut();
+}
+
+async function zoomPhotoOut() {
+    if(global.photoIsZoomed) {
+        centerPhotoContainer.ontransitionend = function () {
+            global.photoIsZoomed = false;
+            this.ontransitionend = null;
+        };
+        centerPhotoContainer.style.setProperty('--center-image-zoom',1);
+        await global.photoZoomsOut;
+    }
+}
+
+centerPhotoContainer.addEventListener('dblclick', onDoubleClick);
+
+
+
+
+function handlePointerUp(event) {
+    if(!document.fullscreenElement) return;
+    const index = global.pointerEventCache.findIndex(cached => cached.pointerId === event.pointerId);
+    if (index > -1) global.pointerEventCache.splice(index, 1);
+}
+
+function handlePointerDown(event) {
+    if(!document.fullscreenElement) return;
+    global.pointerEventCache.push(event);
+    if(global.pointerEventCache.length === 2) {
+        global.basePointerDifference = Math.hypot(
+            global.pointerEventCache[0].clientX - global.pointerEventCache[1].clientX,
+            global.pointerEventCache[0].clientY - global.pointerEventCache[1].clientY
+        );
+
+        global.basePhotoZoom = global.currentPhotoZoom;
+    }
+}
+
+function handlePointerMove(event) {
+    if(!document.fullscreenElement) return;
+    const index = global.pointerEventCache.findIndex(cached => cached.pointerId === event.pointerId);
+    global.pointerEventCache[index] = event;
+
+    if(global.pointerEventCache.length === 2) {
+        const currDiff = Math.hypot(
+            global.pointerEventCache[0].clientX - global.pointerEventCache[1].clientX,
+            global.pointerEventCache[0].clientY - global.pointerEventCache[1].clientY
+        );
+
+        const avg = {
+            x: (global.pointerEventCache[0].clientX + global.pointerEventCache[1].clientX)/2,
+            y: (global.pointerEventCache[0].clientY + global.pointerEventCache[1].clientY)/2,
+        }
+
+
+        let {x, y, width, height} = centerPhotoContainer.getBoundingClientRect();
+
+        let originX = (avg.x-x)*100/width;
+        let originY = (avg.y-y)*100/height;
+
+        let newZoom = Math.max(1,Math.min(global.currentPhotoZoom + (currDiff - global.basePointerDifference)/50,2))
+        console.log(currDiff,newZoom);
+        if (currDiff > global.basePointerDifference && currDiff > 50 || currDiff < global.basePointerDifference) {
+            centerPhotoContainer.style.setProperty('--transform-origin',`${originX}% ${originY}%`);
+            centerPhotoContainer.style.setProperty('--center-image-zoom',newZoom);
+
+            global.currentPhotoZoom = newZoom;
+        }
+
+
+        global.previousPointerDifference = currDiff;
+    }
+}
+
+
+
+centerPhotoContainer.onpointerdown = handlePointerDown;
+centerPhotoContainer.onpointermove = handlePointerMove;
+
+centerPhotoContainer.onpointerup = handlePointerUp;
+centerPhotoContainer.onpointercancel = handlePointerUp;
+centerPhotoContainer.onpointerout = handlePointerUp;
+centerPhotoContainer.onpointerleave = handlePointerUp;
+
+
+
+
+
+
+
 
 export {carousel, forceOpen, carouselIsOpen, openCarousel, closeCarousel, carouselNext, carouselPrevious}

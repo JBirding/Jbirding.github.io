@@ -2,7 +2,7 @@ import {openCarousel} from "/scripts/gallery/carousel.js";
 import {parameters, imgLoadError, updateURL, triggerClickOnKey, normalizeString} from '/scripts/general.js';
 
 const DB_ACCESS_URL = "https://g4bc8210ff017d8-jbirding.adb.eu-madrid-1.oraclecloudapps.com/ords/jbirding/bird_photos/";
-const langIndex = (document.getElementById('language').value === 'EN') + 0;
+const langIndex = (document.getElementById('language').dataset.language === 'EN') + 0;
 const errorMessageES = "Hubo un error cargando los datos. Por favor, recarga la página."
 const errorMessageEN = "There was an error fetching photograph data! Please try again.";
 
@@ -19,8 +19,6 @@ let dataPromise = fetch(DB_ACCESS_URL+'data/'+(langIndex?'en':'es'))
     .catch(() => window.alert(langIndex ? errorMessageEN : errorMessageES));
 let data;
 let total_photos = 0;
-
-
 
 
 let currentPage, filterData;
@@ -161,9 +159,12 @@ function generateTable(data){
 
         imgContainer.classList.toggle('v',data[i].is_vertical);
         imgContainer.classList.toggle('h',!data[i].is_vertical);
-        photo.src = DB_ACCESS_URL+'blur/'+data[i].filename
-        photo.setNewImgOnLoad(DB_ACCESS_URL+data[i].filename,mainContainer)
         photo.classList.add('blurry')
+        photo.src = DB_ACCESS_URL+'blur/'+data[i].filename;
+
+        let alt_frags = ["Photograph of a ","Fotografía de un ejemplar de "];
+        photo.alt = alt_frags[langIndex]+sa[data[i].class][langIndex]+data[i].name_common+sa[data[i].class][2+langIndex]
+        photo.setNewImgOnLoad(DB_ACCESS_URL+data[i].filename,mainContainer);
         photo.onerror = imgLoadError;
         imgBorder.tabIndex = 0;
         imgBorder.onclick = openCarousel.bind(photo);
@@ -231,8 +232,7 @@ function urlFix () {
     if (parameters.has('sort') || localStorage.getItem('sort')) {
         console.log(parameters.get('sort') ?? localStorage.getItem('sort') === 'Random');
         if((parameters.get('sort') ?? localStorage.getItem('sort')) === 'Random') {
-            shuffle.hidden = false
-            sortSelect.style.paddingRight = '60px'
+            shuffle.hidden = false;
         }
         sortSelect.value = parameters.get('sort') ?? localStorage.getItem('sort')
     }
@@ -260,13 +260,8 @@ function changeSort() {
     let sortType = sortSelect.value
 
 
-    if (sortType === 'Random') {
-        shuffle.hidden = false
-        sortSelect.style.paddingRight = '60px'
-    } else {
-        shuffle.hidden = true
-        sortSelect.removeAttribute('style')
-    }
+    shuffle.hidden = (sortType !== 'Random');
+
 
     if (sortType) {
         parameters.set('sort',sortType)
@@ -303,6 +298,20 @@ function tableFiltered() {
 }
 
 
+
+function updateCurrentPage(newCurrentPage) {
+    pageListTop.children[currentPage].classList.remove('current');
+    pageListBottom.children[currentPage].classList.remove('current');
+    currentPage=newCurrentPage;
+    pageListTop.children[currentPage].classList.add('current');
+    pageListBottom.children[currentPage].classList.add('current');
+    main.innerHTML='';
+    hidePaddles(currentPage);
+
+    generateTable(filterData);
+}
+
+
 function updatePageList() {
     let totalPages = Math.ceil(total_photos / photoLimit);
     while (pageListTop.children.length > 2 && pageListBottom.children.length > 2) {
@@ -312,28 +321,24 @@ function updatePageList() {
     let nextPaddleTop = pageListTop.children[1];
     let nextPaddleBottom = pageListBottom.children[1];
 
-    if(totalPages <= 1) {
-        pageListTop.classList.add('hidden');
-        pageListBottom.classList.add('hidden');
-    } else {
-        pageListTop.classList.remove('hidden');
-        pageListBottom.classList.remove('hidden');
-    }
+
+    pageListTop.classList.toggle('hidden',totalPages <= 1);
+    pageListBottom.classList.toggle('hidden',totalPages <= 1);
+
 
     for(let i = 1; i <= totalPages; i++) {
         let pageButton = document.createElement('button');
+        pageButton.setAttribute('aria-label', `Página ${i}`);
         pageButton.innerText = i.toString();
-        pageButton.onclick = function(){
+        pageButton.onclick = function(ev){
             if(currentPage===i) return;
-            pageListTop.children[currentPage].classList.remove('current');
-            pageListBottom.children[currentPage].classList.remove('current');
-            currentPage=i;
-            pageListTop.children[currentPage].classList.add('current');
-            pageListBottom.children[currentPage].classList.add('current');
-            main.innerHTML='';
-            hidePaddles(currentPage);
 
-            generateTable(filterData);
+            let previousY;
+            if(pageListBottom.contains(ev.target)) previousY = pageListBottom.getBoundingClientRect().y + window.scrollY;
+
+            updateCurrentPage(i);
+
+            if(pageListBottom.contains(ev.target)) window.scrollTo({top: pageListBottom.getBoundingClientRect().top + previousY, behavior: 'instant'})
         };
         pageListTop.insertBefore(pageButton, nextPaddleTop);
 
@@ -351,30 +356,27 @@ function updatePageList() {
 }
 
 
-function nextPage() {
+function nextPage(ev) {
     if(currentPage >= Math.ceil(total_photos / photoLimit)) return;
-    pageListTop.children[currentPage].classList.remove('current');
-    pageListBottom.children[currentPage].classList.remove('current');
-    currentPage++;
-    pageListTop.children[currentPage].classList.add('current');
-    pageListBottom.children[currentPage].classList.add('current');
-    main.innerHTML='';
-    hidePaddles(currentPage);
 
-    generateTable(filterData);
+    let previousY;
+    if(pageListBottom.contains(ev.target)) previousY = pageListBottom.getBoundingClientRect().y + window.scrollY;
+
+    updateCurrentPage(currentPage+1);
+
+    if(pageListBottom.contains(ev.target)) window.scrollTo({top: pageListBottom.getBoundingClientRect().top + previousY, behavior: 'instant'})
+
 }
 
-function previousPage() {
+function previousPage(ev) {
     if(currentPage <= 1) return;
-    pageListTop.children[currentPage].classList.remove('current');
-    pageListBottom.children[currentPage].classList.add('current');
-    currentPage--;
-    pageListTop.children[currentPage].classList.add('current');
-    pageListBottom.children[currentPage].classList.remove('current');
-    main.innerHTML='';
-    hidePaddles(currentPage);
 
-    generateTable(filterData);
+    let previousY;
+    if(pageListBottom.contains(ev.target)) previousY = pageListBottom.getBoundingClientRect().y + window.scrollY;
+
+    updateCurrentPage(currentPage-1);
+
+    if(pageListBottom.contains(ev.target)) window.scrollTo({top: pageListBottom.getBoundingClientRect().top + previousY, behavior: 'instant'})
 }
 
 document.getElementById('nextPageTop').onclick = nextPage;

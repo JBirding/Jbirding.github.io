@@ -1,8 +1,10 @@
 /*footer*/
 
 footer {
+    color: var(--opposite-gray-one);
     width: max(70vw,min(920px,90vw));
     margin-inline: auto;
+    margin-block-start: 1em;
 
     #footerContents {
         display: grid;
@@ -27,6 +29,7 @@ footer {
     }
 
     hr {
+        background-color: var(--opposite-gray-one);
         width: 100%;
         border-radius: 5px;
         border: 1px solid;
@@ -54,7 +57,7 @@ footer nav {
     gap: 0.5em;
 }
 
-#footerNavigation {
+#footerNavigation, #socials {
     a {
         color: inherit;
         text-decoration: none;
@@ -80,7 +83,7 @@ footer nav {
     font-size: 0.8em;
     height: min-content;
     margin-bottom: 2em;
-    color: var(--light-gray);
+    color: var(--opposite-gray-two);
 }
 
 #footerLogo, #logo {

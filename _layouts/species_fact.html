@@ -1,0 +1,92 @@
+---
+layout: bird_text_page
+---
+<div class="page-title-and-previous-container">
+    <div class="previousLink">
+        {% for species in page.species %}
+        {% assign current_species = site.species | find: "sci_name", species %}
+        {% if current_species != nil %}
+        <a href="{{ current_species.url }}">
+            <span class="previousArrow">↑</span>{{ current_species.name_es }}
+        </a><br>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="titleContainer">
+        <h1>
+            {{ page.title }}
+        </h1>
+    </div>
+    <div>
+
+    </div>
+</div>
+
+{% assign fixedContent = page.content %}
+{% assign letters = "0,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z" | split: "," %}
+
+{% capture notes %}
+{% if page.notes %}
+<ol id="notes" type="a" role="doc-endnotes">
+    {% assign note_number = 0 %}
+
+    {% for note in page.notes %}
+    {% assign note_number = note_number | plus: 1 %}
+    {% capture text_to_replace %}{note{{note_number}}}{% endcapture %}
+    {% capture replacement_text %}<sup><a href="#note-{{ note_number }}" id="note_ref-{{note_number}}" note="{{letters[note_number]}}" class="tooltip-anchor" style="anchor-name: --note_ref-{{note_number}}"></a></sup><span class="tooltip" role="tooltip" style="position-anchor: --note_ref-{{ note_number }}">{{ note | markdownify | replace: "<p>", "" | replace: "</p>", "" }}</span>{% endcapture %}
+
+    {% assign fixedContent = fixedContent | replace: text_to_replace, replacement_text %}
+
+    <li class="note" id="note-{{ note_number }}">
+        <a href="#note_ref-{{ note_number }}">↑</a>
+        {{ note | markdownify | replace: "<p>", "" | replace: "</p>", "" }}
+    </li>
+    {% endfor %}
+</ol>
+{% endif %}
+{% endcapture %}
+
+{% capture citations %}
+{% if page.citations %}
+<ol id="citations">
+    {% for citation in page.citations %}
+
+    {% assign citation_number = citation_number | plus: 1 %}
+
+    {% capture text_to_replace %}{citation{{citation_number}}}{% endcapture %}
+    {% capture replacement_text %}<sup><a href="#citation-{{ citation_number }}" id="cite_ref-{{citation_number}}" citation="{{citation_number}}" class="tooltip-anchor" style="anchor-name: --cite_ref-{{citation_number}}"></a></sup><span class="tooltip" role="tooltip" style="position-anchor: --cite_ref-{{ citation_number }}">{% if citation.url %}<a class="external" target="_blank" rel="external" href="{{ citation.url }}">{{ citation.title }}</a>{% else %} {{ citation.title }} {% endif %}</span>{% endcapture %}
+
+    {% assign fixedContent = fixedContent | replace: text_to_replace, replacement_text %}
+
+    <li class="citation" id="citation-{{ citation_number }}">
+        {% unless citation.unreferenced %}
+        <a href="#cite_ref-{{ citation_number }}">↑</a>
+        {% endunless %}
+        {% if citation.url %}
+        <a class="external" target="_blank" rel="external" href="{{ citation.url }}">
+            {{ citation.title }}
+        </a>
+        {% else %}
+        {{ citation.title }}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+{% endif %}
+{% endcapture %}
+
+
+{% capture fixedContent %}
+{{ fixedContent }}
+{{ notes }}
+{{ citations }}
+{% endcapture %}
+
+
+
+
+{{ fixedContent | markdownify }}
+
+
+
+

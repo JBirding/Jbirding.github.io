@@ -1,33 +1,19 @@
-.light-theme {
-    #pagesMenu > div p, .star {
-        color: var(--accent-color)
-    }
 
-    .specialBg {
-        background-color: var(--accent-color)
-    }
 
-    .pageImageContent {
-        background-color: var(--light-gray)
-    }
+.svgContainer {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
 }
 
-.dark-theme {
-    #pagesMenu > div p, .star {
-        color: var(--accent-color-dark)
-    }
-
-    .specialBg {
-        background-color: var(--accent-color-dark)
-    }
-
-    .pageImageContent {
-        background-color: var(--dark-gray);
-    }
-
-    #aboutImg {
-        filter: invert(1);
-    }
+#speciesSVG {
+    stroke-width: 15px;
+    stroke-linejoin: round;
+    margin-bottom: 10%;
+    fill: var(--accent-color);
+    stroke: var(--background-color);
 }
 
 #pagesMenu {
@@ -37,7 +23,11 @@
     grid-auto-rows: min(400px,40vw);
     margin-inline: auto;
     justify-content: center;
-    gap: min(50px,5vw);
+    gap: min(25px,2.5vw);
+
+    margin-block-start: 2em;
+
+    color: var(--accent-color);
 }
 
 #pagesMenu > div {
@@ -74,7 +64,9 @@
     border-radius: 15px;
     cursor: pointer;
 
-    img {
+    background-color: var(--gray-one);
+
+    >* {
         width: 90%;
         height: auto;
     }
@@ -92,13 +84,13 @@ p {
     justify-content: center;
     position: relative;
     &.h {
-        width: 100%;
-        height: 75%;
+        width: 90%;
+        height: 67.5%;
     }
 
     &.v {
-        width: 100%;
-        height: 100%;
+        width: 67.5%;
+        height: 90%;
     }
 }
 
@@ -113,7 +105,7 @@ p {
 
 .imgContainer:not(.v) .imgBorder {max-width: 90%; height: 90%;}
 
-.imgContainer.v .imgBorder {height: 90%; max-height: 54vw; max-width: calc(min(400px, 40vw)*0.9*3/4);}
+.imgContainer.v .imgBorder {height: 90%; width: 90%; max-height: 54vw; max-width: calc(min(400px, 40vw)*0.9*3/4);}
 
 .imgBorder>img.blurry {
     width: 105%;
@@ -131,8 +123,8 @@ p {
 }
 
 .imgContainer {
-    --height: min(240px, 24vw);
-    min-height: var(--height);
+    /*--height: min(240px, 24vw);
+    min-height: var(--height);*/
     transition: opacity 0.5s linear;
     opacity: 1;
     &.changingImage {
@@ -147,6 +139,7 @@ p {
     height: 100%;
     mask: url('../other_assets/specialbg.svg') center no-repeat;
     -webkit-mask: url('../other_assets/specialbg.svg') center no-repeat;
+    background-color: var(--accent-color);
 }
 
 .special:not(.v) > .specialBg {
@@ -170,14 +163,82 @@ p {
     height: min(70px, 6vw);
     line-height: min(70px, 6vw);
     pointer-events: none;
+    color: var(--accent-color);
 }
 
 .imgContainer:not(.v)>.star {
-    top: calc(50% - var(--height)*0.45 - min(70px, 6vw)/2);
+    top: calc(50% - 100%*0.45 - min(70px, 6vw)/2);
     left: calc(5% - min(70px, 6vw)/2);
 }
 
 .imgContainer.v>.star {
     top: calc(5% - min(70px, 6vw)/2);
-    left: calc(16.25% - min(70px, 6vw)/2);
+    left: calc(50% - 100%*0.45 - min(70px, 6vw)/2);
+}
+
+
+
+@keyframes moveBird {
+    0% {
+        translate: 0;
+        scale: 1;
+    }
+
+    37% {
+        scale: 1.15
+    }
+    50% {
+        translate: -50% -10%;
+        scale: 0 1.15;
+    }
+    63% {
+        scale: -1.15 1.15;
+    }
+
+    100% {
+        translate: -10% -20%;
+        scale: -1.3 1.3
+    }
+}
+
+
+
+#aboutSVG {
+    overflow: visible;
+    #J, #pygargus {
+        translate: 0;
+        transform: none;
+        transition-property: transform, translate, scale, fill;
+        transition-duration: 0.3s, 0.3s, 0.3s, var(--theme-transition-duration);
+        transition-timing-function: ease-in-out, ease-in-out, ease-in-out, var(--theme-transition-function);
+    }
+
+    #J {
+        transform-origin: top left;
+        fill: var(--accent-color);
+    }
+
+    #pygargus {
+        transform-origin: bottom center;
+        fill: var(--text-color);
+    }
+}
+
+#pagesMenu > div a:hover #aboutSVG {
+    #J {
+        transition-duration: 0.6s, 0.6s, 0.6s, var(--theme-transition-duration);
+        transform: scale(1.1);
+        translate: 20% 40%;
+    }
+    #pygargus {
+        transition-timing-function: linear, cubic-bezier(0.5, 2.5, 0.5, 2.5), cubic-bezier(0.85, 0, 0.15, 1), var(--theme-transition-function);
+
+        transition-duration: 1.2s, 1.2s, 1.2s, var(--theme-transition-duration);
+        translate: calc(-20% ) 0;
+        transform: translateY(-40%) scale(1.2);
+        scale: -1 1;
+
+
+        /*animation: moveBird 1.5s linear forwards;*/
+    }
 }

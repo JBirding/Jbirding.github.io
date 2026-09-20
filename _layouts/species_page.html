@@ -1,0 +1,111 @@
+---
+layout: bird_text_page
+---
+<div class="page-title-and-previous-container">
+    <div class="links-container">
+        <a href="/species" rel="prev" class="previousLink">
+            <span class="previousArrow">↑</span>Pájaropedia
+        </a><br>
+        <a href="/gallery?search={{ page.sci_name | url_encode }}">
+            Ver en la galería
+        </a>
+    </div>
+
+    <div>
+        <h1>
+            {{ page.name_es }}<br>
+            <span class="subheading">{{ page.sci_name }}</span>
+        </h1>
+    </div>
+    {% if page.seo %}
+    <a class="external seo" href="{{page.seo}}" rel="external" title="Sociedad Española de Ornitología" target="_blank">
+        <img src="/other_assets/seo-logo-mono.png" alt="SEO/BirdLife">
+    </a>
+    {% endif %}
+</div>
+
+{% if page.order and page.family %}
+<div class="taxonomy-container">
+    Orden: <span class="taxonomy">{{ page.order }}</span><br>
+    Familia: <span class="taxonomy">{{ page.family }}</span>
+</div>
+{% endif %}
+
+
+{% assign fixedContent = page.content %}
+{% assign letters = "0,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z" | split: "," %}
+
+{% capture notes %}
+{% if page.notes %}
+<ol id="notes" type="a" role="doc-endnotes">
+    {% assign note_number = 0 %}
+
+    {% for note in page.notes %}
+    {% assign note_number = note_number | plus: 1 %}
+    {% capture text_to_replace %}{note{{note_number}}}{% endcapture %}
+    {% capture replacement_text %}<sup><a href="#note-{{ note_number }}" id="note_ref-{{note_number}}" note="{{letters[note_number]}}" class="tooltip-anchor" style="anchor-name: --note_ref-{{note_number}}"></a></sup><span class="tooltip" role="tooltip" style="position-anchor: --note_ref-{{ note_number }}">{{ note | markdownify | replace: "<p>", "" | replace: "</p>", "" }}</span>{% endcapture %}
+
+    {% assign fixedContent = fixedContent | replace: text_to_replace, replacement_text %}
+
+    <li class="note" id="note-{{ note_number }}">
+        <a href="#note_ref-{{ note_number }}">↑</a>
+        {{ note | markdownify | replace: "<p>", "" | replace: "</p>", "" }}
+    </li>
+    {% endfor %}
+</ol>
+{% endif %}
+{% endcapture %}
+
+{% capture citations %}
+{% if page.citations %}
+<ol id="citations">
+    {% for citation in page.citations %}
+
+    {% assign citation_number = citation_number | plus: 1 %}
+
+    {% capture text_to_replace %}{citation{{citation_number}}}{% endcapture %}
+    {% capture replacement_text %}<sup><a href="#citation-{{ citation_number }}" id="cite_ref-{{citation_number}}" citation="{{citation_number}}" class="tooltip-anchor" style="anchor-name: --cite_ref-{{citation_number}}"></a></sup><span class="tooltip" role="tooltip" style="position-anchor: --cite_ref-{{ citation_number }}">{% if citation.url %}<a class="external" target="_blank" rel="external" href="{{ citation.url }}">{{ citation.title }}</a>{% else %} {{ citation.title }} {% endif %}</span>{% endcapture %}
+
+    {% assign fixedContent = fixedContent | replace: text_to_replace, replacement_text %}
+
+    <li class="citation" id="citation-{{ citation_number }}">
+        {% unless citation.unreferenced %}
+        <a href="#cite_ref-{{ citation_number }}">↑</a>
+        {% endunless %}
+        {% if citation.url %}
+        <a class="external" target="_blank" rel="external" href="{{ citation.url }}">
+            {{ citation.title }}
+        </a>
+        {% else %}
+        {{ citation.title }}
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+{% endif %}
+{% endcapture %}
+
+
+{% capture fixedContent %}
+
+{{ fixedContent }}
+
+
+{% assign filtered_posts = site.species_facts | where: 'species', page.sci_name %}
+{% if filtered_posts and filtered_posts.size > 0 %}
+<ul>
+    {% for post in filtered_posts %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+
+{{ notes }}
+{{ citations }}
+{% endcapture %}
+
+
+
+
+{{ fixedContent | markdownify }}

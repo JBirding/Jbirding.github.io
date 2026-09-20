@@ -1,0 +1,82 @@
+---
+layout: default
+---
+<html lang='es'>
+<head>
+    <meta charset='UTF-8'>
+
+    <title>{{ page.title | default: site.title }}</title>
+
+
+    <meta lang='es-ES' content='width=device-width, initial-scale=1.0'>
+    <meta name="keywords" content="aves, fotografía">
+    <link rel="alternate" href="https://en.jbirding.com{{page.url | relative_url}}" hreflang="en-US">
+
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/styles/style-general.css">
+    {% for style in page.styles %}
+        <link rel="stylesheet" type="text/css" href="{{style}}">
+    {% endfor %}
+    {% for style in layout.styles %}
+    <link rel="stylesheet" type="text/css" href="{{style}}">
+    {% endfor %}
+
+    <script src="/scripts/general.js" type="module"></script>
+    {% for script in page.scripts %}
+    <script src="{{script}}" type="module"></script>
+    {% endfor %}
+    {% for script in layout.scripts %}
+    <script src="{{script}}" type="module"></script>
+    {% endfor %}
+
+
+    <meta name="twitter:card" content="summary">
+    <meta property="og:title" content="{{ page.title | default: 'JBirding' }}">
+    {% if page.description %}
+    <meta name="description" content="{{ page.description }}">
+    <meta property="og:description" content="{{ page.description }}">
+    {% endif %}
+    <meta property="og:image" content="{{ page.image | default: 'https://jbirding.com/logos/J-pygargus/j-white-pygargus.png' }}">
+    <meta property="og:url" content="https://jbirding.com/">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+</head>
+<body>
+{% assign active_page = layout.active | default: page.active | default: page.url | relative_url | slugify: "ascii" %}
+{% include header.html active=active_page %}
+
+
+
+{% if page.requires_scripts %}
+<noscript>
+    <div id='noscript'>
+        JavaScript está desactivado en el navegador. Para ver la página, activa JavaScript.
+    </div>
+    <style>
+        main {display:none;}
+    </style>
+</noscript>
+{% endif %}
+
+<main>
+    {% if layout.markdownify or page.markdownify %}
+    {{ content | markdownify }}
+    {% else %}
+    {{ content }}
+    {% endif %}
+</main>
+
+
+
+
+{% include footer.html %}
+</body>
+</html>

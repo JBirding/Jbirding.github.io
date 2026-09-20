@@ -4,6 +4,7 @@ let pages = document.getElementById('pages');
 let navbarHeight = 70;
 
 window.onscroll = hasScrolled;
+window.onresize = updateElementHeight;
 
 function hasScrolled() {
     const st = this.scrollY;
@@ -11,6 +12,9 @@ function hasScrolled() {
     // Make sure they scroll more than delta
     if(Math.abs(lastScrollTop - st) <= delta)
         return;
+
+    // Update element height
+    updateElementHeight();
 
     // If they scrolled down and are past the navbar, add class .nav-up.
     // This is necessary so you never see what is "behind" the navbar.
@@ -27,6 +31,12 @@ function hasScrolled() {
     }
 
     lastScrollTop = st;
+}
+
+
+
+function updateElementHeight() {
+    pages.style.setProperty('--neg-element-height',-pages.getBoundingClientRect().height+'px');
 }
 
 
