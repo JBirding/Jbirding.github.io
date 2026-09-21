@@ -7,7 +7,7 @@ layout: bird_text_page
         {% assign current_species = site.species | find: "sci_name", species %}
         {% if current_species != nil %}
         <a href="{{ current_species.url }}">
-            <span class="previousArrow">↑</span>{{ current_species.name_es }}
+            <span class="previousArrow">↑</span>{{ current_species.sci_name }}
         </a><br>
         {% endif %}
         {% endfor %}
