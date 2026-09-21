@@ -4,12 +4,9 @@ layout: bird_text_page
 <div class="page-title-and-previous-container">
     <div class="previousLink">
         {% for species in page.species %}
-        {% assign current_species = site.species | find: "sci_name", species %}
-        {% if current_species != nil %}
-        <a href="{{ current_species.url }}">
-            <span class="previousArrow">↑</span>{{ current_species.sci_name }}
+        <a href="/species/{{ species | slugify }}">
+            <span class="previousArrow">↑</span>{{ species }}
         </a><br>
-        {% endif %}
         {% endfor %}
     </div>
     <div class="titleContainer">
