@@ -1,8 +1,5 @@
 ---
-species:
-  - name_sci: Streptopelia decaocto
-    name_es: Tórtola Turca
-    name_en: Eurasian Collared Dove
+species: Streptopelia decaocto
 title: El pájaro que conquistó el mundo (literalmente)
 citations:
   - title: 'Streptopelia decaocto - Wikipedia, la enciclopedia libre'

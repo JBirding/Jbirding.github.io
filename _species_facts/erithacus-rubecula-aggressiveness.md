@@ -1,8 +1,5 @@
 ---
-species:
-  - name_sci: Erithacus rubecula
-    name_es: Petirrojo europeo
-    name_en: European Robin
+species: Erithacus rubecula
 title: Un ave más agresiva de lo que parece
 notes:
   - El parámetro que mide el estudio es el "rendimiento vocal" (*vocal performance* en inglés), que se define como el grado de vocalización cerca del límite respiratorio del ave

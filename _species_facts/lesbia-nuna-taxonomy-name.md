@@ -1,8 +1,5 @@
 ---
-species: 
-  - name_sci: Lesbia nuna
-    name_es: Colibrí colilargo menor
-    name_en: Green-Tailed Trainbearer
+species: Lesbia nuna
 title: Colibríes sáficos
 notes:
   - En principio la página enlazada contiene el género *Sappho* en el libro original, pero está vacía en el documento escaneado.

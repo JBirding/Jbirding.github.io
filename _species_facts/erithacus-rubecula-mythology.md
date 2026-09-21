@@ -1,8 +1,5 @@
 ---
-species:
-  - name_sci: Erithacus rubecula
-    name_es: Petirrojo europeo
-    name_en: European Robin
+species: Erithacus rubecula
 title: El pecho del petirrojo en la mitología
 citations:
   - title: Riojarchivo » El petirrojo sacía la sed de Jesucristo
