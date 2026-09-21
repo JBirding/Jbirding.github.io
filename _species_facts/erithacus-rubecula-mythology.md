@@ -9,7 +9,7 @@ citations:
   - title: La leyenda del petirrojo. Txantxangorriaren kondaira.
     url: https://tradicionsilvestre.com/2025/02/12/la-leyenda-del-petirrojo-txantxangorriaren-kondaira/
   - title: Leyenda del petirrojo
-    url: https://elpais.bo/reflexion/20211204_leyenda-del-petirrojo.html#google_vignette
+    url: https://elpais.bo/reflexion/20211204_leyenda-del-petirrojo.html
   - title: Dictionary of symbols and imagery
     url: https://archive.org/details/dictionaryofsymb0000vrie/page/388/mode/2up
 ---
