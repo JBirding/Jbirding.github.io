@@ -226,5 +226,31 @@ a.external::after {
   box-shadow: rgba(0,0,0,0.5) 0 0 10px;
 }
 
+.tooltip:has(img.tooltip-image),
+.note:has(img.tooltip-image) {
+
+  &.tooltip {
+    text-align: center;
+    img {width: 100%}
+  }
+
+  &.note {
+    img, :has(img) {width: 10em;max-width: 100%;}
+  }
+
+
+
+  img, :has(img) {
+    display: block;
+  }
+  img {height: auto;}
+
+  font-style: italic;
+
+
+  em {font-style: normal;}
+
+}
+
 
 
