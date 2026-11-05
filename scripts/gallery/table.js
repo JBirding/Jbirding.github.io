@@ -162,7 +162,7 @@ function generateTable(data){
         photo.classList.add('blurry')
         photo.src = DB_ACCESS_URL+'blur/'+data[i].filename;
 
-        let alt_frags = ["Photograph of a ","Fotografía de un ejemplar de "];
+        let alt_frags = ["Fotografía de un ejemplar de ","Photograph of a "];
         photo.alt = alt_frags[langIndex]+sa[data[i].class][langIndex]+data[i].name_common+sa[data[i].class][2+langIndex]
         photo.setNewImgOnLoad(DB_ACCESS_URL+data[i].filename,mainContainer);
         photo.onerror = imgLoadError;
